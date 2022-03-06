@@ -38,9 +38,13 @@ void Map::print(void) {
 
 void Map::update(Player u) {
   for (int i = u.last_x; i < u.last_x + u.height; i++)
-    for (int j = u.last_y; j < u.last_y + u.width; j++)
+    for (int j = u.last_y; j < u.last_y + u.width; j++) {
       content[i][j] = 0;
+      property[i][j] = 'x';
+    }
   for (int i = u.x; i < u.x + u.height; i++)
-    for (int j = u.y; j < u.y + u.width; j++)
-      content[i][j] = 1; // 这要被换成！！角色像素的数字！！
+    for (int j = u.y; j < u.y + u.width; j++) {
+      content[i][j] = 2; // 这要被换成！！角色像素的数字！！
+      property[i][j] = u.property;
+    }
 }
