@@ -13,7 +13,7 @@ int main() {
   map.print();
 
   Player player;
-  player.init(1, 1, 2, 1, 0);
+  player.init(1, 1, 2, 1, 0, 'i');
 
   usleep(100000); // the unit is miu_s
 

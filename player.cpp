@@ -10,14 +10,16 @@
 //     int last_x, last_y;
 //     int height, width;
 //     int state; // 0-Outer 1-Inner
+//     char property;
 // };
 
-void Player::init(int x0, int y0, int h0, int w0, int s0) {
+void Player::init(int x0, int y0, int h0, int w0, int s0, char p0) {
   x = last_x = x0;
   y = last_y = y0;
   height = h0;
   width = w0;
   state = s0;
+  property = p0;
 }
 
 void Player::move(char direction, Map& map) {
