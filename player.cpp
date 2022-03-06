@@ -34,7 +34,7 @@ void Player::move(char direction, Map& map) {
       last_y = y--;
       break;
     case 'd':
-      if (y - 1 >= map.col || map.content[x][y + 1] == 1) break;
+      if (y + width >= map.col || map.content[x][y + width] == 1) break;
       last_y = y++;
       break;
   }

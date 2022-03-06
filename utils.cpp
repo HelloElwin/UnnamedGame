@@ -2,23 +2,29 @@
 
 #include <iostream>
 #include <cstdio>
+#include <termios.h>
+#include <stdio.h>
 
 // type sheet
-// 0    air
-// 1    ground
-
-// 2  player/bar/portal
-//    property = 'i' : ice 32
-//    property = 'f' : fire 1
-
-//    property = 'r' : red 9
-//    property = 'p' : pink 219
-//    property = 'v' : violet 93
-//    property = 'b' : blue 12
-//    property = 'c' : cyan 14
-//    property = 'g' : green 118
-//    property = 'y' : yellow 226
-//    property = 'o' : orange 214
+// 0  air
+// 1  ground
+// 2  player
+// 3  bar
+// 4  portal
+// 5  gate
+ 
+// property sheet
+// property = 'x' : none
+// property = 'i' : ice 32
+// property = 'f' : fire 1
+// property = 'r' : red 9
+// property = 'p' : pink 219
+// property = 'v' : violet 93
+// property = 'b' : blue 12
+// property = 'c' : cyan 14
+// property = 'g' : green 118
+// property = 'y' : yellow 226
+// property = 'o' : orange 214
 
 
 void super_print(int type, char propty) {
@@ -30,6 +36,9 @@ void super_print(int type, char propty) {
       printf("\033[48;5;231m \033[0m");  
       break;
     case 2:
+    case 3:
+    case 4:
+    case 5:
       switch (propty) {
         case 'i':
           printf("\033[48;5;32m \033[0m");  
@@ -75,4 +84,4 @@ void super_print(int type, char propty) {
   }
   return 0;
 }
-/*
+*/

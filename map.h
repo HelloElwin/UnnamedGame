@@ -11,9 +11,10 @@ class Map {
     void print(void);
     void update(Player);
     int content[200][200];
+    char property[200][200];
     int row;
     int col;
-    int state; // 0 for Outer World and 1 for Inner World
+    int state; // 0-Outer 1-Inner
 };
 
 #endif
