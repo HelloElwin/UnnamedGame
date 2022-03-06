@@ -21,14 +21,16 @@ void Map::init(int r, int c) {
   col = c;
   state = 0;
   for (int i = 0; i < r; i++)
-    for (int j = 0; j < c; j++)
+    for (int j = 0; j < c; j++) {
       content[i][j] = ((i == 0 || i == r - 1) ? 1 : 0);
+      property[i][j] = 'x';
+    }
 }
 
 void Map::print(void) {
   for (int i = row - 1; i >= 0; i--) {
     for (int j = 0; j < col; j++) {
-      super_print(content[i][j]); // 在utils里，输出特定“像素”
+      super_print(content[i][j], property[i][j]); // 在utils里，输出特定“像素”
     }
     printf("\n");
   }
