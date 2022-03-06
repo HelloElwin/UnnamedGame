@@ -10,8 +10,8 @@
 // 1  ground
 // 2  player
 // 3  bar
-// 4  portal
-// 5  gate
+// 4  gate 
+// 10+ portal
  
 // property sheet
 // property = 'x' : none
@@ -27,50 +27,46 @@
 // property = 'o' : orange 214
 
 
-void super_print(int type, char propty) {
-  switch (type) {
-    case 0:
-      printf(" ");
-      break;
-    case 1:
-      printf("\033[48;5;231m \033[0m");  
-      break;
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-      switch (propty) {
-        case 'i':
-          printf("\033[48;5;32m \033[0m");  
-          break;
-        case 'f':
-          printf("\033[48;5;1m \033[0m");  
-          break;
-        case 'r':
-          printf("\033[48;5;9m \033[0m");  
-          break;
-        case 'p':
-          printf("\033[48;5;219m \033[0m");  
-          break;
-        case 'v':
-          printf("\033[48;5;93m \033[0m");  
-          break;
-        case 'b':
-          printf("\033[48;5;12m \033[0m");  
-          break;
-        case 'c':
-          printf("\033[48;5;14m \033[0m");  
-          break;
-        case 'g':
-          printf("\033[48;5;118m \033[0m");  
-          break;
-        case 'y':
-          printf("\033[48;5;226m \033[0m");  
-          break;
-        case 'o':
-          printf("\033[48;5;214m \033[0m");  
-          break;
-      }
+void super_print(int type, char property) {
+  if (type == 0) {
+    printf(" ");
+  } else if (type == 1) {
+    printf("\033[48;5;231m \033[0m");  
+  } else {
+    switch (property) {
+      case 'i':
+        printf("\033[48;5;32m \033[0m");  
+        break;
+      case 'f':
+        printf("\033[48;5;1m \033[0m");  
+        break;
+      case 'r':
+        printf("\033[48;5;9m \033[0m");  
+        break;
+      case 'p':
+        printf("\033[48;5;219m \033[0m");  
+        break;
+      case 'v':
+        printf("\033[48;5;93m \033[0m");  
+        break;
+      case 'b':
+        printf("\033[48;5;12m \033[0m");  
+        break;
+      case 'c':
+        printf("\033[48;5;14m \033[0m");  
+        break;
+      case 'g':
+        printf("\033[48;5;118m \033[0m");  
+        break;
+      case 'y':
+        printf("\033[48;5;226m \033[0m");  
+        break;
+      case 'o':
+        printf("\033[48;5;214m \033[0m");  
+        break;
+      case 'x':
+        printf("\033[48;5;231m \033[0m");  
+    }
   }
 }
 

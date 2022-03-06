@@ -2,8 +2,12 @@
 #define MAP_H
 
 #include "player.h"
+#include "blocks.h"
+
+#include <vector>
 
 class Player;
+class Block;
 
 class Map {
   public:
@@ -15,6 +19,7 @@ class Map {
     int row;
     int col;
     int state; // 0-Outer 1-Inner
+    std::vector<Block> blocks;
 };
 
 #endif

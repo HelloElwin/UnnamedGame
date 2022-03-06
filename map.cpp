@@ -47,4 +47,12 @@ void Map::update(Player u) {
       content[i][j] = 2; // 这要被换成！！角色像素的数字！！
       property[i][j] = u.property;
     }
+  for (int idx = 0; idx < blocks.size(); idx++)
+    for (int i = 0; i < 4; i++)
+      for (int j = 0; j < 10; j++) {
+        int x = blocks[idx].x, y = blocks[idx].y;
+        content[x + i][y + j] = blocks[idx].content[i][j];
+        property[x + i][y + j] = blocks[idx].property[i][j];
+      }
 }
+
