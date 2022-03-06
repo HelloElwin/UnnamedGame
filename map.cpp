@@ -1,5 +1,6 @@
 #include "map.h"
 #include "utils.h"
+#include "player.h"
 
 #include <cstdio>
 #include <iostream>
@@ -8,12 +9,11 @@
 //   public:
 //     void init(int, int);
 //     void print(void);
-//     void update(void);
-//   private:
+//     void update(player);
+//     map content[200][200];
 //     int row;
 //     int col;
 //     int state;
-//     map content[200][200];
 // };
 
 void Map::init(int r, int c) {
@@ -34,6 +34,11 @@ void Map::print(void) {
   }
 }
 
-void Map::update(void) {
-  printf("Nothing");
+void Map::update(Player u) {
+  for (int i = u.last_x; i < u.last_x + u.height; i++)
+    for (int j = u.last_y; j < u.last_y + u.width; j++)
+      content[i][j] = 0;
+  for (int i = u.x; i < u.x + u.height; i++)
+    for (int j = u.y; j < u.y + u.width; j++)
+      content[i][j] = 1; // 这要被换成！！角色像素的数字！！
 }
