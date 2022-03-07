@@ -12,7 +12,10 @@ map.o: map.cpp player.h map.h utils.h
 main.o: main.cpp map.h utils.h 
 	g++ $(FLAGS) -c $<
 
-main: main.o map.o utils.o player.o
+block_fill.o: block_fill.cpp block_fill.h
+	g++ $(FLAGS) -c $<
+
+main: main.o map.o utils.o player.o block_fill.o
 	g++ $(FLAGS) $^ -o main
 
 

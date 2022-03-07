@@ -9,13 +9,13 @@ class Player;
 
 class Block {
   public:
-    void init(int, int, int[][10], char[][10], int);
+    void init(int, int, int[][10], int);
     // void move(char);
     int x, y;
     int last_x, last_y;
     int overall_property;
     int content[4][10];
-    char property[4][10];
+    //char property[4][10];
 };
 
 class Map {
@@ -25,7 +25,7 @@ class Map {
     void check(Player&);
     void update(Player);
     int content[200][200];
-    char property[200][200];
+    //char property[200][200];
     int row;
     int col;
     int state; // 0-Outer 1-Inner

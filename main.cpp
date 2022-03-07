@@ -2,6 +2,7 @@
 #include "utils.h"
 #include "player.h"
 #include "unistd.h"
+#include "block_fill.h"
 
 #include <cstdio>
 #include <iostream>
@@ -13,16 +14,19 @@ int main() {
   map.print();
 
   Player player;
-  player.init(1, 1, 2, 3, 0, 'i');
+  int cont0[4][10];
+  fill(21,(int*)cont0);
+  player.init(1, 1, 4, 4, 0,cont0);
 
   Block portal;
-  int temp0[4][10] = {10,10,10,10,10,0,0,0,0,0,10,10,10,10,10,0,0,0,0,0,10,10,10,10,10,0,0,0,0,0,10,10,10,10,10,0,0,0,0,0};
-  char temp1[4][10] = {'p','p','p','p','p','x','x','x','x','x','p','p','p','p','p','x','x','x','x','x','p','p','p','p','p','x','x','x','x','x','p','p','p','p','p','x','x','x','x','x'};
-  portal.init(0,3,temp0,temp1,10);
+  int cont[4][10];
+  fill(113,(int*)cont);
+  portal.init(0,3,cont,113);
   map.blocks.push_back(portal);
-  int temp2[4][10] = {0,0,0,0,0,11,11,11,11,11,0,0,0,0,0,11,11,11,11,11,0,0,0,0,0,11,11,11,11,11,0,0,0,0,0,11,11,11,11,11};
-  char temp3[4][10] = {'x','x','x','x','x','p','p','p','p','p','x','x','x','x','x','p','p','p','p','p','x','x','x','x','x','p','p','p','p','p','x','x','x','x','x','p','p','p','p','p'};
-  portal.init(0,12,temp2,temp3,11);
+
+  int cont2[4][10];
+  fill(114,(int*)cont2);
+  portal.init(0,12,cont2,114);
   map.blocks.push_back(portal);
 
   usleep(1000000); // the unit is miu_s
@@ -46,8 +50,7 @@ int main() {
     std::cout << "\033[2J\033[1;1H";
     map.print();
 
-    printf("x%d y%d xx%d yy%d\n", player.x, player.y, player.x % 4, player.y / 10);
-
+    printf("x%d y%d xx%d yy%d\n", player.x, player.y, player.x / 4, player.y / 10);
   }
 
   return 0;

@@ -11,7 +11,7 @@
 // 2  player
 // 3  bar
 // 4  gate 
-// 10+ portal
+// 5+ portal
  
 // property sheet
 // property = 'x' : none
@@ -28,8 +28,8 @@
 
 
 void super_print(int Type) {
-	type = Type % 100;
-	property = Type / 100;
+	int type = Type % 100;
+	int property = Type / 100;
   /*if (type == 0) {
     printf(" ");
   } 
