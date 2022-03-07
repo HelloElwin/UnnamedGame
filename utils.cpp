@@ -27,12 +27,16 @@
 // property = 'o' : orange 214
 
 
-void super_print(int type, char property) {
-  if (type == 0) {
+void super_print(int Type) {
+	type = Type % 100;
+	property = Type / 100;
+  /*if (type == 0) {
     printf(" ");
-  } else if (type == 1) {
+  } 
+  else if (type == 1) {
     printf("\033[48;5;231m \033[0m");  
-  } else {
+  } 
+  else {
     switch (property) {
       case 'i':
         printf("\033[48;5;32m \033[0m");  
@@ -68,6 +72,8 @@ void super_print(int type, char property) {
         printf("\033[48;5;231m \033[0m");  
     }
   }
+  */
+	printf("\033[48;5;%dm \033[0m",property);
 }
 
 
