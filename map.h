@@ -14,7 +14,7 @@ class Block {
     int x, y;
     int last_x, last_y;
     int overall_property;
-    int content[4][10];
+    int content[5][10];
     //char property[4][10];
 };
 

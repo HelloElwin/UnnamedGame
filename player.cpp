@@ -21,7 +21,7 @@ void Player::init(int x0, int y0, int h0, int w0, int s0, int cont[][10]) {
   width = w0;
   for (int i = 0; i < width; i++) {
     for (int j = 0; j < height; j++) {
-      content[i][j] = cont[i][j];
+      content[i][j] = cont[i][j]; // !! content of the player
     }
   }
   state = s0;

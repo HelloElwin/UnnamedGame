@@ -1,23 +1,38 @@
 #include "block_fill.h"
+#include <fstream>
+#include <string>
 void fill(int overall, int *cont) {
-  const int row = 4;
+  const int row = 5;
   const int col = 10;
 
   const int grdwid = 1, grdlen = 10;
   const int perwid = 4, perlen = 4;
   const int barwid = 4, barlen = 2; 
   const int polwid1 = 2, pollen1 = 10;
-  const int polwid2 = 2, pollen2 = 4;
+  const int polwid2 = 2, pollen2 = 5;
   const int gatwid = 4, gatlen = 4;
 
   int *ct = cont;
-//  int *pty = propty;
+//int *pty = propty;
+  
+  std::ifstream model1 ("./txt/1.txt");
+  std::string temp1;
+  std::ifstream model4 ("./txt/4.txt");
+  std::string temp4;
+  std::ifstream model51 ("./txt/51.txt");
+  std::string temp51;
+  std::ifstream model52 ("./txt/52.txt");
+  std::string temp52;
+  std::ifstream model53 ("./txt/53.txt");
+  std::string temp53;
+  std::ifstream model54 ("./txt/54.txt");
+  std::string temp54;
 
   if(overall/100 > 0 || overall/10 >= 5) { //portal
     int direct = overall % 10;
-    int color = overall / 10;
+    int serial = overall / 10;
     int numcolor = 231;
-    switch (color) {
+    switch (serial) {
       case 5:
         numcolor = 9; //red
         break;
@@ -45,116 +60,52 @@ void fill(int overall, int *cont) {
     }
     switch (direct) {
       case 1: //up
-        for (int i = 1; i <= col * (row - polwid1); i++) {
-          *ct++ = 0;
-        }
-        *ct++ = numcolor * 100 + color;
-        for (int i = 1; i <= pollen1 - 2; i++) {
-          *ct++ = 0;
-        }
-        *ct++ = numcolor * 100 + color;
-        for (int i = 1; i <= col - pollen1; i++) {
-          *ct++ = 0;
-        }
-        for (int j = 1; j <= polwid1 -1; j++) {
-          for (int i = 1; i <= pollen1; i++) {
-            *ct++ = numcolor * 100 + color;
-          } 
-          for (int i = 1; i <= col - pollen1; i++) {
-            *ct++ = 0;
+        while (getline (model51, temp51)) {
+          for (int j = 0; j < col; j++) {
+            if (temp51[j] == '1')
+              *ct++ = numcolor * 100 + serial;
+            else
+              *ct++ = 0;
           }
         }
         ct = cont;
         break;
       case 2: //down
-        for (int i = 1; i <= col * (row - polwid1); i++) {
-          *ct++ = 0;
-        }
-        for (int j = 1; j <= polwid1 -1; j++) {
-          for (int i = 1; i <= pollen1; i++) {
-            *ct++ = numcolor * 100 + color;
-          } 
-          for (int i = 1; i <= col - pollen1; i++) {
-            *ct++ = 0;
+        while (getline (model52, temp52)) {
+          for (int j = 0; j < col; j++) {
+            if (temp52[j] == '1')
+              *ct++ = numcolor * 100 + serial;
+            else
+              *ct++ = 0;
           }
-        }
-        *ct++ = numcolor * 100 + color;
-        for (int i = 1; i <= pollen1 - 2; i++) {
-          *ct++ = 0;
-        }
-        *ct++ = numcolor * 100 + color;
-        for (int i = 1; i <= col - pollen1; i++) {
-          *ct++ = 0;
         }
         ct = cont;
         break;
       case 3: //left
-        for (int j = 1; j <= polwid2-1; j++) {
-          for (int i = 1; i <= pollen2; i++) {
-            *ct = numcolor * 100 + color;
-            ct = ct + col; 
-          } 
-          for (int i = 1; i <= row - pollen2; i++) {
-            *ct = 0;
-            ct = ct + col;
-          }
-          ct = cont + j;
-        }
-        *ct = numcolor * 100 + color;
-        for (int i = 1; i <= pollen2 - 2; i++) {
-          ct = ct + col;
-          *ct = 0;
-        }
-        ct = ct + col;
-        *ct = numcolor * 100 + color;
-        for (int i = 1; i <= row - pollen2; i++) {
-          ct = ct + col;
-          *ct = 0;
-        }
-        for (int i = polwid2; i <= col - 1; i++) {
-          ct = cont + i;
-          for (int j = 1; j <= row; j++) {
-            *ct = 0;
-            ct = ct + col;
+        while (getline (model53, temp53)) {
+          for (int j = 0; j < col; j++) {
+            if (temp53[j] == '1')
+              *ct++ = numcolor * 100 + serial;
+            else
+              *ct++ = 0;
           }
         }
         ct = cont;
         break;
       case 4: //right
-        *ct = numcolor * 100 + color;
-        for (int i = 1; i <= pollen2 - 2; i++) {
-          ct = ct + col;
-          *ct = 0;
-        }
-        ct = ct + col;
-        *ct = numcolor * 100 + color;
-        for (int i = 1; i <= row - pollen2; i++) {
-          ct = ct + col;
-          *ct = 0;
-        }
-        for (int j = 1; j <= polwid2 - 1; j++) {
-          ct = cont + j;
-          for (int i = 1; i <= pollen2; i++) {
-            *ct = numcolor * 100 + color;
-            ct = ct + col; 
-          } 
-          for (int i = 1; i <= row - pollen2; i++) {
-            *ct = 0;
-            ct = ct + col;
-          }
-        }
-        for (int i = polwid2; i <= col - 1; i++) {
-          ct = cont + i;
-          for (int j = 1; j <= row; j++) {
-            *ct = 0;
-            ct = ct + col;
+        while (getline (model54, temp54)) {
+          for (int j = 0; j < col; j++) {
+            if (temp54[j] == '1')
+              *ct++ = numcolor * 100 + serial;
+            else
+              *ct++ = 0;
           }
         }
         ct = cont;
         break;
     }
   }
-  else if (overall/10 > 0) {
+  else if (overall/10 > 0) { //player and bar
     int p = overall / 10;
     int fi = overall % 10;
     int color = 0;
@@ -166,117 +117,41 @@ void fill(int overall, int *cont) {
         color = 1;
         break;
     }
-    switch(p) {
-      case 2: //player
-        for (int i = 1; i <= row - perwid; i++) {
-          for (int j = 1; j <= col; j++) {
-            *ct++ = 0;
-          }
-        }
-        for (int i = 1; i <= perlen; i++) {
-          *ct++ = color * 100 + p;
-        }
-        for (int i = 1; i <= col - perlen; i++) {
-          *ct++ = 0;
-        }
-        for (int i = 1; i <= perlen/4;i++) {
-          *ct++ = 0;
-        }
-        for (int i = 1; i <= perlen - (perlen/4)*2; i++) {
-          *ct++ = color * 100 + p;
-        }
-        for (int i = 1; i <= col - perlen + perlen/4; i++) {
-          *ct++ =0;
-        }
-        for (int i = 1; i <= perwid - 2; i++) {
-          for (int j = 1; j <= perlen; j++) {
-            *ct++ = color * 100 + p;
-          }
-          for (int j = 1; j <= col - perlen; j++) {
-            *ct++ = 0;
-          }
-        }
-        ct = cont;
-        break;
-        
-      case 3: // bar
-        for (int j = 1; j <= barlen; j++) {
-          for (int i = 1; i <= barwid; i++) {
-            *ct = color * 100 + p;
-            ct = ct + col;
-          }
-          ct = cont + j;
-        }
-        for (int i = barlen; i <= col - 1; i++) {
-          ct = cont + i;
-          for (int j = 1; j <= row; j++) {
-            *ct = 0;
-            ct = ct + col;
-          }
-        }
-        ct = cont;
-        break;
-      
-    }
+    //to be continued
   }
   else { //not portal
     switch(overall) {
       case 1: //ground
-        for (int i = 1; i <= row - grdwid; i++) {
-          *ct++ = 0;
-        }
-        for (int j = 1; j <= grdwid; j++) {
-          for (int i = 1; i <= grdlen; i++) {
-            *ct++ = 23100 + overall;
+        while (getline (model1, temp1)) {
+          for (int j = 0; j < col; j++) {
+            if (temp1[j] == '1')
+              *ct++ = 231 * 100 + overall;
+            else
+              *ct++ = 0;
           }
         }
         ct = cont;
         break;
       case 4: // gate
-        for (int j = 1; j <= gatlen/4; j++) {
-          for (int i = 1; i <= row - gatwid/2; i++) {
-            *ct = 0;
-            ct = ct + col;
-          }
-          for (int i = 1; i <= gatwid/2; i++) {
-            *ct = 13100 + overall;
-            ct = ct + col;
-          }
-          ct = cont + j;
-        }
-        for (int i = gatlen/4; i <= gatlen/4 + gatlen/2 - 1; i++) {
-          ct = cont + i;
-          for (int j = 1; j <= row - gatwid; j++) {
-            *ct = 0;
-            ct = ct + col;
-          }
-          for (int j = 1; j <= gatwid; j++) {
-            *ct = 13100 + overall;
-            ct = ct + col;
+        while (getline (model4, temp4)) {
+          for (int j = 0; j < col; j++) {
+            if (temp4[j] == '1')
+              *ct++ = 131 * 100 + overall;
+            else
+              *ct++ = 0;
           }
         }
-        ct = cont + gatlen/4 + gatlen/2;
-        for (int j = 1; j <= gatlen/4; j++) {
-          for (int i = 1; i <= row - gatwid/2; i++) {
-            *ct = 0;
-            ct = ct + col;
-          }
-          for (int i = 1; i <= gatwid/2; i++) {
-            *ct = 13100 + overall;
-            ct = ct + col;
-          }
-          ct = ct + j;
-        }
-        for (int i = gatwid; i <= col - 1; i++) {
-          ct = cont + i;
-          for (int j = 1; j <= row; j++) {
-            *ct = 0;
-            ct = ct + col;
-          }
-        }
+        ct = cont;
         break;
+
     }
   }
+  model1.close();
+  model4.close();
+  model51.close();
+  model52.close();
+  model53.close();
+  model54.close();
 }
 /*design test
 

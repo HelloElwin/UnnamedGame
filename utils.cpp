@@ -28,8 +28,8 @@
 
 
 void super_print(int Type) {
-	int type = Type % 100;
-	int property = Type / 100;
+  int type = Type % 100;
+  int property = Type / 100;
   /*if (type == 0) {
     printf(" ");
   } 
@@ -73,27 +73,27 @@ void super_print(int Type) {
     }
   }
   */
-	printf("\033[48;5;%dm \033[0m",property);
+  printf("\033[48;5;%dm \033[0m",property);
 }
 
 
 // Adapted from https://zhuanlan.zhihu.com/p/381561249
 char get_keyboard(void) {
-    char input;
-    struct termios new_settings;
-    struct termios stored_settings;
-    tcgetattr(0,&stored_settings);
-    new_settings = stored_settings;
-    new_settings.c_lflag &= (~ICANON);
-    new_settings.c_cc[VTIME] = 0;
-    tcgetattr(0,&stored_settings);
-    new_settings.c_cc[VMIN] = 1;
-    tcsetattr(0,TCSANOW,&new_settings);
+  char input;
+  struct termios new_settings;
+  struct termios stored_settings;
+  tcgetattr(0,&stored_settings);
+  new_settings = stored_settings;
+  new_settings.c_lflag &= (~ICANON);
+  new_settings.c_cc[VTIME] = 0;
+  tcgetattr(0,&stored_settings);
+  new_settings.c_cc[VMIN] = 1;
+  tcsetattr(0,TCSANOW,&new_settings);
 
-    input = getchar();
+  input = getchar();
 
-    tcsetattr(0,TCSANOW,&stored_settings);
-    return input;
+  tcsetattr(0,TCSANOW,&stored_settings);
+  return input;
 }
 
 /*
