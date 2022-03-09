@@ -1,25 +1,25 @@
 FLAGS = -pedantic-errors -std=c++11
 
-utils.o: utils.cpp utils.h
-	g++ $(FLAGS) -c $<
+bin/utils.o: src/utils.cpp src/utils.h
+	g++ $(FLAGS) -c $< -o $@
 
-player.o: player.cpp player.h map.h utils.h
-	g++ $(FLAGS) -c $<
+bin/player.o: src/player.cpp src/player.h src/map.h src/utils.h
+	g++ $(FLAGS) -c $< -o $@
 
-map.o: map.cpp player.h map.h utils.h
-	g++ $(FLAGS) -c $<
+bin/map.o: src/map.cpp src/player.h src/map.h src/utils.h
+	g++ $(FLAGS) -c $< -o $@
 
-main.o: main.cpp map.h utils.h 
-	g++ $(FLAGS) -c $<
+bin/main.o: src/main.cpp src/map.h src/utils.h 
+	g++ $(FLAGS) -c $< -o $@
 
-block_fill.o: block_fill.cpp block_fill.h
-	g++ $(FLAGS) -c $<
+bin/block_fill.o: src/block_fill.cpp src/block_fill.h
+	g++ $(FLAGS) -c $< -o $@
 
-main: main.o map.o utils.o player.o block_fill.o
+main: bin/main.o bin/map.o bin/utils.o bin/player.o bin/block_fill.o
 	g++ $(FLAGS) $^ -o main
 
 
 clean:
-	rm -f main main.o map.o player.o utils.o
+	rm -f bin/*
 
 .PHONY: clean

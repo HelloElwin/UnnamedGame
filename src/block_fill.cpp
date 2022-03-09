@@ -1,6 +1,7 @@
 #include "block_fill.h"
 #include <fstream>
 #include <string>
+
 void fill(int overall, int *cont) {
   const int row = 5;
   const int col = 10;
@@ -15,17 +16,17 @@ void fill(int overall, int *cont) {
   int *ct = cont;
 //int *pty = propty;
   
-  std::ifstream model1 ("./txt/1.txt");
+  std::ifstream model1 ("./lib/blocks/1.txt");
   std::string temp1;
-  std::ifstream model4 ("./txt/4.txt");
+  std::ifstream model4 ("./lib/blocks/4.txt");
   std::string temp4;
-  std::ifstream model51 ("./txt/51.txt");
+  std::ifstream model51 ("./lib/blocks/51.txt");
   std::string temp51;
-  std::ifstream model52 ("./txt/52.txt");
+  std::ifstream model52 ("./lib/blocks/52.txt");
   std::string temp52;
-  std::ifstream model53 ("./txt/53.txt");
+  std::ifstream model53 ("./lib/blocks/53.txt");
   std::string temp53;
-  std::ifstream model54 ("./txt/54.txt");
+  std::ifstream model54 ("./lib/blocks/54.txt");
   std::string temp54;
 
   if(overall/100 > 0 || overall/10 >= 5) { //portal
