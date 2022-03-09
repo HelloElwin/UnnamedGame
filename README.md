@@ -2,9 +2,10 @@
 
 ## Usage
 
-Start the game with this command:
+Start the game with these commands:
 
 ```bash
+make clean
 make main
 ./main
 ```
