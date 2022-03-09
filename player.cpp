@@ -9,17 +9,23 @@
 //     int x, y;
 //     int last_x, last_y;
 //     int height, width;
+//     int content[4][10];
 //     int state; // 0-Outer 1-Inner
 //     char property;
 // };
 
-void Player::init(int x0, int y0, int h0, int w0, int s0, char p0) {
+void Player::init(int x0, int y0, int h0, int w0, int s0, int cont[][10]) {
   x = last_x = x0;
   y = last_y = y0;
   height = h0;
   width = w0;
+  for (int i = 0; i < width; i++) {
+    for (int j = 0; j < height; j++) {
+      content[i][j] = cont[i][j]; // !! content of the player
+    }
+  }
   state = s0;
-  property = p0;
+  //property = p0;
 }
 
 void Player::move(char direction, Map& map) {
