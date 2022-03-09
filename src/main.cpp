@@ -7,51 +7,56 @@
 #include <cstdio>
 #include <iostream>
 
+void clear_screen() {
+  printf("\033[2J\033[1;1H");
+}
+
+
+int welcome() {
+  int x;
+  clear_screen();
+  printf("\033[1;97mWellcome to unnamed game!\n\033[0m");
+  usleep(600000);
+  printf("Please select a map from [1]\n");
+  printf("Choice: ");
+  scanf("%d", &x);
+  return x;
+}
+
 int main() {
     
+  int map_num = welcome();
+
   Map map;
-  map.init(60, 160); // blocks: 15x16
-  map.print();
+  map.init(map_num); // map file No.1
 
   Player player;
   int cont0[4][10];
-  //fill(21, (int*)cont0);
-  player.init(1, 1, 2, 1, 0,cont0);
-
-  Block portal;
-  int cont1[5][10];
-  fill(113, (int*)cont1);
-  portal.init(0,3, cont1, 113);
-  map.blocks.push_back(portal);
-
-  Block portal2;
-  int cont2[5][10];
-  fill(114, (int*)cont2);
-  portal2.init(0, 12, cont2, 114);
-  map.blocks.push_back(portal2);
-
-  usleep(1000000); // the unit is miu_s
+  fill(21, (int*)cont0);
+  player.init(1, 2, 2, 2, 0,cont0);
 
   map.update(player);
-  std::cout << "\033[2J\033[1;1H";
   map.print();
 
   while (true) {
     
-    map.check(player);
-
     char key = get_keyboard();
-    std::cout<<key;
+
     if (key != 'x') {
       player.move(key, map);
     }
 
     map.check(player);
     map.update(player);
-    std::cout << "\033[2J\033[1;1H";
+
+    clear_screen();
     map.print();
 
-    printf("x%d y%d xx%d yy%d\n", player.x, player.y, player.x / 5, player.y / 10);
+    // map.inspect(2);
+    player.inspect(1);
+     
+    usleep(20000);
+    
   }
 
   return 0;

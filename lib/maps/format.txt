@@ -1,0 +1,9 @@
+0       air
+#       ground
+[1[     portal No.1, left
+]1]     portal No.1, right
+(1(     portal No.1, up
+)1)     portal No.1, down
+|       gate
+@       character
+g       gravity change point

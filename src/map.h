@@ -1,37 +1,43 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef HEADER_MAP
+#define HEADER_MAP
 
 #include "player.h"
 
 #include <vector>
 
+// size of block
+#define BLOCK_H 5
+#define BLOCK_W 10
+
+// real size of map
+#define MAP_R 60
+#define MAP_C 160
+
+//size of map in blocks
+#define MAP_H 12
+#define MAP_W 16
+
 class Player;
 
 class Block {
   public:
-    void init(int, int, int[][10], int);
-    // void move(char);
+    void init(int);
     int x, y;
-    int last_x, last_y;
     int overall_property;
-    int content[5][10];
-    //char property[4][10];
+    int content[BLOCK_H][BLOCK_W];
 };
 
 class Map {
   public:
-    void init(int, int);
+    void init(int);
     void print(void);
+    void inspect(int);
     void check(Player&);
     void update(Player);
-    int content[200][200];
-    //char property[200][200];
-    int row;
-    int col;
-    int state; // 0-Outer 1-Inner
-    std::vector<Block> blocks;
+    Block get_portal(int, int, int);
+    int content[MAP_R][MAP_C];
+    int state;
+    Block blocks[MAP_H][MAP_W];
 };
-
-int get_portal(int, std::vector<Block>, int, int);
 
 #endif

@@ -2,6 +2,13 @@
 #include <fstream>
 #include <string>
 
+// content = color的int*100+属性的数字
+// overall property = 属性*10+方向/冰火（如果有）
+
+// overall_property of a portal
+// serial = overall_property / 10
+// direction = overall % 10
+
 void fill(int overall, int *cont) {
   const int row = 5;
   const int col = 10;
@@ -14,7 +21,6 @@ void fill(int overall, int *cont) {
   const int gatwid = 4, gatlen = 4;
 
   int *ct = cont;
-//int *pty = propty;
   
   std::ifstream model1 ("./lib/blocks/1.txt");
   std::string temp1;
@@ -29,7 +35,7 @@ void fill(int overall, int *cont) {
   std::ifstream model54 ("./lib/blocks/54.txt");
   std::string temp54;
 
-  if(overall/100 > 0 || overall/10 >= 5) { //portal
+  if (overall / 10 >= 5) { //portal
     int direct = overall % 10;
     int serial = overall / 10;
     int numcolor = 231;
@@ -106,7 +112,7 @@ void fill(int overall, int *cont) {
         break;
     }
   }
-  else if (overall/10 > 0) { //player and bar
+  else if (overall / 10 > 0) { //player and bar
     int p = overall / 10;
     int fi = overall % 10;
     int color = 0;
@@ -122,6 +128,11 @@ void fill(int overall, int *cont) {
   }
   else { //not portal
     switch(overall) {
+      case 0: //air
+        for (int i = 0; i < row; i++) 
+          for (int j = 0; j < col; j++)
+            *ct++ = 0;
+        break;
       case 1: //ground
         while (getline (model1, temp1)) {
           for (int j = 0; j < col; j++) {
@@ -144,7 +155,6 @@ void fill(int overall, int *cont) {
         }
         ct = cont;
         break;
-
     }
   }
   model1.close();
