@@ -20,7 +20,7 @@ Success means safely arriving at the endpoint.
 
 ### Air
 
-The player will fall/flow according the direction of gravity.
+The player will fall/float according the direction of gravity.
 
 ### Bar
 
@@ -50,18 +50,20 @@ World converters usually have similar shapes with portals except that they are n
 
 1. Generation of random game sets or events
 
-    * We use seed to randomly generate 
+    * We use seed to randomly decide the color of Portals and World-Converters.
 
 2. Data structures for storing game status
 
-    * 
-
+    * We design a class `Map` to store the information of the map.
+    * We design a class `Block` to store the information of blocks. 
+    * We design a class `Player` to store the information of the player.
 
 3. Dynamic memory management
 
 
 4. File input/output (e.g., for loading/saving game status)
 
+   * Before the game, the player needs to input a number to choose a map available.
 
 5. Program codes in multiple files
 ```
@@ -83,6 +85,31 @@ World converters usually have similar shapes with portals except that they are n
     └── testfill.cpp
 ```
 
+6. Program functions
+
+   **Initialize the map**
+   
+   ```c++
+   void Map::init(int map_num);
+   ```
+
+   **Print the whole map**
+
+   ```c++
+   void Map::print(void);
+   ```
+
+   **Update map**
+   
+   ```c++
+   void Map::update(Player u);
+   ```
+   
+   **Portal delivery**
+   
+   ```c++
+   void Map::check(Player &u);
+   ```
 
 ## Usage
 
