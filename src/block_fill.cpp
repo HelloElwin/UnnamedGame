@@ -69,8 +69,10 @@ void fill(int overall, int *cont) {
       case 1: //up
         while (getline (model51, temp51)) {
           for (int j = 0; j < col; j++) {
-            if (temp51[j] == '1')
+            if (temp51[j] == '2')
               *ct++ = numcolor * 100 + serial;
+            else if (temp51[j] == '1')
+              *ct++ = 23101;
             else
               *ct++ = 0;
           }
@@ -80,8 +82,10 @@ void fill(int overall, int *cont) {
       case 2: //down
         while (getline (model52, temp52)) {
           for (int j = 0; j < col; j++) {
-            if (temp52[j] == '1')
+            if (temp52[j] == '2')
               *ct++ = numcolor * 100 + serial;
+            else if (temp52[j] == '1')
+              *ct++ = 23101;
             else
               *ct++ = 0;
           }
@@ -91,8 +95,10 @@ void fill(int overall, int *cont) {
       case 3: //left
         while (getline (model53, temp53)) {
           for (int j = 0; j < col; j++) {
-            if (temp53[j] == '1')
+            if (temp53[j] == '2')
               *ct++ = numcolor * 100 + serial;
+            else if (temp53[j] == '1')
+              *ct++ = 23101;
             else
               *ct++ = 0;
           }
@@ -102,8 +108,10 @@ void fill(int overall, int *cont) {
       case 4: //right
         while (getline (model54, temp54)) {
           for (int j = 0; j < col; j++) {
-            if (temp54[j] == '1')
+            if (temp54[j] == '2')
               *ct++ = numcolor * 100 + serial;
+            else if (temp54[j] == '1')
+              *ct++ = 23101;
             else
               *ct++ = 0;
           }
@@ -147,8 +155,10 @@ void fill(int overall, int *cont) {
       case 4: // gate
         while (getline (model4, temp4)) {
           for (int j = 0; j < col; j++) {
-            if (temp4[j] == '1')
+            if (temp4[j] == '2')
               *ct++ = 131 * 100 + overall;
+            else if (temp4[j] == '1')
+              *ct++ = 23101;
             else
               *ct++ = 0;
           }
