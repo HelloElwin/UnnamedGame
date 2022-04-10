@@ -106,7 +106,7 @@ void Map::init(int map_num) {
       blocks[i][j].init(blocks[i][j].overall_property);
     }
 
-  gravity = -1;
+  gravity = 1;
 
 }
 

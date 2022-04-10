@@ -54,21 +54,26 @@ void Player::move(char direction, Map& map) {
     case 's':
       if (is_floor[1]) return;
       last_x = x--;
+      last_y = y;
       break;
     case 'a':
       if (is_floor[2]) return;
+      last_x = x;
       last_y = y;
       y -= 2;
       break;
     case 'd':
       if (is_floor[3]) return;
+      last_x = x;
       last_y = y;
       y += 2;
       break;
   }
-  if (is_floor[1]) speed = 0;
+  check_floor(map, is_floor);
+  if (map.gravity < 0 && is_floor[1]) speed = 0;
+  else if (map.gravity > 0 && is_floor[0]) speed = 0;
   else {
-    speed += map.gravity;
+    speed = map.gravity;
     last_x = x;
     x += speed;
   }
@@ -80,16 +85,16 @@ void Player::check_floor(Map map, bool* is_floor) {
   // up
   if (x + 1 >= MAP_R) is_floor[0] = true;
   for (int i = 0; i < width; i++)
-    if (map.content[x + 1][y + i] % 10 == 1) is_floor[0] = true;
+    if (map.content[x + height][y + i] % 100 == 1) is_floor[0] = true;
   // down
   if (x - 1 < 0) is_floor[0] = true;
   for (int i = 0; i < width; i++)
-    if (map.content[x - 1][y + i] % 10 == 1) is_floor[1] = true;
+    if (map.content[x - 1][y + i] % 100 == 1) is_floor[1] = true;
   // left
   if (y - 2 < 0) is_floor[2] = true;
   if (map.content[x][y - 1] % 100 == 1 || map.content[x][y - 2] % 100 == 1) is_floor[2] = true;
   // right
   if (y + width + 1 >= MAP_C) is_floor[3] = true;
   for (int i = 0; i < height; i++)
-    if (map.content[x + i][y + 2] % 100 == 1 || map.content[x + i][y + 1] % 100 == 1) is_floor[3] = true;
+    if (map.content[x + i][y + width + 2] % 100 == 1 || map.content[x + i][y + 1] % 100 == 1) is_floor[3] = true;
 }

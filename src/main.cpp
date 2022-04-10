@@ -43,7 +43,7 @@ int main() {
     char key = get_keyboard();
 
     player.move(key, map);
-
+    
     map.check(player);
     map.update(player);
 
