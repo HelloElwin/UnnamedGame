@@ -11,7 +11,8 @@
 // 2  player
 // 3  bar
 // 4  gate 
-// 5+ portal
+// 5  world converter
+// 6+ portal
  
 // property sheet
 // property = 'x' : none

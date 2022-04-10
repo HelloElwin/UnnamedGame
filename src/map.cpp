@@ -129,19 +129,28 @@ Block Map::get_portal(int tar, int player_xx, int player_yy) {
 
 void Map::check(Player &u) {
   int x = u.x, y = u.y;
-  for (int i = x; i < x + u.height; i++) 
-    for (int j = y; j < y + u.width; j++) {
-      if (content[i][j] % 100 >= 5) { // 贴进
-        int xx = i / BLOCK_H, yy = j / BLOCK_W;
-        Block portal = get_portal(content[i][j] % 100, xx, yy);
-        if (portal.overall_property % 10 == 4) { // right 
-          u.x = portal.x * BLOCK_H + 1;
-          u.y = portal.y * BLOCK_W + 6;
-        } 
+
+  for (int player_i = x; player_i < x + u.height; player_i++) 
+    for (int player_j = y; player_j < y + u.width; player_j++) {
+      if (content[player_i][player_j] % 100 >= 6) { // 贴进
+        int xx = player_i / BLOCK_H, yy = player_j / BLOCK_W;
+        int direc_from = 1;
+        int direc_orig = (content[player_i][player_j] % 100) % 10;
+        Block portal = get_portal(content[player_i][player_j] % 100, xx, yy);
+        if (portal.overall_property % 10 == 1) { //up
+          continue; // to be continued 
+        }
+        else if (portal.overall_property % 10 == 2) { //down
+          continue; // to be continued
+        }
         else if (portal.overall_property % 10 == 3){ // left
           u.x = portal.x * BLOCK_H + 1;
           u.y = portal.y * BLOCK_W - u.width;
         }
+        else if (portal.overall_property % 10 == 4) { // right 
+          u.x = portal.x * BLOCK_H + 1;
+          u.y = portal.y * BLOCK_W + 6;
+        } 
         return;
       }
     }
