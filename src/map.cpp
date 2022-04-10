@@ -94,6 +94,9 @@ void Map::init(int map_num) {
         case '|': // gate
           blocks[i][j].overall_property = 4;
           break;
+        case 'g': // gravity-converter
+          // blocks[i][j].overall_property = 4;
+          break;
       }
     }
   }
@@ -106,7 +109,7 @@ void Map::init(int map_num) {
       blocks[i][j].init(blocks[i][j].overall_property);
     }
 
-  gravity = 1;
+  gravity = -1;
 
 }
 
@@ -150,8 +153,8 @@ void Map::check(Player &u) {
 
 void Map::update(Player u) {
 
-  for (int i = u.last_x; i < u.last_x + u.height; i++)
-    for (int j = u.last_y; j < u.last_y + u.width; j++)
+  for (int i = 0; i < MAP_R; i++)
+    for (int j = 0; j < MAP_C; j++)
       content[i][j] = 0;
 
   for (int r = 0; r < MAP_H; r++)
