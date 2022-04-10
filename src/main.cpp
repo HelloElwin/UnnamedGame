@@ -42,9 +42,7 @@ int main() {
     
     char key = get_keyboard();
 
-    if (key != 'x') {
-      player.move(key, map);
-    }
+    player.move(key, map);
 
     map.check(player);
     map.update(player);
