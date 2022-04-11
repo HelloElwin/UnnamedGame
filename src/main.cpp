@@ -17,7 +17,7 @@ int welcome() {
   clear_screen();
   printf("\033[1;97mWellcome to unnamed game!\n\033[0m");
   usleep(600000);
-  printf("Please select a map from [1]\n");
+  printf("Please select a map from [1 / 11 / 111]\n");
   printf("Choice: ");
   scanf("%d", &x);
   return x;

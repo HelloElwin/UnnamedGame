@@ -46,8 +46,13 @@ void Player::inspect(int level) {
 
 void Player::move(char direction, Map& map) {
   switch (direction) {
-    case 'u':
+    case 'w':
       // Cannot move upwards
+      if (x + height + 1 >= MAP_R) return;
+      for (int i = 0; i < width; i++)
+        if (map.content[x + 1][y + i] % 100 == 1) return;
+      last_y = y;
+      last_x = x++;
       break;
     case 's':
       if (x - 1 < 0) return;
