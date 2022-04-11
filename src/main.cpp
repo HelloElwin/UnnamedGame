@@ -56,7 +56,6 @@ void death(int& map_num, bool& outcome) {
 }
 
 void begin(int& map_num, Map& map, Player& player) {
-    
   clear_screen();
   map.init(map_num); // map file No.1
 
@@ -72,11 +71,9 @@ void game(int& map_num, Map& map, Player& player) {
   bool outcome = true;
   while (outcome) {
     
-    char key = get_keyboard();
-
-    if (key != 'x') {
-      player.move(key, map);
-    }
+    char key = '.';
+    if (kbhit()) key = get_keyboard();
+    player.move(key, map);
 
     bool judge = true;
     judge = player.alive(map);
@@ -104,12 +101,16 @@ void game(int& map_num, Map& map, Player& player) {
 }
 
 int main() {
+
   Map map;
   Player player;
+
   int map_num;
   welcome();
   map_num = choose_map();
+
   begin(map_num, map, player);
   game(map_num, map, player);
+
   return 0;
 }
