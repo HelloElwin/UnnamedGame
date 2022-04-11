@@ -114,6 +114,12 @@ void Map::init(int map_num) {
         case '|': // gate
           blocks[i][j].overall_property = 4;
           break;
+        case 'i': //ice ground
+          blocks[i][j].overall_property = 11;
+          break;
+        case 'f': //fire ground
+          blocks[i][j].overall_property = 12;
+          break;
       }
     }
   }
@@ -151,7 +157,6 @@ Block Map::get_tar_portal(int tar, int player_xx, int player_yy) {
     for (int j = 0; j < MAP_W; j++) {
       if (player_xx == i && player_yy == j) continue;
       else if (blocks[i][j].overall_property / 10 == tar) {
-        printf("player_xx: %d\ni: %d\nplayer_yy: %d\nj: %d\n",player_xx,i,player_yy,j);
         return blocks[i][j];
       }
     }
@@ -164,7 +169,6 @@ void Map::check(Player &u) {
   for (int player_i = x; player_i < x + u.height; player_i++) 
     for (int player_j = y; player_j < y + u.width; player_j++) {
       if (content[player_i][player_j] % 100 >= 6) { // 贴进
-        printf("content[player_i][player_j] % 100: %d\n", content[player_i][player_j] % 100);
         int xx = player_i / BLOCK_H, yy = player_j / BLOCK_W;
         int direc_from = 0; // 0: back    1: front
         Block portal = get_portal(content[player_i][player_j] % 100, xx, yy);

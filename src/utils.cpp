@@ -8,8 +8,11 @@
 // type sheet
 // 0  air
 // 1  ground
+// 11 ice ground
+// 12 fire ground
 // 2  player
-// 3  bar
+// 31 ice bar
+// 32 fire bar
 // 4  gate 
 // 5  world converter
 // 6+ portal

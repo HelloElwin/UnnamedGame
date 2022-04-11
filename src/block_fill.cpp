@@ -3,7 +3,7 @@
 #include <string>
 
 // content = color的int*100+属性的数字
-// overall property = 属性*10+方向/冰火（如果有）
+// overall property = 属性(*10 + 方向(如果有)）
 
 // overall_property of a portal
 // serial = overall_property / 10
@@ -24,6 +24,7 @@ void fill(int overall, int *cont) {
   
   std::ifstream model1 ("./lib/blocks/1.txt");
   std::string temp1;
+  std::string temp10;
   std::ifstream model4 ("./lib/blocks/4.txt");
   std::string temp4;
   std::ifstream model5 ("./lib/blocks/5.txt");
@@ -122,16 +123,35 @@ void fill(int overall, int *cont) {
         break;
     }
   }
-  else if (overall / 10 > 0) { //player and bar
-    int p = overall / 10;
+  else if (overall / 10 > 0) { //player and bar and property ground
+    int serial = overall / 10;
     int fi = overall % 10;
     int color = 0;
-    switch(fi) {
-      case 1: //ice
-        color = 32;
+    switch(serial) {
+      case 1: //property ground
+        switch(fi) {
+          case 1: //ice
+            color = 32;
+            break;
+          case 2: //fire
+            color = 1;
+            break;
+        }
+        while (getline (model1, temp10)) {
+          for (int j = 0; j < col; j++) {
+            if (temp10[j] == '1')
+              *ct++ = color * 100 + overall;
+            else
+              *ct++ = 0;
+          }
+        }
+        ct = cont;
         break;
-      case 2: //fire
-        color = 1;
+      case 2: //player
+        //temporarily/permanently nothing
+        break;
+      case 3: //bar
+        //temporarily/permanently nothing
         break;
     }
     //to be continued
