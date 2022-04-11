@@ -115,16 +115,14 @@ void Map::init(int map_num) {
         case '|': // gate
           blocks[i][j].overall_property = 4;
           break;
-<<<<<<< HEAD
         case 'i': //ice ground
           blocks[i][j].overall_property = 11;
           break;
         case 'f': //fire ground
           blocks[i][j].overall_property = 12;
-=======
+          break;
         case 'g': // gravity-converter
           // blocks[i][j].overall_property = 4;
->>>>>>> gravity_dev
           break;
       }
     }
