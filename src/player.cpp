@@ -57,7 +57,7 @@ void Player::move(char direction, Map& map) {
     case 's':
       if (x - 1 < 0) return;
       for (int i = 0; i < width; i++)
-        if (map.content[x - 1][y + i] % 10 == 1) return;
+        if (map.content[x - 1][y + i] % 100 == 1) return;
       last_y = y;
       last_x = x--;
       break;
