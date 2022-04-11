@@ -9,6 +9,7 @@ class Player {
   public:
     void init(int, int, int, int, int, int[][10], int);
     void move(char, Map&);
+    void check_floor(Map, bool*);
     void inspect(int);
 	bool alive(Map&);
     int x, y;
@@ -17,6 +18,7 @@ class Player {
     int content[4][10];
     int state; // 0-Outer 1-Inner
     char property;
+    int speed; // verticle speed only
 };
 
 #endif

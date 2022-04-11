@@ -63,6 +63,8 @@ bool Player::alive(Map& map) {
 }
 
 void Player::move(char direction, Map& map) {
+  bool is_floor[4]; // up, down, left, right
+  check_floor(map, is_floor);
   switch (direction) {
     case 'w':
       // Cannot move upwards
@@ -73,25 +75,49 @@ void Player::move(char direction, Map& map) {
       last_x = x++;
       break;
     case 's':
-      if (x - 1 < 0) return;
-      for (int i = 0; i < width; i++)
-        if (map.content[x - 1][y + i] % 100 == 1) return;
-      last_y = y;
+      if (is_floor[1]) return;
       last_x = x--;
+      last_y = y;
       break;
     case 'a':
-      if (y - 2 < 0 || map.content[x][y - 1] % 100 == 1 || map.content[x][y - 2] % 100 == 1) return;
-      last_y = y;
+      if (is_floor[2]) return;
       last_x = x;
+      last_y = y;
       y -= 2;
       break;
     case 'd':
-      if (y + width + 1 >= MAP_C) return;
-      for (int i = 0; i < height; i++)
-        if (map.content[x + i][y] % 100 == 1 || map.content[x + i][y + 1] % 100 == 1) return;
+      if (is_floor[3]) return;
       last_x = x;
       last_y = y;
       y += 2;
       break;
   }
+  check_floor(map, is_floor);
+  if (map.gravity < 0 && is_floor[1]) speed = 0;
+  else if (map.gravity > 0 && is_floor[0]) speed = 0;
+  else {
+    speed = map.gravity;
+    last_x = x;
+    x += speed;
+  }
+}
+
+void Player::check_floor(Map map, bool* is_floor) {
+  // initialize
+  for (int i = 0; i < 4; i++) is_floor[i] = false;
+  // up
+  if (x + 1 >= MAP_R) is_floor[0] = true;
+  for (int i = 0; i < width; i++)
+    if (map.content[x + height][y + i] % 100 == 1) is_floor[0] = true;
+  // down
+  if (x - 1 < 0) is_floor[0] = true;
+  for (int i = 0; i < width; i++)
+    if (map.content[x - 1][y + i] % 100 == 1) is_floor[1] = true;
+  // left
+  if (y - 2 < 0) is_floor[2] = true;
+  if (map.content[x][y - 1] % 100 == 1 || map.content[x][y - 2] % 100 == 1) is_floor[2] = true;
+  // right
+  if (y + width + 1 >= MAP_C) is_floor[3] = true;
+  for (int i = 0; i < height; i++)
+    if (map.content[x + i][y + width + 2] % 100 == 1 || map.content[x + i][y + 1] % 100 == 1) is_floor[3] = true;
 }

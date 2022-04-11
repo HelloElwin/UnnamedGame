@@ -3,6 +3,7 @@
 #include "player.h"
 #include "unistd.h"
 #include "block_fill.h"
+#include "../lib/maps/conio.h"
 
 #include <cstdio>
 #include <iostream>
@@ -67,7 +68,6 @@ void begin(int& map_num, Map& map, Player& player) {
   map.print();
 }
 
-
 void game(int& map_num, Map& map, Player& player) {
   bool outcome = true;
   while (outcome) {
@@ -98,7 +98,8 @@ void game(int& map_num, Map& map, Player& player) {
     //map.inspect(2);
     player.inspect(1);
      
-    usleep(20000); 
+    usleep(50000);
+
   }
 }
 

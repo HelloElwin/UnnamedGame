@@ -37,8 +37,8 @@ class Map {
 	Block get_portal(int, int, int);
     Block get_tar_portal(int, int, int);
     int content[MAP_R][MAP_C];
-    int state;
     Block blocks[MAP_H][MAP_W];
+    int gravity; // verticle gravity only
 };
 
 #endif
