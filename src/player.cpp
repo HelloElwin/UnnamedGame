@@ -15,7 +15,7 @@
 //     char property;
 // };
 
-void Player::init(int x0, int y0, int h0, int w0, int s0, int cont[][10]) {
+void Player::init(int x0, int y0, int h0, int w0, int s0, int cont[][10], int proty) {
   x = last_x = x0;
   y = last_y = y0;
   height = h0;
@@ -26,6 +26,7 @@ void Player::init(int x0, int y0, int h0, int w0, int s0, int cont[][10]) {
     }
   }
   state = s0;
+  property = proty;
 }
 
 void Player::inspect(int level) {
@@ -44,12 +45,34 @@ void Player::inspect(int level) {
   }
 }
 
+bool Player::alive(Map& map) {
+  for (int i = x; i < x + height; i++) {
+    for (int j = y; j < y + width; j++) {
+      int xx = i / BLOCK_H, yy = j / BLOCK_W;
+      if (i < 0 || i > MAP_R - height + 1)
+        return false;
+      if ((map.content[i][j] % 100) / 10 == 3)
+        if (property != (map.content[i][j] % 100) % 10)
+          return false;
+      if (map.blocks[xx][yy].overall_property / 10 == 1)
+        if (property != (map.blocks[xx][yy].overall_property % 10))
+          return false;
+    }
+  }
+  return true;
+}
+
 void Player::move(char direction, Map& map) {
   bool is_floor[4]; // up, down, left, right
   check_floor(map, is_floor);
   switch (direction) {
     case 'w':
       // Cannot move upwards
+      if (x + height + 1 >= MAP_R) return;
+      for (int i = 0; i < width; i++)
+        if (map.content[x + 1][y + i] % 100 == 1) return;
+      last_y = y;
+      last_x = x++;
       break;
     case 's':
       if (is_floor[1]) return;

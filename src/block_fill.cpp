@@ -3,7 +3,7 @@
 #include <string>
 
 // content = color的int*100+属性的数字
-// overall property = 属性*10+方向/冰火（如果有）
+// overall property = 属性(*10 + 方向(如果有)）
 
 // overall_property of a portal
 // serial = overall_property / 10
@@ -24,54 +24,57 @@ void fill(int overall, int *cont) {
   
   std::ifstream model1 ("./lib/blocks/1.txt");
   std::string temp1;
+  std::string temp10;
   std::ifstream model4 ("./lib/blocks/4.txt");
   std::string temp4;
-  std::ifstream model51 ("./lib/blocks/51.txt");
-  std::string temp51;
-  std::ifstream model52 ("./lib/blocks/52.txt");
-  std::string temp52;
-  std::ifstream model53 ("./lib/blocks/53.txt");
-  std::string temp53;
-  std::ifstream model54 ("./lib/blocks/54.txt");
-  std::string temp54;
+  std::ifstream model5 ("./lib/blocks/5.txt");
+  std::string temp5;
+  std::ifstream model61 ("./lib/blocks/61.txt");
+  std::string temp61;
+  std::ifstream model62 ("./lib/blocks/62.txt");
+  std::string temp62;
+  std::ifstream model63 ("./lib/blocks/63.txt");
+  std::string temp63;
+  std::ifstream model64 ("./lib/blocks/64.txt");
+  std::string temp64;
 
-  if (overall / 10 >= 5) { //portal
+  if (overall / 10 >= 6) { //portal
     int direct = overall % 10;
     int serial = overall / 10;
     int numcolor = 231;
     switch (serial) {
-      case 5:
+      case 6:
         numcolor = 9; //red
         break;
-      case 6:
+      case 7:
         numcolor = 219; //pink
         break;
-      case 7:
+      case 8:
         numcolor = 93; //violet
         break;
-      case 8:
+      case 9:
         numcolor = 12; //blue
         break;
-      case 9:
+      case 10:
         numcolor = 14; //cyan
         break;
-      case 10:
+      case 11:
         numcolor = 118; //green
         break;
-      case 11:
+      case 12:
         numcolor = 226; //yellow
         break;
-      case 12:
+      case 13:
         numcolor = 214; //orange
         break;
     }
     switch (direct) {
       case 1: //up
-        while (getline (model51, temp51)) {
+        while (getline (model61, temp61)) {
           for (int j = 0; j < col; j++) {
-            if (temp51[j] == '2')
+            if (temp61[j] == '2')
               *ct++ = numcolor * 100 + serial;
-            else if (temp51[j] == '1')
+            else if (temp61[j] == '1')
               *ct++ = 23101;
             else
               *ct++ = 0;
@@ -80,11 +83,11 @@ void fill(int overall, int *cont) {
         ct = cont;
         break;
       case 2: //down
-        while (getline (model52, temp52)) {
+        while (getline (model62, temp62)) {
           for (int j = 0; j < col; j++) {
-            if (temp52[j] == '2')
+            if (temp62[j] == '2')
               *ct++ = numcolor * 100 + serial;
-            else if (temp52[j] == '1')
+            else if (temp62[j] == '1')
               *ct++ = 23101;
             else
               *ct++ = 0;
@@ -93,11 +96,11 @@ void fill(int overall, int *cont) {
         ct = cont;
         break;
       case 3: //left
-        while (getline (model53, temp53)) {
+        while (getline (model63, temp63)) {
           for (int j = 0; j < col; j++) {
-            if (temp53[j] == '2')
+            if (temp63[j] == '2')
               *ct++ = numcolor * 100 + serial;
-            else if (temp53[j] == '1')
+            else if (temp63[j] == '1')
               *ct++ = 23101;
             else
               *ct++ = 0;
@@ -106,11 +109,11 @@ void fill(int overall, int *cont) {
         ct = cont;
         break;
       case 4: //right
-        while (getline (model54, temp54)) {
+        while (getline (model64, temp64)) {
           for (int j = 0; j < col; j++) {
-            if (temp54[j] == '2')
+            if (temp64[j] == '2')
               *ct++ = numcolor * 100 + serial;
-            else if (temp54[j] == '1')
+            else if (temp64[j] == '1')
               *ct++ = 23101;
             else
               *ct++ = 0;
@@ -120,16 +123,35 @@ void fill(int overall, int *cont) {
         break;
     }
   }
-  else if (overall / 10 > 0) { //player and bar
-    int p = overall / 10;
+  else if (overall / 10 > 0) { //player and bar and property ground
+    int serial = overall / 10;
     int fi = overall % 10;
     int color = 0;
-    switch(fi) {
-      case 1: //ice
-        color = 32;
+    switch(serial) {
+      case 1: //property ground
+        switch(fi) {
+          case 1: //ice
+            color = 32;
+            break;
+          case 2: //fire
+            color = 1;
+            break;
+        }
+        while (getline (model1, temp10)) {
+          for (int j = 0; j < col; j++) {
+            if (temp10[j] == '1')
+              *ct++ = color * 100 + overall;
+            else
+              *ct++ = 0;
+          }
+        }
+        ct = cont;
         break;
-      case 2: //fire
-        color = 1;
+      case 2: //player
+        //temporarily/permanently nothing
+        break;
+      case 3: //bar
+        //temporarily/permanently nothing
         break;
     }
     //to be continued
@@ -165,14 +187,28 @@ void fill(int overall, int *cont) {
         }
         ct = cont;
         break;
+      case 5: //world converter
+        while (getline (model5, temp5)) {
+          for (int j = 0; j < col; j++) {
+            if (temp5[j] == '2')
+              *ct++ = 17 * 100 + overall;
+            else if (temp5[j] == '1')
+              *ct++ = 23101;
+            else
+              *ct++ = 0;
+          }
+        }
+        ct = cont;
+        break;
     }
   }
   model1.close();
   model4.close();
-  model51.close();
-  model52.close();
-  model53.close();
-  model54.close();
+  model5.close();
+  model61.close();
+  model62.close();
+  model63.close();
+  model64.close();
 }
 /*design test
 

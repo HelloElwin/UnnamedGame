@@ -65,6 +65,7 @@ void Map::init(int map_num) {
   for (int i = MAP_H - 1; i >= 0; i--) {
     for (int j = 0; j < MAP_W; j++) {
       int serial;
+      int temp;
       char x;
       map_file >> x;
       if (x == '\n') map_file >> x;
@@ -76,23 +77,49 @@ void Map::init(int map_num) {
           blocks[i][j].overall_property = 1;
           break;
         case '(': // up portal
-          map_file >> serial >> x;
+          map_file >> serial;
+          if (serial == 1) {
+            map_file >> temp;
+            serial = serial * 10 + temp;
+          }
+          map_file >> x;
           blocks[i][j].overall_property = serial * 10 + 1;
           break;
         case ')': // down portal
-          map_file >> serial >> x;
+          map_file >> serial;
+          if (serial == 1) {
+            map_file >> temp;
+            serial = serial * 10 + temp;
+          }
+          map_file >> x;
           blocks[i][j].overall_property = serial * 10 + 2;
           break;
         case '[': // left portal
-          map_file >> serial >> x;
+          map_file >> serial;
+          if (serial == 1) {
+            map_file >> temp;
+            serial = serial * 10 + temp;
+          }
+          map_file >> x;
           blocks[i][j].overall_property = serial * 10 + 3;
           break;
         case ']': // right portal
-          map_file >> serial >> x;
+          map_file >> serial;
+          if (serial == 1) {
+            map_file >> temp;
+            serial = serial * 10 + temp;
+          }
+          map_file >> x;
           blocks[i][j].overall_property = serial * 10 + 4;
           break;
         case '|': // gate
           blocks[i][j].overall_property = 4;
+          break;
+        case 'i': //ice ground
+          blocks[i][j].overall_property = 11;
+          break;
+        case 'f': //fire ground
+          blocks[i][j].overall_property = 12;
           break;
         case 'g': // gravity-converter
           // blocks[i][j].overall_property = 4;
@@ -122,29 +149,56 @@ void Map::print(void) {
 }
 
 Block Map::get_portal(int tar, int player_xx, int player_yy) {
-  Block ret;
+  for (int i = 0; i < MAP_H; i++)
+    for (int j = 0; j < MAP_W; j++) {
+      if (player_xx == i && player_yy == j) 
+        return blocks[i][j];
+    }
+}
+
+Block Map::get_tar_portal(int tar, int player_xx, int player_yy) {
   for (int i = 0; i < MAP_H; i++)
     for (int j = 0; j < MAP_W; j++) {
       if (player_xx == i && player_yy == j) continue;
-      else if (blocks[i][j].overall_property / 10 == tar) ret = blocks[i][j];
+      else if (blocks[i][j].overall_property / 10 == tar) {
+        return blocks[i][j];
+      }
     }
-  return ret;
 }
+
 
 void Map::check(Player &u) {
   int x = u.x, y = u.y;
-  for (int i = x; i < x + u.height; i++) 
-    for (int j = y; j < y + u.width; j++) {
-      if (content[i][j] % 100 >= 5) { // 贴进
-        int xx = i / BLOCK_H, yy = j / BLOCK_W;
-        Block portal = get_portal(content[i][j] % 100, xx, yy);
-        if (portal.overall_property % 10 == 4) { // right 
-          u.x = portal.x * BLOCK_H + 1;
-          u.y = portal.y * BLOCK_W + 6;
-        } 
-        else if (portal.overall_property % 10 == 3){ // left
-          u.x = portal.x * BLOCK_H + 1;
-          u.y = portal.y * BLOCK_W - u.width;
+  int last_x = u.last_x, last_y = u.last_y;
+  for (int player_i = x; player_i < x + u.height; player_i++) 
+    for (int player_j = y; player_j < y + u.width; player_j++) {
+      if (content[player_i][player_j] % 100 >= 6) { // 贴进
+        int xx = player_i / BLOCK_H, yy = player_j / BLOCK_W;
+        int direc_from = 0; // 0: back    1: front
+        Block portal = get_portal(content[player_i][player_j] % 100, xx, yy);
+        int direc_orig = portal.overall_property % 10;
+        if (direc_orig <= 2) { // the original portal is towards up/down 
+          if (last_x > x)
+            direc_from = direc_orig % 2; //front
+          else
+            direc_from = 1 - direc_orig % 2; //back
+        }
+        else { // the original portal is towards left/right
+          if (last_y < y)
+            direc_from = direc_orig % 2;
+          else
+            direc_from = 1 - direc_orig % 2;
+        }
+        Block tar_portal = get_tar_portal(content[player_i][player_j] % 100, xx, yy);
+        int tar_property = tar_portal.overall_property % 10;
+        if (tar_property <= 2) { // up and down
+          u.x = tar_portal.x * BLOCK_H + (BLOCK_H / 2 + ((1.5 - tar_property) * 2) * ((direc_from - 0.5) * 2) * (u.height * (((tar_property % 2) + (direc_from % 2)) % 2) + 2 * (1 - ((tar_property % 2) + (direc_from % 2)) % 2)));
+          u.y = tar_portal.y * BLOCK_W + ((BLOCK_W - u.width) / 2);
+        }
+        else { // left and right
+          u.x = tar_portal.x * BLOCK_H + 1;
+          u.y = tar_portal.y * BLOCK_W + (BLOCK_W / 2 + ((3.5 - tar_property) * 2) * ((0.5 - direc_from) * 2) * (u.width * (1 - ((tar_property % 2) + (direc_from % 2)) % 2) + 1 * (((tar_property % 2) + (direc_from % 2)) % 2)));
+          printf("tar_property: %d\ncontent[i][j]: %d\n", tar_property, content[player_i][player_j]);
         }
         return;
       }
