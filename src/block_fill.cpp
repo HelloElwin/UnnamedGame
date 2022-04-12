@@ -193,7 +193,7 @@ void fill(int overall, int *cont) {
         while (getline (model51, temp51)) {
           for (int j = 0; j < col; j++) {
             if (temp51[j] == '2')
-              *ct++ = 17 * 100 + 5;
+              *ct++ = 21 * 100 + 5;
             else if (temp51[j] == '1')
               *ct++ = 23101;
             else
@@ -206,7 +206,7 @@ void fill(int overall, int *cont) {
         while (getline (model52, temp52)) {
           for (int j = 0; j < col; j++) {
             if (temp52[j] == '2')
-              *ct++ = 17 * 100 + 5;
+              *ct++ = 21 * 100 + 5;
             else if (temp52[j] == '1')
               *ct++ = 23101;
             else
