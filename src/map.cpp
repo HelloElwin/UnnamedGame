@@ -122,7 +122,10 @@ void Map::init(int map_num) {
           blocks[i][j].overall_property = 12;
           break;
         case 'g': // gravity-converter
-          // blocks[i][j].overall_property = 4;
+          blocks[i][j].overall_property = 51;
+          break;
+        case 'G': // gravity-converter
+          blocks[i][j].overall_property = 52;
           break;
       }
     }
@@ -168,11 +171,19 @@ Block Map::get_tar_portal(int tar, int player_xx, int player_yy) {
 
 
 void Map::check(Player &u) {
+  bool already_got_portal = false;
+  u.touching_gravity = false;
   int x = u.x, y = u.y;
   int last_x = u.last_x, last_y = u.last_y;
   for (int player_i = x; player_i < x + u.height; player_i++) 
     for (int player_j = y; player_j < y + u.width; player_j++) {
-      if (content[player_i][player_j] % 100 >= 6) { // 贴进
+      if (content[player_i][player_j] % 100 == 5) {
+        u.touching_gravity = true;
+        if (!u.last_touching_gravity) {
+          gravity *= -1;
+          u.last_touching_gravity = true;
+        }
+      } else if (!already_got_portal && content[player_i][player_j] % 100 >= 6) { // 贴进
         int xx = player_i / BLOCK_H, yy = player_j / BLOCK_W;
         int direc_from = 0; // 0: back    1: front
         Block portal = get_portal(content[player_i][player_j] % 100, xx, yy);
@@ -182,8 +193,7 @@ void Map::check(Player &u) {
             direc_from = direc_orig % 2; //front
           else
             direc_from = 1 - direc_orig % 2; //back
-        }
-        else { // the original portal is towards left/right
+        } else { // the original portal is towards left/right
           if (last_y < y)
             direc_from = direc_orig % 2;
           else
@@ -200,9 +210,10 @@ void Map::check(Player &u) {
           u.y = tar_portal.y * BLOCK_W + (BLOCK_W / 2 + ((3.5 - tar_property) * 2) * ((0.5 - direc_from) * 2) * (u.width * (1 - ((tar_property % 2) + (direc_from % 2)) % 2) + 1 * (((tar_property % 2) + (direc_from % 2)) % 2)));
           printf("tar_property: %d\ncontent[i][j]: %d\n", tar_property, content[player_i][player_j]);
         }
-        return;
+        already_got_portal = true;
       }
     }
+  if (!u.touching_gravity) u.last_touching_gravity = 0;
 }
 
 void Map::update(Player u) {

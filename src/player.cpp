@@ -27,11 +27,12 @@ void Player::init(int x0, int y0, int h0, int w0, int s0, int cont[][10], int pr
   }
   state = s0;
   property = proty;
+  last_touching_gravity = 0;
 }
 
 void Player::inspect(int level) {
   if (level >= 1) {
-    printf("Player Info: x%d y%d xx%d yy%d last_x%d last_y%d state%d\n", x, y, x / 5, y / 10, last_x, last_y, state);
+    printf("Player Info: x%d y%d xx%d yy%d last_x%d last_y%d state%d touching_gravity%d last_touching_gravity%d\n", x, y, x / 5, y / 10, last_x, last_y, state, touching_gravity, last_touching_gravity);
   }
   if (level >= 2) {
     printf("Player Content:\n");
