@@ -18,9 +18,17 @@ void welcome() {
   usleep(600000);
 }
 
+void print_maps() {
+  printf("  [1]    The first journey\n");
+  printf("  [2]    One taste of gravity\n");
+  printf("  [11]   You know what\n");
+  printf("  [111]  You know what\n");
+}
+
 int choose_map() {
   int choice;
-  printf("Please select a map from [1 / 11 / 111]\n");
+  printf("Please select a map from:\n");
+  print_maps();
   printf("Choice: ");
   scanf("%d", &choice);
   return choice;
@@ -92,7 +100,7 @@ void game(int& map_num, Map& map, Player& player) {
     clear_screen();
     map.print();
 
-    //map.inspect(2);
+    // map.inspect(3);
     player.inspect(1);
      
     usleep(50000);
