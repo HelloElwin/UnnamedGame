@@ -19,6 +19,7 @@ class Player {
     int state; // 0-Outer 1-Inner
     char property;
     int speed; // verticle speed only
+    bool touching_gravity, last_touching_gravity;
 };
 
 #endif

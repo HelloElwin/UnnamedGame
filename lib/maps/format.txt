@@ -6,4 +6,5 @@
 )1)     portal No.1, down
 |       gate
 @       character
-g       gravity change point
+g       lower-ground gravity change point
+G       upper-ground gravity change point

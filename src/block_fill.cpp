@@ -27,8 +27,10 @@ void fill(int overall, int *cont) {
   std::string temp10;
   std::ifstream model4 ("./lib/blocks/4.txt");
   std::string temp4;
-  std::ifstream model5 ("./lib/blocks/5.txt");
-  std::string temp5;
+  std::ifstream model51 ("./lib/blocks/51.txt");
+  std::string temp51;
+  std::ifstream model52 ("./lib/blocks/52.txt");
+  std::string temp52;
   std::ifstream model61 ("./lib/blocks/61.txt");
   std::string temp61;
   std::ifstream model62 ("./lib/blocks/62.txt");
@@ -123,7 +125,7 @@ void fill(int overall, int *cont) {
         break;
     }
   }
-  else if (overall / 10 > 0) { //player and bar and property ground
+  else if (overall / 10 >= 6) { //player and bar and property ground
     int serial = overall / 10;
     int fi = overall % 10;
     int color = 0;
@@ -187,12 +189,25 @@ void fill(int overall, int *cont) {
         }
         ct = cont;
         break;
-      case 5: //world converter
-        while (getline (model5, temp5)) {
+      case 51: // gravity converter
+        while (getline (model51, temp51)) {
           for (int j = 0; j < col; j++) {
-            if (temp5[j] == '2')
-              *ct++ = 17 * 100 + overall;
-            else if (temp5[j] == '1')
+            if (temp51[j] == '2')
+              *ct++ = 17 * 100 + 5;
+            else if (temp51[j] == '1')
+              *ct++ = 23101;
+            else
+              *ct++ = 0;
+          }
+        }
+        ct = cont;
+        break;
+      case 52: // gravity converter
+        while (getline (model52, temp52)) {
+          for (int j = 0; j < col; j++) {
+            if (temp52[j] == '2')
+              *ct++ = 17 * 100 + 5;
+            else if (temp52[j] == '1')
               *ct++ = 23101;
             else
               *ct++ = 0;
@@ -204,7 +219,8 @@ void fill(int overall, int *cont) {
   }
   model1.close();
   model4.close();
-  model5.close();
+  model51.close();
+  model52.close();
   model61.close();
   model62.close();
   model63.close();
