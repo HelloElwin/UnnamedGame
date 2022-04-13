@@ -7,7 +7,7 @@ class Map;
 
 class Player {
   public:
-    void init(int, int, int, int, int, int[][10], int);
+    void init(int, int, int, int, int, int[][2], int);
     void move(char, Map&, bool&);
     void check_floor(Map, bool*);
     void inspect(int);

@@ -117,10 +117,10 @@ void Map::init(int map_num) {
           blocks[i][j].overall_property = 4;
           break;
         case 'i': //ice ground
-          blocks[i][j].overall_property = 11;
+          blocks[i][j].overall_property = 21;
           break;
         case 'f': //fire ground
-          blocks[i][j].overall_property = 12;
+          blocks[i][j].overall_property = 22;
           break;
         case 'g': // lower gravity-converter
           blocks[i][j].overall_property = 51;
@@ -165,7 +165,7 @@ void Map::converter(Player& u) {
           blocks[i][j].overall_property = serial * 10 + new_direc;
         }
       }
-      else if (blocks[i][j].overall_property / 10 == 1) {
+      else if (blocks[i][j].overall_property / 10 == 2) {
         int k = blocks[i][j].overall_property % 10;
         k = 3 - k;
         blocks[i][j].overall_property = 10 + k;
@@ -213,7 +213,7 @@ void Map::check(Player &u) {
           u.last_touching_gravity = true;
         }
       } 
-      else if (content[player_i][player_j] % 100 >= 6) { // 贴进
+      else if (content[player_i][player_j] % 100 >= 6 && content[player_i][player_j] % 100 <= 20) { // 贴进
         int xx = player_i / BLOCK_H, yy = player_j / BLOCK_W;
         int direc_from = 0; // 0: back    1: front
         Block portal = get_portal(content[player_i][player_j] % 100, xx, yy);

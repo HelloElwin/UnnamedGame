@@ -8,9 +8,8 @@
 // type sheet
 // 0  air
 // 1  ground
-// 11 ice ground
-// 12 fire ground
-// 2  player
+// 21 ice ground
+// 22 fire ground
 // 31 ice bar
 // 32 fire bar
 // 4  gate 

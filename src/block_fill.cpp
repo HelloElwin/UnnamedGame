@@ -134,12 +134,12 @@ void fill(int overall, int *cont, int state) {
         break;
     }
   }
-  else if (overall / 10 >= 1) { //player and bar and property ground
+  else if (overall / 10 >= 2) { //player and bar and property ground and gravity converter
     int serial = overall / 10;
     int fi = overall % 10;
     int color = 0;
     switch(serial) {
-      case 1: //property ground
+      case 2: //property ground
         switch(fi) {
           case 1: //ice
             color = 32;
@@ -158,11 +158,35 @@ void fill(int overall, int *cont, int state) {
         }
         ct = cont;
         break;
-      case 2: //player
-        //temporarily/permanently nothing
-        break;
       case 3: //bar
         //temporarily/permanently nothing
+        break;
+      case 5: // lower gravity converter
+        if (fi == 1) {
+          while (getline (model51, temp51)) {
+            for (int j = 0; j < col; j++) {
+              if (temp51[j] == '2')
+                *ct++ = 21 * 100 + 5;
+              else if (temp51[j] == '1')
+                *ct++ = GRD_C * 100 + 1;
+              else
+                *ct++ = AIR_C * 100 + 0;
+            }
+          }
+        }
+        else { // upper gravity converter
+          while (getline (model52, temp52)) {
+            for (int j = 0; j < col; j++) {
+              if (temp52[j] == '2')
+                *ct++ = 21 * 100 + 5;
+              else if (temp52[j] == '1')
+                *ct++ = GRD_C * 100 + 1;
+              else
+                *ct++ = AIR_C * 100 + 0;
+            }
+          }
+        }
+        ct = cont;
         break;
     }
     //to be continued
@@ -191,32 +215,6 @@ void fill(int overall, int *cont, int state) {
             if (temp4[j] == '2')
               *ct++ = 131 * 100 + overall;
             else if (temp4[j] == '1')
-              *ct++ = GRD_C * 100 + 1;
-            else
-              *ct++ = AIR_C * 100 + 0;
-          }
-        }
-        ct = cont;
-        break;
-      case 51: // gravity converter
-        while (getline (model51, temp51)) {
-          for (int j = 0; j < col; j++) {
-            if (temp51[j] == '2')
-              *ct++ = 21 * 100 + 5;
-            else if (temp51[j] == '1')
-              *ct++ = GRD_C * 100 + 1;
-            else
-              *ct++ = AIR_C * 100 + 0;
-          }
-        }
-        ct = cont;
-        break;
-      case 52: // gravity converter
-        while (getline (model52, temp52)) {
-          for (int j = 0; j < col; j++) {
-            if (temp52[j] == '2')
-              *ct++ = 21 * 100 + 5;
-            else if (temp52[j] == '1')
               *ct++ = GRD_C * 100 + 1;
             else
               *ct++ = AIR_C * 100 + 0;

@@ -89,9 +89,12 @@ void begin(int& map_num, Map& map, Player& player) {
   clear_screen();
   map.init(map_num); 
 
-  int cont0[4][10];
-  fill(21, (int*)cont0, 0);
-  player.init(1, 2, 2, 2, 0,cont0, 1);
+  int cont0[2][2];
+  //fill(21, (int*)cont0, 0);
+  for (int i = 0; i < 2; i++)
+    for (int j = 0; j < 2; j++)
+      cont0[i][j] = 0; 
+  player.init(1, 2, 2, 2, 0,cont0, 2);
 
   map.update(player);
   map.print();
@@ -134,7 +137,7 @@ void game(int& map_num, Map& map, Player& player) {
     if (moving) {
       clear_screen();
       map.print();
-      // map.inspect(3);
+      //map.inspect(3);
       player.inspect(1);
     }
 

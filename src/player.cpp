@@ -20,7 +20,7 @@
 //      bool touching_gravity, last_touching_gravity;
 //  };
 
-void Player::init(int x0, int y0, int h0, int w0, int s0, int cont[][10], int proty) {
+void Player::init(int x0, int y0, int h0, int w0, int s0, int cont[][2], int proty) {
   x = last_x = x0;
   y = last_y = y0;
   height = h0;
@@ -60,7 +60,7 @@ bool Player::alive(Map& map) {
       if ((map.content[i][j] % 100) / 10 == 3) // touch bar with opposite property
         if (property != (map.content[i][j] % 100) % 10)
           return false;
-      if (map.blocks[xx][yy].overall_property / 10 == 1) // step onto ground with opposite property
+      if (map.blocks[xx][yy].overall_property / 10 == 2) // step onto ground with opposite property
         if (property != (map.blocks[xx][yy].overall_property % 10))
           return false;
     }
@@ -126,11 +126,11 @@ void Player::check_floor(Map map, bool* is_floor) {
   // up
   //if (x + 1 >= MAP_R) is_floor[0] = true;
   for (int i = 0; i < width; i++)
-    if (map.content[x + height][y + i] % 100 == 1) is_floor[0] = true;
+    if (map.content[x + height][y + i] % 100 == 1 || (map.content[x + height][y + i] % 100) / 10 == 2) is_floor[0] = true;
   // down
   //if (x - 1 < 0) is_floor[1] = true;
   for (int i = 0; i < width; i++)
-    if (map.content[x - 1][y + i] % 100 == 1) is_floor[1] = true;
+    if (map.content[x - 1][y + i] % 100 == 1 || (map.content[x - 1][y + i] % 100) / 10 == 2) is_floor[1] = true;
   // left
   if (y - 2 < 0) is_floor[2] = true;
   if (map.content[x][y - 1] % 100 == 1 || map.content[x][y - 2] % 100 == 1) is_floor[2] = true;
