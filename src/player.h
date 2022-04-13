@@ -8,10 +8,11 @@ class Map;
 class Player {
   public:
     void init(int, int, int, int, int, int[][10], int);
-    void move(char, Map&);
+    void move(char, Map&, bool&);
     void check_floor(Map, bool*);
     void inspect(int);
 	bool alive(Map&);
+	bool success(Map&);
     int x, y;
     int last_x, last_y;
     int height, width;

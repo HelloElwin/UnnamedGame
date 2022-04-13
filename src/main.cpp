@@ -21,7 +21,7 @@ void welcome() {
 void print_maps() {
   printf("  [1]    The first journey\n");
   printf("  [2]    One taste of gravity\n");
-  printf("  [11]   You know what\n");
+  printf("  [3]    one taste of world converter\n");
   printf("  [111]  You know what\n");
 }
 
@@ -44,31 +44,53 @@ void death(int& map_num, bool& outcome) {
   while (choice1 != 'Y' && choice1 != 'N')
     scanf("%c", &choice1);
   if (choice1 == 'Y') {
-      usleep(600000);
-      printf("Do you wan to try the same map again?(Y/N): ");
-      char choice2;
-      scanf(" %c", &choice2);
-      if (choice2 == 'Y')
-        return;
-      else {
-        map_num = choose_map();
-        return;
-      }
+    usleep(600000);
+    printf("Do you wan to try the same map again?(Y/N): ");
+    char choice2;
+    scanf(" %c", &choice2);
+    if (choice2 == 'Y')
+      return;
+    else {
+      map_num = choose_map();
+      return;
+    }
   }
   else {
-      outcome = false;
-      printf("BYE!\n");
-      usleep(1200000);
-      return;
+    outcome = false;
+    printf("BYE!\n");
+    usleep(1200000);
+    return;
   }  
+}
+
+void success(int& map_num, bool& outcome) {
+  clear_screen();
+  printf("\033[1;33mSuccess!\033[0m\n");
+  usleep(1200000);
+  printf("Do you want to continue?(Y/N): ");
+  char choice1;
+  scanf("%c", &choice1);
+  while (choice1 != 'Y' && choice1 != 'N')
+    scanf("%c", &choice1);
+  if (choice1 == 'Y') {
+    usleep(600000);
+    map_num = choose_map();
+    return;
+  }
+  else {
+    outcome = false;
+    printf("BYE!\n");
+    usleep(1200000);
+    return;
+  }
 }
 
 void begin(int& map_num, Map& map, Player& player) {
   clear_screen();
-  map.init(map_num); // map file No.1
+  map.init(map_num); 
 
   int cont0[4][10];
-  fill(21, (int*)cont0);
+  fill(21, (int*)cont0, 0);
   player.init(1, 2, 2, 2, 0,cont0, 1);
 
   map.update(player);
@@ -81,14 +103,26 @@ void game(int& map_num, Map& map, Player& player) {
     
     char key = '.';
     if (kbhit()) key = get_keyboard();
-    player.move(key, map);
+    bool moving = false;
+    player.move(key, map, moving);
 
-    bool judge = true;
-    judge = player.alive(map);
-    char temp;
-    if (!judge) {
+    bool fail_judge = true;
+    fail_judge = player.alive(map);
+    
+    bool succ_judge = false;
+    succ_judge = player.success(map);
+
+    if (!fail_judge) {
       usleep(300000);
       death(map_num, outcome);
+      if (outcome)
+        begin(map_num, map, player);
+      continue;
+    }
+
+    if (succ_judge) {
+      usleep(300000);
+      success(map_num, outcome);
       if (outcome)
         begin(map_num, map, player);
       continue;
@@ -97,11 +131,13 @@ void game(int& map_num, Map& map, Player& player) {
     map.check(player);
     map.update(player);
 
-    clear_screen();
-    map.print();
+    if (moving) {
+      clear_screen();
+      map.print();
+      // map.inspect(3);
+      player.inspect(1);
+    }
 
-    // map.inspect(3);
-    player.inspect(1);
      
     usleep(50000);
 

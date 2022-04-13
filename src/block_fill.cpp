@@ -9,7 +9,8 @@
 // serial = overall_property / 10
 // direction = overall % 10
 
-void fill(int overall, int *cont) {
+
+void fill(int overall, int *cont, int state) {
   const int row = 5;
   const int col = 10;
 
@@ -21,7 +22,15 @@ void fill(int overall, int *cont) {
   const int gatwid = 4, gatlen = 4;
 
   int *ct = cont;
-  
+  int GRD_C = 231;
+  int AIR_C = 0;
+  if (state == 1) {
+    int temp;
+    temp = GRD_C;
+    GRD_C = AIR_C;
+    AIR_C = temp;
+  }
+
   std::ifstream model1 ("./lib/blocks/1.txt");
   std::string temp1;
   std::string temp10;
@@ -43,7 +52,7 @@ void fill(int overall, int *cont) {
   if (overall / 10 >= 6) { //portal
     int direct = overall % 10;
     int serial = overall / 10;
-    int numcolor = 231;
+    int numcolor = GRD_C;
     switch (serial) {
       case 6:
         numcolor = 9; //red
@@ -77,9 +86,9 @@ void fill(int overall, int *cont) {
             if (temp61[j] == '2')
               *ct++ = numcolor * 100 + serial;
             else if (temp61[j] == '1')
-              *ct++ = 23101;
+              *ct++ = GRD_C * 100 + 1;
             else
-              *ct++ = 0;
+              *ct++ = AIR_C * 100 + 0;
           }
         }
         ct = cont;
@@ -90,9 +99,9 @@ void fill(int overall, int *cont) {
             if (temp62[j] == '2')
               *ct++ = numcolor * 100 + serial;
             else if (temp62[j] == '1')
-              *ct++ = 23101;
+              *ct++ = GRD_C * 100 + 1;
             else
-              *ct++ = 0;
+              *ct++ = AIR_C * 100 + 0;
           }
         }
         ct = cont;
@@ -103,9 +112,9 @@ void fill(int overall, int *cont) {
             if (temp63[j] == '2')
               *ct++ = numcolor * 100 + serial;
             else if (temp63[j] == '1')
-              *ct++ = 23101;
+              *ct++ = GRD_C * 100 + 1;
             else
-              *ct++ = 0;
+              *ct++ = AIR_C * 100 + 0;
           }
         }
         ct = cont;
@@ -116,16 +125,16 @@ void fill(int overall, int *cont) {
             if (temp64[j] == '2')
               *ct++ = numcolor * 100 + serial;
             else if (temp64[j] == '1')
-              *ct++ = 23101;
+              *ct++ = GRD_C * 100 + 1;
             else
-              *ct++ = 0;
+              *ct++ = AIR_C * 100 + 0;
           }
         }
         ct = cont;
         break;
     }
   }
-  else if (overall / 10 >= 6) { //player and bar and property ground
+  else if (overall / 10 >= 1) { //player and bar and property ground
     int serial = overall / 10;
     int fi = overall % 10;
     int color = 0;
@@ -144,7 +153,7 @@ void fill(int overall, int *cont) {
             if (temp10[j] == '1')
               *ct++ = color * 100 + overall;
             else
-              *ct++ = 0;
+              *ct++ = AIR_C * 100 + 0;
           }
         }
         ct = cont;
@@ -163,15 +172,15 @@ void fill(int overall, int *cont) {
       case 0: //air
         for (int i = 0; i < row; i++) 
           for (int j = 0; j < col; j++)
-            *ct++ = 0;
+            *ct++ = AIR_C * 100 + 0;
         break;
       case 1: //ground
         while (getline (model1, temp1)) {
           for (int j = 0; j < col; j++) {
             if (temp1[j] == '1')
-              *ct++ = 231 * 100 + overall;
+              *ct++ = GRD_C * 100 + overall;
             else
-              *ct++ = 0;
+              *ct++ = AIR_C * 100 + 0;
           }
         }
         ct = cont;
@@ -182,9 +191,9 @@ void fill(int overall, int *cont) {
             if (temp4[j] == '2')
               *ct++ = 131 * 100 + overall;
             else if (temp4[j] == '1')
-              *ct++ = 23101;
+              *ct++ = GRD_C * 100 + 1;
             else
-              *ct++ = 0;
+              *ct++ = AIR_C * 100 + 0;
           }
         }
         ct = cont;
@@ -195,9 +204,9 @@ void fill(int overall, int *cont) {
             if (temp51[j] == '2')
               *ct++ = 21 * 100 + 5;
             else if (temp51[j] == '1')
-              *ct++ = 23101;
+              *ct++ = GRD_C * 100 + 1;
             else
-              *ct++ = 0;
+              *ct++ = AIR_C * 100 + 0;
           }
         }
         ct = cont;
@@ -208,9 +217,9 @@ void fill(int overall, int *cont) {
             if (temp52[j] == '2')
               *ct++ = 21 * 100 + 5;
             else if (temp52[j] == '1')
-              *ct++ = 23101;
+              *ct++ = GRD_C * 100 + 1;
             else
-              *ct++ = 0;
+              *ct++ = AIR_C * 100 + 0;
           }
         }
         ct = cont;
