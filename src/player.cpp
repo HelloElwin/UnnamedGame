@@ -112,12 +112,12 @@ void Player::move(char direction, Map& map, bool& moving) {
   check_floor(map, is_floor);
   if (map.gravity < 0 && is_floor[1]) speed = 0;
   else if (map.gravity > 0 && is_floor[0]) speed = 0;
-  /*else {
+  else {
     speed = map.gravity;
     last_x = x;
     x += speed;
     moving = true;
-  }*/
+  }
 }
 
 void Player::check_floor(Map map, bool* is_floor) {

@@ -8,7 +8,7 @@
 @       character
 g       lower-ground gravity change point
 G       upper-ground gravity change point
-i		ice ground
-f		fire ground
-b31b	ice bar
-b32b	fire bar
+i       ice ground
+f       fire ground
+b31b    ice bar
+b32b    fire bar
