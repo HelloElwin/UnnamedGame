@@ -286,6 +286,6 @@ void Map::update(Player u) {
 
   for (int i = u.x; i < u.x + u.height; i++)
     for (int j = u.y; j < u.y + u.width; j++)
-      content[i][j] = 3202; // 这要被换成！！角色像素的数字！！
+      content[i][j] = u.content[i - u.x][j - u.y]; // 这要被换成！！角色像素的数字！！
 }
 

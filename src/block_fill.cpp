@@ -249,6 +249,22 @@ void fill(int overall, int *cont, int state) {
   model64.close();
 }
 
+void player_fill(int property, int *cont) {
+  int color;
+  switch(property) {
+    case 1: // ice
+      color = 32;
+      break;
+    case 2:
+      color = 1;
+      break;
+  }
+  int *ct = cont;
+  for (int i = 0; i < 2 * 2; i++) 
+    *ct++ = color * 100 + 2;
+}
+
+
 /*design test
 
   int content = 0;

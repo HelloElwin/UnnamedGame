@@ -94,13 +94,11 @@ void success(int& map_num, bool& outcome) {
 void begin(int& map_num, Map& map, Player& player) {
   clear_screen();
   map.init(map_num); 
-
   int cont0[2][2];
   //fill(21, (int*)cont0, 0);
-  for (int i = 0; i < 2; i++)
-    for (int j = 0; j < 2; j++)
-      cont0[i][j] = 0; 
-  player.init(1, 2, 2, 2, 0,cont0, 2);
+  int player_proty = 2; 
+  player_fill(player_proty, (int*)cont0);
+  player.init(1, 2, 2, 2, 0,cont0, player_proty);
 
   map.update(player);
   map.print();
