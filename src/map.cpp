@@ -2,12 +2,14 @@
 #include "utils.h"
 #include "player.h"
 #include "block_fill.h"
+#include "bar.h"
 
 #include <cstdio>
 #include <string>
 #include <fstream>
 #include <iostream>
 #include <cmath>
+#include <vector>
 
 // class Block {
 //   public:
@@ -28,6 +30,7 @@
 //     int content[MAP_R][MAP_C];
 //     Block blocks[MAP_H][MAP_W];
 //     int gravity; // verticle gravity only
+//     std::vector<Bar> bars;
 // };
 
 void Block::init(int property) {
@@ -78,39 +81,19 @@ void Map::init(int map_num) {
           blocks[i][j].overall_property = 1;
           break;
         case '(': // up portal
-          map_file >> serial;
-          if (serial == 1) {
-            map_file >> temp;
-            serial = serial * 10 + temp;
-          }
-          map_file >> x;
+          map_file >> serial >> x;
           blocks[i][j].overall_property = serial * 10 + 1;
           break;
         case ')': // down portal
-          map_file >> serial;
-          if (serial == 1) {
-            map_file >> temp;
-            serial = serial * 10 + temp;
-          }
-          map_file >> x;
+          map_file >> serial >> x;
           blocks[i][j].overall_property = serial * 10 + 2;
           break;
         case '[': // left portal
-          map_file >> serial;
-          if (serial == 1) {
-            map_file >> temp;
-            serial = serial * 10 + temp;
-          }
-          map_file >> x;
+          map_file >> serial >> x;
           blocks[i][j].overall_property = serial * 10 + 3;
           break;
         case ']': // right portal
-          map_file >> serial;
-          if (serial == 1) {
-            map_file >> temp;
-            serial = serial * 10 + temp;
-          }
-          map_file >> x;
+          map_file >> serial >> x;
           blocks[i][j].overall_property = serial * 10 + 4;
           break;
         case '|': // gate
@@ -127,6 +110,15 @@ void Map::init(int map_num) {
           break;
         case 'G': // upper gravity-converter
           blocks[i][j].overall_property = 52;
+          break;
+        case 'b': //bar
+          map_file >> serial >> x;
+          Bar bar;
+          int content[4][6];
+          fill(serial, (int*)content, 0);
+          bar.init(i * BLOCK_H + 2, j * BLOCK_W + 4, 4, 6, content, serial, i);
+          bars.push_back(bar);
+          blocks[i][j].overall_property = 1;
           break;
       }
     }
@@ -168,11 +160,14 @@ void Map::converter(Player& u) {
       else if (blocks[i][j].overall_property / 10 == 2) {
         int k = blocks[i][j].overall_property % 10;
         k = 3 - k;
-        blocks[i][j].overall_property = 10 + k;
+        blocks[i][j].overall_property = 20 + k;
       }
-      //bar to be continued
       fill(blocks[i][j].overall_property, (int*)blocks[i][j].content, u.state);
     }
+  }
+  for (int i = 0; i < bars.size(); i++) {
+    bars[i].property = 63 - bars[i].property;
+    fill(bars[i].property, (int*)bars[i].content, u.state);
   }
 
 }
@@ -283,9 +278,14 @@ void Map::update(Player u) {
           if (cont != 0) content[x + i][y + j] = cont;
         }
 
+  for (int idx = 0; idx < bars.size(); idx++)
+    for (int i = bars[idx].x; i < bars[idx].x + bars[idx].height; i++) 
+      for (int j = bars[idx].y - 2; j < bars[idx].y - 2 + bars[idx].width; j++) 
+        if (bars[idx].content[i - bars[idx].x][j - bars[idx].y + 2] % 100 != 0) 
+          content[i][j] = bars[idx].content[i - bars[idx].x][j - bars[idx].y + 2]; 
+
   for (int i = u.x; i < u.x + u.height; i++)
     for (int j = u.y; j < u.y + u.width; j++)
       content[i][j] = 3202; // 这要被换成！！角色像素的数字！！
-
 }
 

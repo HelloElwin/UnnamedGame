@@ -31,9 +31,14 @@ void fill(int overall, int *cont, int state) {
     AIR_C = temp;
   }
 
+  int BAR_H = 4;
+  int BAR_W = 6;
+
   std::ifstream model1 ("./lib/blocks/1.txt");
   std::string temp1;
   std::string temp10;
+  std::ifstream model3 ("./lib/blocks/3.txt");
+  std::string temp3;
   std::ifstream model4 ("./lib/blocks/4.txt");
   std::string temp4;
   std::ifstream model51 ("./lib/blocks/51.txt");
@@ -138,16 +143,16 @@ void fill(int overall, int *cont, int state) {
     int serial = overall / 10;
     int fi = overall % 10;
     int color = 0;
+    switch(fi) {
+      case 1: //ice
+        color = 32;
+        break;
+      case 2: //fire
+        color = 1;
+        break;
+    }
     switch(serial) {
       case 2: //property ground
-        switch(fi) {
-          case 1: //ice
-            color = 32;
-            break;
-          case 2: //fire
-            color = 1;
-            break;
-        }
         while (getline (model1, temp10)) {
           for (int j = 0; j < col; j++) {
             if (temp10[j] == '1')
@@ -160,6 +165,15 @@ void fill(int overall, int *cont, int state) {
         break;
       case 3: //bar
         //temporarily/permanently nothing
+        while (getline(model3, temp3)) {
+          for (int i = 0; i < BAR_W; i++) {
+              if (temp3[i] == '1') 
+                *ct++ = color * 100 + overall;
+              else
+                *ct++ = AIR_C * 100 + 0;
+          }
+        }
+        ct = cont;
         break;
       case 5: // lower gravity converter
         if (fi == 1) {
@@ -225,6 +239,7 @@ void fill(int overall, int *cont, int state) {
     }
   }
   model1.close();
+  model3.close();
   model4.close();
   model51.close();
   model52.close();
@@ -233,6 +248,7 @@ void fill(int overall, int *cont, int state) {
   model63.close();
   model64.close();
 }
+
 /*design test
 
   int content = 0;

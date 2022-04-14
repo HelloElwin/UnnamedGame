@@ -2,6 +2,7 @@
 #define HEADER_MAP
 
 #include "player.h"
+#include "bar.h"
 
 #include <vector>
 
@@ -40,6 +41,7 @@ class Map {
     int content[MAP_R][MAP_C];
     Block blocks[MAP_H][MAP_W];
     int gravity; // verticle gravity only
+	std::vector<Bar> bars;
 };
 
 #endif

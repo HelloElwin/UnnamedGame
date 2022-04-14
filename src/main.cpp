@@ -4,9 +4,12 @@
 #include "unistd.h"
 #include "block_fill.h"
 #include "../lib/maps/conio.h"
+#include "windowsize.h"
+#include "bar.h"
 
 #include <cstdio>
 #include <iostream>
+#include <vector>
 
 void clear_screen() {
   printf("\033[2J\033[1;1H");
@@ -16,17 +19,20 @@ void welcome() {
   clear_screen();
   printf("\033[1;97mWellcome to unnamed game!\n\033[0m");
   usleep(600000);
+  sizecheck();
 }
 
 void print_maps() {
   printf("  [1]    The first journey\n");
   printf("  [2]    One taste of gravity\n");
   printf("  [3]    one taste of world converter\n");
+  printf("  [4]    one taste of bar\n");
   printf("  [111]  You know what\n");
 }
 
 int choose_map() {
   int choice;
+  clear_screen();
   printf("Please select a map from:\n");
   print_maps();
   printf("Choice: ");
@@ -109,13 +115,19 @@ void game(int& map_num, Map& map, Player& player) {
     bool moving = false;
     player.move(key, map, moving);
 
-    bool fail_judge = true;
-    fail_judge = player.alive(map);
+    bool live_judge = true;
+    live_judge = player.alive(map);
+
+    bool touch_bar = false;
+    bar_move(map, player, touch_bar, moving);
+    if (touch_bar)
+      live_judge = false;
     
     bool succ_judge = false;
     succ_judge = player.success(map);
 
-    if (!fail_judge) {
+    if (!live_judge) {
+      map.bars.clear();
       usleep(300000);
       death(map_num, outcome);
       if (outcome)
