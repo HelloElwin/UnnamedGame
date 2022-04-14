@@ -4,7 +4,6 @@
 #include "unistd.h"
 #include "block_fill.h"
 #include "../lib/maps/conio.h"
-#include "windowsize.h"
 #include "bar.h"
 
 #include <cstdio>
