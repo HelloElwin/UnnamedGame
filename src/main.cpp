@@ -1,18 +1,16 @@
+#include "bar.h"
 #include "map.h"
 #include "utils.h"
 #include "player.h"
 #include "unistd.h"
+#include "interface.h"
 #include "block_fill.h"
 #include "../lib/maps/conio.h"
-#include "bar.h"
 
 #include <cstdio>
 #include <iostream>
 #include <vector>
 
-void clear_screen() {
-  printf("\033[2J\033[1;1H");
-}
 
 void welcome() {
   clear_screen();

@@ -1,8 +1,9 @@
+#include "map.h"
+#include "player.h"
+
 #ifndef BAR_H
 #define BAR_H
 
-#include "map.h"
-#include "player.h"
 
 class Bar {
   public:
