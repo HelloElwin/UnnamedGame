@@ -10,7 +10,7 @@
 #include <cstdio>
 #include <iostream>
 #include <vector>
-
+#include <string>
 
 void welcome() {
   clear_screen();
@@ -155,16 +155,36 @@ void game(int& map_num, Map& map, Player& player) {
 }
 
 int main() {
+  
+  sizecheck();
+  int choice;
+  show_welcome(&choice);
+  if (choice == 0) { // start
+    std::string map_name = "Not selected yet!";
+    // show_map_selection(map_name);
+    // printf("Selected map: ");
+    std::cout << map_name;
+  } else if (choice == 1) { // help
+ 
+  } else if (choice == 2) { // quit
+    
+  }
 
-  Map map;
-  Player player;
-
-  int map_num;
-  welcome();
-  map_num = choose_map();
-
-  begin(map_num, map, player);
-  game(map_num, map, player);
 
   return 0;
 }
+
+// int main() {
+// 
+//   Map map;
+//   Player player;
+// 
+//   int map_num;
+//   welcome();
+//   map_num = choose_map();
+// 
+//   begin(map_num, map, player);
+//   game(map_num, map, player);
+// 
+//   return 0;
+// }

@@ -1,10 +1,10 @@
+#include <vector>
+
 #ifndef HEADER_MAP
 #define HEADER_MAP
 
 #include "player.h"
 #include "bar.h"
-
-#include <vector>
 
 // size of block
 #define BLOCK_H 5
