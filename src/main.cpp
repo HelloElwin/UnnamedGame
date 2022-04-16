@@ -161,8 +161,8 @@ int main() {
   show_welcome(&choice);
   if (choice == 0) { // start
     std::string map_name = "Not selected yet!";
-    // show_map_selection(map_name);
-    // printf("Selected map: ");
+    show_map_selection(map_name);
+    printf("Selected map: ");
     std::cout << map_name;
   } else if (choice == 1) { // help
  

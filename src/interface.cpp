@@ -6,6 +6,36 @@
 #include <string>
 #include <iostream>
 
+#define SQUARE_H 15
+#define SQUARE_W 32
+#define MAP_NUM 20
+#define SINGLE_R 6
+#define SINGLE_C 8
+
+std::string background[MAP_R][MAP_C]; // background of each little map square
+//0123456789 row: 6 column: 8
+std::string number[10][MAP_R][MAP_C] = {
+  {{" ", "█", "█", "█", "█", "█", "╗", " "},{"█", "█", " ", " ", " ", "█", "█", "╗"},{"█", "█", " ", " ", " ", "█", "█", "║"},{"█", "█", " ", " ", " ", "█", "█", "║"},{"╚", "█", "█", "█", "█", "█", "╔", "╝"},{" ", "╚", "═", "═", "═", "═", "╝", " "}},
+
+  {{" ", " ", " ", "█", "█", "╗", " ", " "},{" ", " ", "█", "█", "█", "║", " ", " "},{" ", " ", "╚", "█", "█", "║", " ", " "},{" ", " ", " ", "█", "█", "║", " ", " "},{" ", " ", " ", "█", "█", "║", " ", " "},{" ", " ", " ", "╚", "═", "╝", " ", " "}}, 
+
+  {{"█", "█", "█", "█", "█", "█", "╗", " "},{"╚", "═", "═", "═", "═", "█", "█", "╗"},{" ", "█", "█", "█", "█", "█", "╔", "╝"},{"█", "█", "╔", "═", "═", "═", "╝", " "},{"█", "█", "█", "█", "█", "█", "█", "╗"},{"╚", "═", "═", "═", "═", "═", "═", "╝"}},
+
+  {{"█", "█", "█", "█", "█", "█", "╗", " "},{"╚", "═", "═", "═", "═", "█", "█", "╗"},{" ", "█", "█", "█", "█", "█", "╔", "╝"},{" ", "╚", "═", "═", "═", "█", "█", "╗"},{"█", "█", "█", "█", "█", "█", "╔", "╝"},{"╚", "═", "═", "═", "═", "═", "╝", " "}},
+
+  {{"█", "█", "╗", " ", " ", "█", "█", "╗"},{"█", "█", "║", " ", " ", "█", "█", "║"},{"█", "█", "█", "█", "█", "█", "█", "║"},{"╚", "═", "═", "═", "═", "█", "█", "║"},{" ", " ", " ", " ", " ", "█", "█", "║"},{" ", " ", " ", " ", " ", "╚", "═", "╝"}},
+
+  {{"█", "█", "█", "█", "█", "█", "█", "╗"},{"█", "█", "╔", "═", "═", "═", "═", "╝"},{"█", "█", "█", "█", "█", "█", "█", "╗"},{"╚", "═", "═", "═", "═", "█", "█", "║"},{"█", "█", "█", "█", "█", "█", "█", "║"},{"╚", "═", "═", "═", "═", "═", "═", "╝"}},
+
+  {{" ", "█", "█", "█", "█", "█", "╗", " "},{"█", "█", "╔", "═", "═", "═", "╝", " "},{"█", "█", "█", "█", "█", "█", "╗", " "},{"█", "█", "╔", "═", "═", "█", "█", "╗"},{"╚", "█", "█", "█", "█", "█", "╔", "╝"},{" ", "╚", "═", "═", "═", "═", "╝", " "}},
+
+  {{"█", "█", "█", "█", "█", "█", "█", "╗"},{"╚", "═", "═", "═", "═", "█", "█", "║"},{" ", " ", " ", " ", "█", "█", "╔", "╝"},{" ", " ", " ", "█", "█", "╔", "╝", " "},{" ", " ", " ", "█", "█", "║", " ", " "},{" ", " ", " ", "╚", "═", "╝", " ", " "}},
+
+  {{" ", "█", "█", "█", "█", "█", "╗", " "},{"█", "█", "╔", "═", "═", "█", "█", "╗"},{"╚", "█", "█", "█", "█", "█", "╔", "╝"},{"█", "█", "╔", "═", "═", "█", "█", "╗"},{"╚", "█", "█", "█", "█", "█", "╔", "╝"},{" ", "╚", "═", "═", "═", "═", "╝", " "}}, 
+
+  {{" ", "█", "█", "█", "█", "█", "╗", " "},{"█", "█", "╔", "═", "═", "█", "█", "╗"},{"╚", "█", "█", "█", "█", "█", "█", "║"},{" ", "╚", "═", "═", "═", "█", "█", "║"},{" ", "█", "█", "█", "█", "█", "╔", "╝"},{" ", "╚", "═", "═", "═", "═", "╝", " "}}
+}; 
+
 void show_welcome(int* choice) {
   std::string welcome_msg = "Welcome to the Unnamed Game!";
   std::string tip_msg = "Press WASD to move; Press g to select";
@@ -40,13 +70,105 @@ void show_interface(std::string interface[][MAP_C]) {
   for (int i = 0; i < MAP_R; i++) {
     for (int j = 0; j < MAP_C; j++) {
       int color = 231;
+      int bg = 25; 
       if (interface[i][j] == "█") printf("\033[48;5;%dm \033[0m", color);
+      else if (interface[i][j] == "b") printf("\033[48;5;%dm \033[0m", bg);
       else std::cout << interface[i][j];
     }
     std::cout << '\n';
   }
 }
 
+void show_map_selection(std::string &selection) {
+  int select = 0;
+  int levnum = MAP_C / SQUARE_W;
+  /*for (int i = 0; i < SQUARE_H; i++)
+    for (int j = 0; j < SQUARE_W; j++)
+      background[i][j] = "b";
+  */
+  std::string interface[MAP_R][MAP_C];
+  for (int i = 0; i < MAP_R; i++) {
+    for (int j = 0; j < MAP_C; j++) {
+      interface[i][j] = " ";
+    }
+  }
+  for (int i = 0; i < MAP_NUM; i++) {
+    //draw_insert((select / levnum) * SQUARE_H + 1, (select % levnum) * SQUARE_W + 1, SQUARE_H - 2, SQUARE_W - 2, background, interface);
+    if ((i + 1) / 10 == 0) {
+      draw_insert((i / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 + 1, (i % levnum) * SQUARE_W + (SQUARE_W - SINGLE_C - 2) / 2 + 1, SINGLE_R, SINGLE_C, number[i + 1], interface);
+    }
+    else {
+      int tens = (i + 1) / 10;
+      int digits = (i + 1) % 10;
+      std::string combine[MAP_R][MAP_C];
+      for (int ii = 0; ii < SINGLE_R; ii++) {
+        for (int j = 0; j < SINGLE_C; j++) {
+          combine[ii][j] = number[tens][ii][j];
+          combine[ii][SINGLE_C + j] = number[digits][ii][j];
+        }
+      }
+      draw_insert((i / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 + 1, (i % levnum) * SQUARE_W + (SQUARE_W - SINGLE_C * 2 - 2) / 2 + 1, SINGLE_R, SINGLE_C * 2, combine, interface);
+    }
+  }
+  draw_border((select / levnum) * SQUARE_H, (select % levnum) * SQUARE_W, SQUARE_H, SQUARE_W, interface); 
+  printf("\n");
+  show_interface(interface);
+  char key = 'x';
+  while (key != 'g') {
+    std::string interface[MAP_R][MAP_C];
+    for (int i = 0; i < MAP_R; i++) {
+      for (int j = 0; j < MAP_C; j++) {
+        interface[i][j] = " ";
+      }
+    }
+    for (int i = 0; i < MAP_NUM; i++) {
+      //draw_insert((select / levnum) * SQUARE_H + 1, (select % levnum) * SQUARE_W + 1, SQUARE_H - 2, SQUARE_W - 2, background, interface);
+      if ((i + 1) / 10 == 0) {
+        draw_insert((i / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 + 1, (i % levnum) * SQUARE_W + (SQUARE_W - SINGLE_C - 2) / 2 + 1, SINGLE_R, SINGLE_C, number[i + 1], interface);
+      }
+      else {
+        int tens = (i + 1) / 10;
+        int digits = (i + 1) % 10;
+        std::string combine[MAP_R][MAP_C];
+        for (int ii = 0; ii < SINGLE_R; ii++) {
+          for (int j = 0; j < SINGLE_C; j++) {
+            combine[ii][j] = number[tens][ii][j];
+            combine[ii][SINGLE_C + j] = number[digits][ii][j];
+          }
+        }
+        draw_insert((i / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 + 1, (i % levnum) * SQUARE_W + (SQUARE_W - SINGLE_C * 2 - 2) / 2 + 1, SINGLE_R, SINGLE_C * 2, combine, interface);
+      }
+    }
+    key = get_keyboard();
+    switch(key) {
+      case 'w':
+        if (select / levnum == 0)
+          break;
+        select -= levnum;
+        break;
+      case 'a':
+        if (select % levnum == 0)
+          break;
+        select -= 1;
+        break;
+      case 's':
+        if (select / levnum == MAP_R / SQUARE_H - 1)
+          break;
+        select += levnum;
+        break;
+      case 'd':
+        if (select % levnum == levnum - 1)
+          break;
+        select += 1;
+        break;
+    }
+    draw_border((select / levnum) * SQUARE_H, (select % levnum) * SQUARE_W, SQUARE_H, SQUARE_W, interface); 
+    printf("\n");
+    show_interface(interface);
+  }
+  selection = std::to_string(select + 1);
+}
+  
 void draw_initial_interface(std::string interface[][MAP_C]) {
   int r = MAP_R;
   int c = MAP_C;
@@ -92,6 +214,8 @@ void draw_words(int x, int y, std::string words, std::string interface[][MAP_C])
     interface[x][y + i] = words[i];
 }
 
+
 void clear_screen() {
   printf("\033[2J\033[1;1H");
 }
+
