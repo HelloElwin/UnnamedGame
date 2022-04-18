@@ -8,34 +8,91 @@
 #include "../lib/maps/conio.h"
 
 #include <cstdio>
-#include <iostream>
 #include <vector>
 #include <string>
+#include <iostream>
 
-void welcome() {
-  clear_screen();
-  printf("\033[1;97mWellcome to unnamed game!\n\033[0m");
-  usleep(600000);
+bool game(Map&, Player&);
+bool start_game(std::string);
+
+int main() {
+  
   sizecheck();
+
+  int choice = -1;
+  while (choice != 2) {
+    show_welcome(choice);
+    if (choice == 0) { // start
+      std::string map_name = "Not selected yet!";
+      map_selection(map_name);
+      bool back = false;
+      while (!back) {
+        printf("Selected map: %s", map_name.c_str());
+        bool won = start_game(map_name);
+        show_game_end(won, back);
+      }
+    } else if (choice == 1) { // about
+      // show about 
+    } else if (choice == 2) { // quit
+      // show goodbye
+    }
+  }
+
+  return 0;
 }
 
-void print_maps() {
-  printf("  [1]    The first journey\n");
-  printf("  [2]    One taste of gravity\n");
-  printf("  [3]    one taste of world converter\n");
-  printf("  [4]    one taste of bar\n");
-  printf("  [111]  You know what\n");
-}
-
-int choose_map() {
-  int choice;
+bool start_game(std::string map_name) {
+  Player player;
   clear_screen();
-  printf("Please select a map from:\n");
-  print_maps();
-  printf("Choice: ");
-  scanf("%d", &choice);
-  return choice;
+  int player_cont[2][2];
+  int player_property=2;
+  player_fill(player_property, (int*)player_cont);
+  player.init(1, 2, 2, 2, 0, player_cont, player_property);
+
+  Map map;
+  map.init(std::stoi(map_name)); // assume map name is an integer
+  map.update(player);
+  map.print();
+
+  return game(map, player);
 }
+
+bool game(Map& map, Player& player) {
+  while (true) {
+    char key = '.';
+    if (kbhit()) key = get_keyboard();
+    bool moving = false;
+    player.move(key, map, moving);
+
+    bool live_judge = true;
+    live_judge = player.alive(map);
+
+    bool touch_bar = false;
+    bar_move(map, player, touch_bar, moving);
+    if (touch_bar)
+      live_judge = false;
+    
+    bool succ_judge = false;
+    succ_judge = player.success(map);
+
+    if (!live_judge) return false;
+    if (succ_judge) return true;
+
+    map.check(player);
+    map.update(player);
+
+    if (moving) {
+      clear_screen();
+      map.print();
+      // map.inspect(3);
+      player.inspect(1);
+    }
+     
+    usleep(50000);
+  }
+}
+
+/*
 
 void death(int& map_num, bool& outcome) {
   clear_screen();
@@ -87,104 +144,4 @@ void success(int& map_num, bool& outcome) {
     return;
   }
 }
-
-void begin(int& map_num, Map& map, Player& player) {
-  clear_screen();
-  map.init(map_num); 
-  int cont0[2][2];
-  //fill(21, (int*)cont0, 0);
-  int player_proty = 2; 
-  player_fill(player_proty, (int*)cont0);
-  player.init(1, 2, 2, 2, 0,cont0, player_proty);
-
-  map.update(player);
-  map.print();
-}
-
-void game(int& map_num, Map& map, Player& player) {
-  bool outcome = true;
-  while (outcome) {
-    
-    char key = '.';
-    if (kbhit()) key = get_keyboard();
-    bool moving = false;
-    player.move(key, map, moving);
-
-    bool live_judge = true;
-    live_judge = player.alive(map);
-
-    bool touch_bar = false;
-    bar_move(map, player, touch_bar, moving);
-    if (touch_bar)
-      live_judge = false;
-    
-    bool succ_judge = false;
-    succ_judge = player.success(map);
-
-    if (!live_judge) {
-      map.bars.clear();
-      usleep(300000);
-      death(map_num, outcome);
-      if (outcome)
-        begin(map_num, map, player);
-      continue;
-    }
-
-    if (succ_judge) {
-      usleep(300000);
-      success(map_num, outcome);
-      if (outcome)
-        begin(map_num, map, player);
-      continue;
-    }
-
-    map.check(player);
-    map.update(player);
-
-    if (moving) {
-      clear_screen();
-      map.print();
-      //map.inspect(3);
-      player.inspect(1);
-    }
-
-     
-    usleep(50000);
-
-  }
-}
-
-int main() {
-  
-  sizecheck();
-  int choice;
-  show_welcome(&choice);
-  if (choice == 0) { // start
-    std::string map_name = "Not selected yet!";
-    map_selection(map_name);
-    printf("Selected map: ");
-    std::cout << map_name;
-  } else if (choice == 1) { // help
- 
-  } else if (choice == 2) { // quit
-    
-  }
-
-
-  return 0;
-}
-
-// int main() {
-// 
-//   Map map;
-//   Player player;
-// 
-//   int map_num;
-//   welcome();
-//   map_num = choose_map();
-// 
-//   begin(map_num, map, player);
-//   game(map_num, map, player);
-// 
-//   return 0;
-// }
+*/

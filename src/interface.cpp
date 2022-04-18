@@ -36,7 +36,7 @@ std::string number[10][MAP_R][MAP_C] = {
   {{"b", "█", "█", "█", "█", "█", "╗", "b"},{"█", "█", "╔", "═", "═", "█", "█", "╗"},{"╚", "█", "█", "█", "█", "█", "█", "║"},{"b", "╚", "═", "═", "═", "█", "█", "║"},{"b", "█", "█", "█", "█", "█", "╔", "╝"},{"b", "╚", "═", "═", "═", "═", "╝", "b"}}
 }; 
 
-void show_welcome(int* choice) {
+void show_welcome(int& choice) {
   std::string welcome_msg = "Welcome to the Unnamed Game!";
   std::string tip_msg = "Press WASD to move; Press g to select";
   int pos = 0;
@@ -48,8 +48,8 @@ void show_welcome(int* choice) {
     draw_words(20, 60, welcome_msg, interface);
     draw_words(55, 60, tip_msg, interface);
     draw_words(30, 60, "Start", interface);
-    draw_words(35, 60, "Help", interface);
-    draw_words(40, 60, "Help", interface);
+    draw_words(35, 60, "About", interface);
+    draw_words(40, 60, "Quit", interface);
     switch (key) {
       case 'w':
         if (pos != 0) pos -= 1;
@@ -57,13 +57,13 @@ void show_welcome(int* choice) {
       case 's':
         if (pos != 2) pos += 1;
     }
-    if (pos == 0) draw_border(29, 59, 3, 7, interface);
-    else if (pos == 1) draw_border(34, 59, 3, 6, interface);
-    else if (pos == 2) draw_border(39, 59, 3, 6, interface);
+    if (pos == 0) draw_border(29, 58, 3, 9, interface);
+    else if (pos == 1) draw_border(34, 58, 3, 9, interface);
+    else if (pos == 2) draw_border(39, 58, 3, 8, interface);
     show_interface(interface);
     key = get_keyboard();
   }
-  *choice = pos;
+  choice = pos;
 }
 
 void show_interface(std::string interface[][MAP_C]) {
@@ -192,7 +192,36 @@ void map_selection(std::string &selection) {
   }
   selection = std::to_string(select + 1);
 }
+
+void show_game_end(bool won, bool& back) { // (0 for lose 1 for win, map_name), show win or lose, and choose to restart or go back
+  std::string msg = won ? "You won!" : "You are a loser!";
+  std::string tip_msg = "Press WASD to move; Press g to select";
+  int pos = 0;
+  char key = 'x';
+  while (key != 'g') {
+    clear_screen();
+    std::string interface[MAP_R][MAP_C];
+    draw_initial_interface(interface);
+    draw_words(20, 60, msg, interface);
+    draw_words(55, 60, tip_msg, interface);
+    draw_words(30, 60, "Restart", interface);
+    draw_words(35, 60, "Back", interface);
+    switch (key) {
+      case 'w':
+        if (pos != 0) pos -= 1;
+        break;
+      case 's':
+        if (pos != 1) pos += 1;
+    }
+    if (pos == 0) draw_border(29, 58, 3, 11, interface);
+    else if (pos == 1) draw_border(34, 58, 3, 8, interface);
+    show_interface(interface);
+    key = get_keyboard();
+  }
+  back = pos;
+}
   
+
 void draw_initial_interface(std::string interface[][MAP_C]) {
   int r = MAP_R;
   int c = MAP_C;
