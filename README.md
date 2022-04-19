@@ -8,13 +8,11 @@ Ye Yaowen (3035845344) [@HelloElwin](https://github.com/HelloElwin)
 
 ## Introduction
 
-"Unnamed Game is a fun game without a name (yet)! And you, the bravest explorer in HKU, is given the job to find the name for this game! The name is hidden in a secrete room in a world of ice and flame, and your journey starts from a certain point in this world. At the end point lies the entrance of the secrete room and your ultimate goal: name for the Unnamed Game!"
+"Unnamed Game is a fun game without a name (yet)! And you, the bravest explorer in HKU, are given the job to find the name for this game! The name is hidden in a secrete room in a world of ice and flame, and your journey starts from a certain point in this world. At the end point lies the entrance of the secrete room and your ultimate goal: name for the Unnamed Game!"
 
-This is a keyboard-based adventure game for one player controlled by **WASD**. The player is suggested to kick in a way to move itself to the destination.
+This is a keyboard-based adventure game for one player controlled by **WASD**. The player is suggested to kick in a way to travel to the destination.
 
-A list of features including portals, gravity switches, world converters etc., are designed to assist the travel. Two properties, ice and frame, are attached to the player, bars and grounds. Under opposite properties, bars and grounds may be dangerous to the player.
-
-Success means safely arriving at the endpoint. 
+A list of features including portals, gravity switches, world converters etc., are designed to assist the travel. Two properties, ice and flame, are attached to the player, bars and grounds. Under opposite properties, bars and grounds may be dangerous to the player.
 
 ## Quick Start
 
