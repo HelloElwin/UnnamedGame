@@ -6,4 +6,9 @@
 )1)     portal No.1, down
 |       gate
 @       character
-g       gravity change point
+g       lower-ground gravity change point
+G       upper-ground gravity change point
+i       ice ground
+f       fire ground
+b31b    ice bar
+b32b    fire bar

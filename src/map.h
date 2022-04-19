@@ -1,9 +1,10 @@
+#include <vector>
+
 #ifndef HEADER_MAP
 #define HEADER_MAP
 
 #include "player.h"
-
-#include <vector>
+#include "bar.h"
 
 // size of block
 #define BLOCK_H 5
@@ -34,10 +35,13 @@ class Map {
     void inspect(int);
     void check(Player&);
     void update(Player);
+    void converter(Player&);
     Block get_portal(int, int, int);
+    Block get_tar_portal(int, int, int, bool&);
     int content[MAP_R][MAP_C];
-    int state;
     Block blocks[MAP_H][MAP_W];
+    int gravity; // verticle gravity only
+    std::vector<Bar> bars;
 };
 
 #endif

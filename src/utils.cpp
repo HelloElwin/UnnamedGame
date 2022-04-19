@@ -1,17 +1,21 @@
 #include "utils.h"
 
-#include <iostream>
-#include <cstdio>
+#include <sys/ioctl.h>
 #include <termios.h>
-#include <stdio.h>
+#include <iostream>
+#include <unistd.h>
+#include <cstdio>
 
 // type sheet
 // 0  air
 // 1  ground
-// 2  player
-// 3  bar
+// 21 ice ground
+// 22 fire ground
+// 31 ice bar
+// 32 fire bar
 // 4  gate 
-// 5+ portal
+// 5  world converter
+// 6+ portal
  
 // property sheet
 // property = 'x' : none
@@ -94,6 +98,34 @@ char get_keyboard(void) {
 
   tcsetattr(0,TCSANOW,&stored_settings);
   return input;
+}
+
+void sizecheck(void) {
+    struct winsize w;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    int row = w.ws_row;
+    int col = w.ws_col;
+
+    while (row < 60 || col < 160) {
+      if (col < 160) {
+        printf("Your current window size could only contain %d columns. Please enlarge your window.\n\n", col);
+        usleep(600000);
+        while (col == w.ws_col) {
+          ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+        }
+      }
+      if (row < 60) {
+        printf("Your current window size could only contain %d lines. Please enlarge your window.\n\n", row);
+        usleep(600000);
+        while (row == w.ws_row) {
+          ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+        }
+      }
+      row = w.ws_row;
+      col = w.ws_col;
+    }
+
+    return;  
 }
 
 /*
