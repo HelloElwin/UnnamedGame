@@ -2,9 +2,11 @@
 #include "utils.h"
 #include "map.h"
 
+#include "unistd.h"
 #include <cstdio>
 #include <string>
 #include <iostream>
+#include <fstream>
 
 #define SQUARE_H 15
 #define SQUARE_W 32
@@ -15,25 +17,25 @@
 std::string background[MAP_R][MAP_C]; // background of each little map square
 //0123456789 row: 6 column: 8
 std::string number[10][MAP_R][MAP_C] = {
-  {{"b", "█", "█", "█", "█", "█", "╗", "b"},{"█", "█", "b", "b", "b", "█", "█", "╗"},{"█", "█", "b", "b", "b", "█", "█", "║"},{"█", "█", "b", "b", "b", "█", "█", "║"},{"╚", "█", "█", "█", "█", "█", "╔", "╝"},{"b", "╚", "═", "═", "═", "═", "╝", "b"}},
+  {{"B", "█", "█", "█", "█", "█", "╗", "B"},{"█", "█", "B", "B", "B", "█", "█", "╗"},{"█", "█", "B", "B", "B", "█", "█", "║"},{"█", "█", "B", "B", "B", "█", "█", "║"},{"╚", "█", "█", "█", "█", "█", "╔", "╝"},{"B", "╚", "═", "═", "═", "═", "╝", "B"}},
 
-  {{"b", "b", "b", "█", "█", "╗", "b", "b"},{"b", "b", "█", "█", "█", "║", "b", "b"},{"b", "b", "╚", "█", "█", "║", "b", "b"},{"b", "b", "b", "█", "█", "║", "b", "b"},{"b", "b", "b", "█", "█", "║", "b", "b"},{"b", "b", "b", "╚", "═", "╝", "b", "b"}}, 
+  {{"B", "B", "B", "█", "█", "╗", "B", "B"},{"B", "B", "█", "█", "█", "║", "B", "B"},{"B", "B", "╚", "█", "█", "║", "B", "B"},{"B", "B", "B", "█", "█", "║", "B", "B"},{"B", "B", "B", "█", "█", "║", "B", "B"},{"B", "B", "B", "╚", "═", "╝", "B", "B"}}, 
 
-  {{"█", "█", "█", "█", "█", "█", "╗", "b"},{"╚", "═", "═", "═", "═", "█", "█", "╗"},{"b", "█", "█", "█", "█", "█", "╔", "╝"},{"█", "█", "╔", "═", "═", "═", "╝", "b"},{"█", "█", "█", "█", "█", "█", "█", "╗"},{"╚", "═", "═", "═", "═", "═", "═", "╝"}},
+  {{"█", "█", "█", "█", "█", "█", "╗", "B"},{"╚", "═", "═", "═", "═", "█", "█", "╗"},{"B", "█", "█", "█", "█", "█", "╔", "╝"},{"█", "█", "╔", "═", "═", "═", "╝", "B"},{"█", "█", "█", "█", "█", "█", "█", "╗"},{"╚", "═", "═", "═", "═", "═", "═", "╝"}},
 
-  {{"█", "█", "█", "█", "█", "█", "╗", "b"},{"╚", "═", "═", "═", "═", "█", "█", "╗"},{"b", "█", "█", "█", "█", "█", "╔", "╝"},{"b", "╚", "═", "═", "═", "█", "█", "╗"},{"█", "█", "█", "█", "█", "█", "╔", "╝"},{"╚", "═", "═", "═", "═", "═", "╝", "b"}},
+  {{"█", "█", "█", "█", "█", "█", "╗", "B"},{"╚", "═", "═", "═", "═", "█", "█", "╗"},{"B", "█", "█", "█", "█", "█", "╔", "╝"},{"B", "╚", "═", "═", "═", "█", "█", "╗"},{"█", "█", "█", "█", "█", "█", "╔", "╝"},{"╚", "═", "═", "═", "═", "═", "╝", "B"}},
 
-  {{"█", "█", "╗", "b", "b", "█", "█", "╗"},{"█", "█", "║", "b", "b", "█", "█", "║"},{"█", "█", "█", "█", "█", "█", "█", "║"},{"╚", "═", "═", "═", "═", "█", "█", "║"},{"b", "b", "b", "b", "b", "█", "█", "║"},{"b", "b", "b", "b", "b", "╚", "═", "╝"}},
+  {{"█", "█", "╗", "B", "B", "█", "█", "╗"},{"█", "█", "║", "B", "B", "█", "█", "║"},{"█", "█", "█", "█", "█", "█", "█", "║"},{"╚", "═", "═", "═", "═", "█", "█", "║"},{"B", "B", "B", "B", "B", "█", "█", "║"},{"B", "B", "B", "B", "B", "╚", "═", "╝"}},
 
   {{"█", "█", "█", "█", "█", "█", "█", "╗"},{"█", "█", "╔", "═", "═", "═", "═", "╝"},{"█", "█", "█", "█", "█", "█", "█", "╗"},{"╚", "═", "═", "═", "═", "█", "█", "║"},{"█", "█", "█", "█", "█", "█", "█", "║"},{"╚", "═", "═", "═", "═", "═", "═", "╝"}},
 
-  {{"b", "█", "█", "█", "█", "█", "╗", "b"},{"█", "█", "╔", "═", "═", "═", "╝", "b"},{"█", "█", "█", "█", "█", "█", "╗", "b"},{"█", "█", "╔", "═", "═", "█", "█", "╗"},{"╚", "█", "█", "█", "█", "█", "╔", "╝"},{"b", "╚", "═", "═", "═", "═", "╝", "b"}},
+  {{"B", "█", "█", "█", "█", "█", "╗", "B"},{"█", "█", "╔", "═", "═", "═", "╝", "B"},{"█", "█", "█", "█", "█", "█", "╗", "B"},{"█", "█", "╔", "═", "═", "█", "█", "╗"},{"╚", "█", "█", "█", "█", "█", "╔", "╝"},{"B", "╚", "═", "═", "═", "═", "╝", "B"}},
 
-  {{"█", "█", "█", "█", "█", "█", "█", "╗"},{"╚", "═", "═", "═", "═", "█", "█", "║"},{"b", "b", "b", "b", "█", "█", "╔", "╝"},{"b", "b", "b", "█", "█", "╔", "╝", "b"},{"b", "b", "b", "█", "█", "║", "b", "b"},{"b", "b", "b", "╚", "═", "╝", "b", "b"}},
+  {{"█", "█", "█", "█", "█", "█", "█", "╗"},{"╚", "═", "═", "═", "═", "█", "█", "║"},{"B", "B", "B", "B", "█", "█", "╔", "╝"},{"B", "B", "B", "█", "█", "╔", "╝", "B"},{"B", "B", "B", "█", "█", "║", "B", "B"},{"B", "B", "B", "╚", "═", "╝", "B", "B"}},
 
-  {{"b", "█", "█", "█", "█", "█", "╗", "b"},{"█", "█", "╔", "═", "═", "█", "█", "╗"},{"╚", "█", "█", "█", "█", "█", "╔", "╝"},{"█", "█", "╔", "═", "═", "█", "█", "╗"},{"╚", "█", "█", "█", "█", "█", "╔", "╝"},{"b", "╚", "═", "═", "═", "═", "╝", "b"}}, 
+  {{"B", "█", "█", "█", "█", "█", "╗", "B"},{"█", "█", "╔", "═", "═", "█", "█", "╗"},{"╚", "█", "█", "█", "█", "█", "╔", "╝"},{"█", "█", "╔", "═", "═", "█", "█", "╗"},{"╚", "█", "█", "█", "█", "█", "╔", "╝"},{"B", "╚", "═", "═", "═", "═", "╝", "B"}}, 
 
-  {{"b", "█", "█", "█", "█", "█", "╗", "b"},{"█", "█", "╔", "═", "═", "█", "█", "╗"},{"╚", "█", "█", "█", "█", "█", "█", "║"},{"b", "╚", "═", "═", "═", "█", "█", "║"},{"b", "█", "█", "█", "█", "█", "╔", "╝"},{"b", "╚", "═", "═", "═", "═", "╝", "b"}}
+  {{"B", "█", "█", "█", "█", "█", "╗", "B"},{"█", "█", "╔", "═", "═", "█", "█", "╗"},{"╚", "█", "█", "█", "█", "█", "█", "║"},{"B", "╚", "═", "═", "═", "█", "█", "║"},{"B", "█", "█", "█", "█", "█", "╔", "╝"},{"B", "╚", "═", "═", "═", "═", "╝", "B"}}
 }; 
 std::string game_title[MAP_R][MAP_C] = {
   {"█", "█", "╗", " ", " ", " ", "█", "█", "╗", "█", "█", "█", "╗", " ", " ", " ", "█", "█", "╗", "█", "█", "█", "╗", " ", " ", " ", "█", "█", "╗", " ", "█", "█", "█", "█", "█", "╗", " ", "█", "█", "█", "╗", " ", " ", " ", "█", "█", "█", "╗", "█", "█", "█", "█", "█", "█", "█", "╗", "█", "█", "█", "█", "█", "█", "╗", " ", " ", " ", " ", " ", " ", "█", "█", "█", "█", "█", "█", "╗", " ", " ", "█", "█", "█", "█", "█", "╗", " ", "█", "█", "█", "╗", " ", " ", " ", "█", "█", "█", "╗", "█", "█", "█", "█", "█", "█", "█", "╗"},
@@ -100,7 +102,30 @@ std::string word_back[MAP_R][MAP_C] = {
   {" ", "/", " ", "_", " ", " ", "/", " ", "_", " ", "`", "/", " ", "_", "_", "/", " ", " ", "'", "_", "/"},
   {"/", "_", "_", "_", "_", "/", "\\", "_", ",", "_", "/", "\\", "_", "_", "/", "_", "/", "\\", "_", "\\", " "}
 };
-
+std::string word_reselect[MAP_R][MAP_C] = {
+  {"_", "_", "_", " ", "_", "_", "_", " ", "_", "_", "_", " ", "_", "_", "_", " ", "_", " ", " ", " ", "_", "_", "_", " ", "_", "_", "_", " ", "_", "_", "_", " "},
+  {"|", "_", "/", " ", "|", "_", "_", " ", "[", "_", " ", " ", "|", "_", "_", " ", "|", " ", " ", " ", "|", "_", "_", " ", "|", " ", " ", " ", " ", "|", " ", " "},
+  {"|", " ", "\\", " ", "|", "_", "_", " ", "_", "_", "]", " ", "|", "_", "_", " ", "|", "_", "_", " ", "|", "_", "_", " ", "|", "_", "_", " ", " ", "|", " ", " "},
+  {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}
+};
+std::string word_next[MAP_R][MAP_C] = {
+  {"_", " ", " ", "_", " ", "_", "_", "_", " ", "_", " ", " ", "_", " ", "_", "_", "_", " "},
+  {"|", "\\", " ", "|", " ", "|", "_", "_", " ", " ", "\\", "/", " ", " ", " ", "|", " ", " "},
+  {"|", " ", "\\", "|", " ", "|", "_", "_", " ", "_", "/", "\\", "_", " ", " ", "|", " ", " "},
+  {" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " "}
+};
+std::string word_BYE[MAP_R][MAP_C] = {
+  {" ", " ", " ", "_", " ", " ", " ", " ", " ", "_", " ", " ", " ", " ", " ", " ", "_", " ", " ", " ", " ", " ", "_", " ", " ", " ", " ", " ", " ", "_", " ", " ", " ", " ", " ", "_", " ", " ", " "},
+  {" ", " ", "(", "c", ")", ".", "-", ".", "(", "c", ")", " ", " ", " ", " ", "(", "c", ")", ".", "-", ".", "(", "c", ")", " ", " ", " ", " ", "(", "c", ")", ".", "-", ".", "(", "c", ")", " ", " "},
+  {" ", " ", " ", "/", " ", ".", "_", ".", " ", "\\", " ", " ", " ", " ", " ", " ", "/", " ", ".", "_", ".", " ", "\\", " ", " ", " ", " ", " ", " ", "/", " ", ".", "_", ".", " ", "\\", " ", " ", " "},
+  {" ", "_", "_", "\\", "(", " ", "Y", " ", ")", "/", "_", "_", " ", " ", "_", "_", "\\", "(", " ", "Y", " ", ")", "/", "_", "_", " ", " ", "_", "_", "\\", "(", " ", "Y", " ", ")", "/", "_", "_", " "},
+  {"(", "_", ".", "-", "/", "'", "-", "'", "\\", "-", ".", "_", ")", "(", "_", ".", "-", "/", "'", "-", "'", "\\", "-", ".", "_", ")", "(", "_", ".", "-", "/", "'", "-", "'", "\\", "-", ".", "_", ")"},
+  {" ", " ", " ", "|", "|", " ", "B", " ", "|", "|", " ", " " ," ", " ", " ", " ", "|", "|", " ", "Y", " ", "|", "|", " ", " ", " ", " ", " ", " ", "|", "|", " ", "E", " ", "|", "|", " ", " ", " "},
+  {" ", "_", ".", "'", " ", "`", "-", "'", " ", "'", ".", "_", " ", " ", "_", ".", "'", " ", "`", "-", "'", " ", "'", ".", "_", " ", " ", "_", ".", "'", " ", "`", "-", "'", " ", "'", ".", "_", " "},
+  {"(", ".", "-", ".", "/", "`", "-", "'", "\\", ".", "-", ".", ")", "(", ".", "-", ".", "/", "`", "-", "'", "\\", ".", "-", ".", ")", "(", ".", "-", ".", "/", "`", "-", "'", "\\", ".", "-", ".", ")"},
+  {" ", "`", "-", "'", " ", " ", " ", " ", " ", "`", "-", "'", " ", " ", "`", "-", "'", " ", " ", " ", " ", " ", "`", "-", "'", " ", " ", "`", "-", "'", " ", " ", " ", " ", " ", "`", "-", "'", " "}
+};
+bool map_pass[20];
 void show_welcome(int& choice) {
   std::string welcome_msg = "Welcome to the Unnamed Game!";
   std::string tip_msg = "Press WASD to move; Press g to select";
@@ -164,7 +189,7 @@ void show_selection(int selection, std::string interface[][MAP_C]) {
       }
       if (interface[i][j] == "█") 
         printf("\033[48;5;%dm \033[0m", color);
-      else if (interface[i][j] == "b") 
+      else if (interface[i][j] == "B") 
         printf("\033[48;5;%dm \033[0m", bg);
       else if (interface[i][j] == " ") 
         printf("%s", interface[i][j].c_str());
@@ -178,9 +203,16 @@ void show_selection(int selection, std::string interface[][MAP_C]) {
 void map_selection(std::string &selection) {
   int select = 0;
   int levnum = MAP_C / SQUARE_W;
+  for (int i = 0; i < 20; i++)
+    map_pass[i] = false;
+  std::ifstream map_passed ("./lib/maps/pass.txt");
+  std::string name;
+  while (getline(map_passed, name))
+    map_pass[std::stoi(name) - 1] = true;
+  map_passed.close();
   for (int i = 0; i < SQUARE_H - 2; i++)
     for (int j = 0; j < SQUARE_W - 2; j++)
-      background[i][j] = "b";
+      background[i][j] = "B";
   
   std::string interface[MAP_R][MAP_C];
   for (int i = 0; i < MAP_R; i++) {
@@ -257,12 +289,33 @@ void map_selection(std::string &selection) {
         break;
     }
     draw_border((select / levnum) * SQUARE_H, (select % levnum) * SQUARE_W, SQUARE_H, SQUARE_W, interface); 
+    if (select > 0 && map_pass[select - 1] == false) {
+      draw_insert((select / levnum) * SQUARE_H + 1, (select % levnum) * SQUARE_W + 1, SQUARE_H - 2, SQUARE_W - 2, background, interface);
+
+      if ((select + 1) / 10 == 0) {
+        draw_insert((select / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 - 1, (select % levnum) * SQUARE_W + (SQUARE_W - SINGLE_C - 2) / 2 + 1, SINGLE_R, SINGLE_C, number[select + 1], interface);
+      }
+      else {
+        int tens = (select + 1) / 10;
+        int digits = (select + 1) % 10;
+        std::string combine[MAP_R][MAP_C];
+        for (int ii = 0; ii < SINGLE_R; ii++) {
+          for (int j = 0; j < SINGLE_C; j++) {
+            combine[ii][j] = number[tens][ii][j];
+            combine[ii][SINGLE_C + j] = number[digits][ii][j];
+          }
+        }
+        draw_insert((select / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 - 1, (select % levnum) * SQUARE_W + (SQUARE_W - SINGLE_C * 2 - 2) / 2 + 1, SINGLE_R, SINGLE_C * 2, combine, interface);
+      }
+      std::string notice = "passBpreviousBmapsBfirst";
+      draw_words((select / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 - 1 + SINGLE_R + 2, (select % levnum) * SQUARE_W + 1 + (SQUARE_W - notice.size()) / 2, notice, interface);
+    }
     show_selection(select, interface);
   }
   selection = std::to_string(select + 1);
 }
 
-void show_game_end(bool won, bool& back) { // (0 for lose 1 for win, map_name), show win or lose, and choose to restart or go back
+void show_game_end(bool won, bool& back, std::string& map_name) { // (0 for lose 1 for win, map_name), show win or lose, and choose to restart or go back
   std::string msg = won ? "You won!" : "You are a loser!";
   std::string tip_msg = "Press WASD to move; Press g to select";
   int pos = 0;
@@ -272,28 +325,64 @@ void show_game_end(bool won, bool& back) { // (0 for lose 1 for win, map_name), 
     std::string interface[MAP_R][MAP_C];
     draw_initial_interface(interface);
     // draw_words(20, 60, msg, interface);
-    if (won) draw_insert(10, 26, 16, 110, you_win, interface);
-    else draw_insert(14, 30, 7, 101, you_lose, interface);
+    if (won) {
+      draw_insert(10, 26, 16, 110, you_win, interface);
+      if (map_name != "20")
+        draw_insert(31, 69, 4, 18, word_next, interface);
+      if (map_pass[std::stoi(map_name) - 1] == false) {
+        map_pass[std::stoi(map_name) - 1] = true;
+        std::ofstream process_save;
+        process_save.open("./lib/maps/pass.txt", std::ios_base::app);
+        process_save << map_name << std::endl;
+        process_save.close();
+      }
+    }
+    else {
+      draw_insert(14, 30, 7, 101, you_lose, interface);
+      draw_insert(31, 64, 4, 31, word_restart, interface);
+    }
     draw_words(55, 60, tip_msg, interface);
-    draw_insert(30, 64, 4, 31, word_restart, interface);
-    draw_insert(39, 68, 4, 21, word_back, interface);
+    draw_insert(39, 63, 4, 32, word_reselect, interface);
+    //draw_insert(39, 68, 4, 21, word_back, interface);
+    draw_insert(47, 67, 4, 21, word_back, interface);
     // draw_words(35, 75, "Restart", interface);
     // draw_words(40, 75, "Back", interface);
     switch (key) {
       case 'w':
-        if (pos != 0) pos -= 1;
+        if (!(won && map_name == "20" && pos == 1) || pos != 0) pos -= 1;
         break;
       case 's':
-        if (pos != 1) pos += 1;
+        if (pos != 2) pos += 1;
     }
-    if (pos == 0) draw_border(29, 62, 6, 35, interface);
-    else if (pos == 1) draw_border(38, 66, 6, 25, interface);
+    if (pos == 0) 
+      //draw_border(29, 62, 6, 35, interface);
+      draw_border(30, 60, 6, 38, interface);
+    else if (pos == 1) 
+      //draw_border(38, 66, 6, 25, interface);
+      draw_border(38, 60, 6, 38, interface);
+    else
+      draw_border(46, 60, 6, 38, interface);
     show_interface(interface);
     key = get_keyboard();
   }
-  back = pos;
+  if (won && pos == 0) { //next
+    int num = std::stoi(map_name);
+    map_name = std::to_string(num + 1);
+  }
+  else if (pos == 1)
+    map_selection(map_name);
+  else if (pos == 2) 
+    back = true;
+  //back = pos;
 }
   
+void show_bye() {
+  std::string interface[MAP_R][MAP_C];
+  draw_initial_interface(interface);
+  draw_insert(25, 61, 9, 39, word_BYE, interface);
+  show_interface(interface);
+  usleep(60000);
+}
 
 void draw_initial_interface(std::string interface[][MAP_C]) {
   int r = MAP_R;
