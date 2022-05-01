@@ -22,7 +22,7 @@ class Player;
 
 class Block {
   public:
-    void init(int);
+    void init(int, int[]);
     int x, y;
     int overall_property;
     int content[BLOCK_H][BLOCK_W];
@@ -39,6 +39,7 @@ class Map {
     Block get_portal(int, int, int);
     Block get_tar_portal(int, int, int, bool&);
     int content[MAP_R][MAP_C];
+	int portal_color[8];
     Block blocks[MAP_H][MAP_W];
     int gravity; // verticle gravity only
     std::vector<Bar> bars;

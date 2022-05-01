@@ -10,7 +10,7 @@
 // direction = overall % 10
 
 
-void fill(int overall, int *cont, int state) {
+void fill(int overall, int *cont, int state, int portal_color[]) {
   const int row = 5;
   const int col = 10;
 
@@ -58,7 +58,9 @@ void fill(int overall, int *cont, int state) {
     int direct = overall % 10;
     int serial = overall / 10;
     int numcolor = GRD_C;
-    switch (serial) {
+    int color_arr[8] = {9, 219, 93, 12, 14, 118, 226, 214}; 
+    numcolor = color_arr[portal_color[serial - 6]];
+    /*switch (serial) {
       case 6:
         numcolor = 9; //red
         break;
@@ -83,7 +85,7 @@ void fill(int overall, int *cont, int state) {
       case 13:
         numcolor = 214; //orange
         break;
-    }
+    }*/
     switch (direct) {
       case 1: //up
         while (getline (model61, temp61)) {

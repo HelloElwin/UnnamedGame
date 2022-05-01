@@ -10,10 +10,11 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <cstdlib>
 
 // class Block {
 //   public:
-//     void init(int);
+//     void init(int, int[]);
 //     int x, y;
 //     int overall_property;
 //     int content[BLOCK_H][BLOCK_W];
@@ -31,10 +32,11 @@
 //     Block blocks[MAP_H][MAP_W];
 //     int gravity; // verticle gravity only
 //     std::vector<Bar> bars;
+//     int portal_color[8];
 // };
 
-void Block::init(int property) {
-  fill(property, (int*)content, 0);
+void Block::init(int property, int portal_color[]) {
+  fill(property, (int*)content, 0, portal_color);
   overall_property = property;
 }
 
@@ -115,7 +117,7 @@ void Map::init(int map_num) {
           map_file >> serial >> x;
           Bar bar;
           int content[4][6];
-          fill(serial, (int*)content, 0);
+          fill(serial, (int*)content, 0, portal_color);
           bar.init(i * BLOCK_H + 2, j * BLOCK_W + 4, 4, 6, content, serial, i);
           bars.push_back(bar);
           blocks[i][j].overall_property = 1;
@@ -126,10 +128,22 @@ void Map::init(int map_num) {
 
   map_file.close();
 
+  bool judge_repeat[8];
+  for (int i = 0; i < 8; i++)
+    judge_repeat[i] = false;
+  srand(time(NULL));
+  for (int i = 0; i < 8; i++) {
+    int c = rand() % 8;
+    while(judge_repeat[c])
+      c = rand() % 8;
+    judge_repeat[c] = true;
+    portal_color[i] = c;
+  }
+
   for (int i = 0; i < MAP_H; i++)
     for (int j = 0; j < MAP_W; j++) {
       blocks[i][j].x = i, blocks[i][j].y = j;
-      blocks[i][j].init(blocks[i][j].overall_property);
+      blocks[i][j].init(blocks[i][j].overall_property, portal_color);
     }
 
   gravity = -1;
@@ -162,12 +176,12 @@ void Map::converter(Player& u) {
         k = 3 - k;
         blocks[i][j].overall_property = 20 + k;
       }
-      fill(blocks[i][j].overall_property, (int*)blocks[i][j].content, u.state);
+      fill(blocks[i][j].overall_property, (int*)blocks[i][j].content, u.state, portal_color);
     }
   }
   for (int i = 0; i < bars.size(); i++) {
     bars[i].property = 63 - bars[i].property;
-    fill(bars[i].property, (int*)bars[i].content, u.state);
+    fill(bars[i].property, (int*)bars[i].content, u.state, portal_color);
   }
 
 }
