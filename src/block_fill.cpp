@@ -16,7 +16,7 @@ void fill(int overall, int *cont, int state, int portal_color[]) {
 
   const int grdwid = 1, grdlen = 10;
   const int perwid = 4, perlen = 4;
-  const int barwid = 4, barlen = 2; 
+  const int elfinwid = 4, elfinlen = 2; 
   const int polwid1 = 2, pollen1 = 10;
   const int polwid2 = 2, pollen2 = 5;
   const int gatwid = 4, gatlen = 4;
@@ -31,8 +31,8 @@ void fill(int overall, int *cont, int state, int portal_color[]) {
     AIR_C = temp;
   }
 
-  int BAR_H = 4;
-  int BAR_W = 6;
+  int ELFIN_H = 4;
+  int ELFIN_W = 6;
 
   std::ifstream model1 ("./lib/blocks/1.txt");
   std::string temp1;
@@ -141,7 +141,7 @@ void fill(int overall, int *cont, int state, int portal_color[]) {
         break;
     }
   }
-  else if (overall / 10 >= 2) { //player and bar and property ground and gravity converter
+  else if (overall / 10 >= 2) { //player and elfin and property ground and gravity converter
     int serial = overall / 10;
     int fi = overall % 10;
     int color = 0;
@@ -165,10 +165,10 @@ void fill(int overall, int *cont, int state, int portal_color[]) {
         }
         ct = cont;
         break;
-      case 3: //bar
+      case 3: //elfin
         //temporarily/permanently nothing
         while (getline(model3, temp3)) {
-          for (int i = 0; i < BAR_W; i++) {
+          for (int i = 0; i < ELFIN_W; i++) {
               if (temp3[i] == '1') 
                 *ct++ = color * 100 + overall;
               else
@@ -315,7 +315,7 @@ void player_fill(int property, int *cont) {
       if (((i == 20 || i == 22 || i == 23) && j >= 44 && j <= 47)||(i == 21 && j >= 45 && j <= 46))
         content = 10;
 
-      //bar fire
+      //elfin fire
       if (i <= 35 && i >= 32 && j <= 50 && j >= 41)
         content = 3;
       if (i <= 35 && i >= 32 && j >= 45 && j <= 46)

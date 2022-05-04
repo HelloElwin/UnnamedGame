@@ -4,7 +4,7 @@
 #define HEADER_MAP
 
 #include "player.h"
-#include "bar.h"
+#include "elfin.h"
 
 // size of block
 #define BLOCK_H 5
@@ -42,7 +42,7 @@ class Map {
 	int portal_color[8];
     Block blocks[MAP_H][MAP_W];
     int gravity; // verticle gravity only
-    std::vector<Bar> bars;
+    std::vector<Elfin> elfins;
 };
 
 #endif
