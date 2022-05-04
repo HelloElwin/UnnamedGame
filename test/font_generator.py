@@ -101,16 +101,29 @@ font="""   ___           __
  / _  / _ `/ __/  '_/
 /____/\_,_/\__/_/\_\ """
 
+font="""   ___              __        __ 
+  / _ \___ ___ ___ / /__ ____/ /_
+ / , _/ -_|_-</ -_) / -_) __/ __/
+/_/|_|\__/___/\__/_/\__/\__/\__/ """
+
+font="""   _  __        __ 
+  / |/ /____ __/ /_
+ /    / -_) \ / __/
+/_/|_/\__/_\_\\\\__/ """
+
 font = font.split('\n')
 for line_idx, line in enumerate(font):
     print("{", end="")
     for idx, x in enumerate(line):
-        if x != '"':
-            if idx != len(line) - 1: print(f'"{x}", ', end="")
-            else: print(f'"{x}"', end="")
-        else:
+        if x == '"':
             if idx != len(line) - 1: print('"\\' + f'{x}' + '", ', end="")
             else: print('"\\' + f'{x}"', end="")
+        elif x == '\\':
+            if idx != len(line) - 1: print('"\\\\", ', end="")
+            else: print('"\\\\', end="")
+        else:
+            if idx != len(line) - 1: print(f'"{x}", ', end="")
+            else: print(f'"{x}"', end="")
     if line_idx != len(font) - 1: print('},')
     else: print('}')
 print(f"Row={len(font)} Col={len(font[0])}")
