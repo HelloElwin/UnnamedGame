@@ -17,6 +17,7 @@
 //      int state; // 0-Outer 1-Inner
 //      char property;
 //      int speed; // verticle speed only
+//      int real_speed; 
 //      bool touching_gravity, last_touching_gravity;
 //  };
 
@@ -110,11 +111,49 @@ void Player::move(char direction, Map& map, bool& moving) {
       break;
   }
   check_floor(map, is_floor);
-  if (map.gravity < 0 && is_floor[1]) speed = 0;
-  else if (map.gravity > 0 && is_floor[0]) speed = 0;
+  if (map.gravity < 0 && is_floor[1]) {
+    speed = 0;
+    real_speed = 0;
+  }
+  else if (map.gravity > 0 && is_floor[0]) {
+    speed = 0;
+    real_speed = 0;
+  }
   else {
-    speed = map.gravity;
+    speed += map.gravity;
+    real_speed += map.gravity;
     last_x = x;
+    int bound = speed > 0 ? x + height : x;
+    int addpos = 0;
+    bool special0 = false;
+    if (abs(speed) > 0) {
+      addpos = speed / abs(speed);
+      for (int j = 0; j < width; j++) {
+        if (map.content[bound + addpos][y + j] % 100 != 0) {
+          special0 = true;
+          real_speed -= map.gravity;
+          break;
+        }
+      }
+    }
+    if (!special0)
+      speed = real_speed;
+    if (abs(speed) > 1) {
+      bool special = false;
+      for (int j = 0; j < width; j++) {
+        int pos = addpos;
+        while (pos != speed + addpos) {
+          if (bound + pos <= MAP_R && bound + pos >= 0 && map.content[bound + pos][y + j] % 100 != 0) {
+            special = true;
+            speed = pos - addpos;
+            break;
+          }
+          pos += addpos;
+        }
+        if (special)
+          break;
+      }
+    }
     x += speed;
     moving = true;
   }

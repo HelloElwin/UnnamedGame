@@ -1,11 +1,11 @@
 #include "map.h"
 #include "player.h"
 
-#ifndef BAR_H
-#define BAR_H
+#ifndef ELFIN_H
+#define ELFIN_H
 
 
-class Bar {
+class Elfin {
   public:
     int x, y;
     int last_x, last_y;
@@ -19,6 +19,6 @@ class Bar {
 class Map;
 class Player;
 
-void bar_move(Map&, Player&, bool&, bool&);
+void elfin_move(Map&, Player&, bool&, bool&);
 
 #endif
