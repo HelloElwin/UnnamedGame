@@ -10,11 +10,13 @@ Ye Yaowen (3035845344) [@HelloElwin](https://github.com/HelloElwin)
 
 "Unnamed Game is a fun game without a name (yet)! And you, the bravest explorer in HKU, are given the job to find the name for this game! The name is hidden in a secrete room in a world of ice and flame, and your journey starts from a certain point in this world. At the end point lies the entrance of the secrete room and your ultimate goal: name for the Unnamed Game!"
 
-This is a keyboard-based adventure game for one player controlled by **WASD**. The player is suggested to kick in a way to travel to the destination.
+This is a keyboard-based adventure game for one player controlled by **wasd**. The player is suggested to kick in a way to travel to the destination.
 
-A list of features including portals, gravity switches, world converters etc., are designed to assist the travel. Two properties, ice and flame, are attached to the player, bars and grounds. Under opposite properties, bars and grounds may be dangerous to the player.
+A list of features including portals, gravity switches, world converters etc., are designed to assist the travel. Two properties, ice and flame, are attached to the player, elfins and grounds. Under opposite properties, elfins and grounds may be dangerous to the player.
 
-## Quick Start
+## Instruction
+
+### Quick Start
 
 Start the game with these commands!
 
@@ -24,15 +26,19 @@ make main
 ./main
 ```
 
+**[Game guidance]()**
+
+**[Video demostration]()**
+
 ## Element Description
 
 ### Air
 
 The player will fall/float according the direction of gravity.
 
-### Bar
+### Elfin
 
-It can move in horizontal directions with a property of ice or flame. A bar will move towards the player when the player arrives at the same level. If the player holds the same property as the bar, the bar is equivalent to Air. Otherwise, if the player holds the opposite property as the bar's, direct contacting means **Game Fails**.
+It can move in horizontal directions with a property of ice or flame. An elfin will move towards the player when the player arrives at the same level. If the player holds the same property as the elfin, the elfin is harmless. It will chase after you, or bounce around you, or fly towards you. Otherwise, if the player holds the opposite property as the elfin's, direct contacting means **Game Fails**.
 
 ### Gravity Switch
 
@@ -59,22 +65,20 @@ World converters usually have similar shapes with portals except that they are n
 1. Generation of random game sets or events
 
     * We use random seeds to decide the color of Portals and World-Converters.
-
 2. Data structures for storing game status
 
     * We design a class `Map` to store the information of the map.
     * We design a class `Block` to store the information of blocks, i.e. ground, portals etc. 
     * We design a class `Player` to store the information of the player.
-
+    * We design a class `Elfin` to store the information of elfins.
 3. Dynamic memory management
 
-    * We allocate new memory for blocks in a map when the player enters it, and deallocate the memory upon end of game in this map.
-
+    * We use a vector to store all the elfins in a specific map. When initializing a map, we push the elfin to the vector one by one. At the end of the game, we release all the stored elfins from the vector.
 4. File input/output (e.g., for loading/saving game status)
 
-    * Before the game, the player needs to input a number to choose a map available.
-    * The movement of the player is controlled by keyboard inputs **WASD**.
-
+    * Before the game, the player needs to choose a map available. The program will read the choice, and the corresponding map file will be loaded from `/lib/maps`.
+    * When the program initializes a map, the corresponding templates of different blocks (E.G., portals, gates, grounds) and the elfin are loaded to fill the content of the map.
+    * After the player wins a game, the success record will be saved to `pass.txt`.
 5. Program codes in multiple files
 ```
 .
@@ -97,29 +101,104 @@ World converters usually have similar shapes with portals except that they are n
 
 6. Program functions
 
-   **Initialize the map**
+   **Map initialization**
    
    ```c++
    void Map::init(int map_num);
    ```
 
-   **Print the whole map**
+   **Map print**
 
    ```c++
    void Map::print(void);
    ```
 
-   **Update map**
+   **Map update**
    
    ```c++
    void Map::update(Player u);
    ```
    
-   **Portal delivery**
+   **Map content fill**
+   
+   ```c++
+   void fill(int overall, int *cont, int state);
+   ```
+   
+   **Gravity inversion & portal and world-converter delivery**
    
    ```c++
    void Map::check(Player &u);
    ```
+   
+   **World Conversion**
+   
+   ```c++
+   void Map::converter(Player &u);
+   ```
+   
+   **Player initialization**
+   
+   ```c++
+   void Player::init(int x0, int y0, int h0, int w0, int s0, int cont[][2], int proty);
+   ```
+   
+   **Game status check**
+   
+   ```c++
+   bool Player::alive(Map& map);
+   bool Player::success(Map& map);
+   ```
+   
+   **Player move**
+   
+   ```c++
+   void Player::move(char direction, Map& map, bool& moving);
+   ```
+   
+   **Elfin initialization**
+   
+   ```c++
+   void Elfin::init(int x0; int y0, int h, int w, int cont[][6], int proty, int lel);
+   ```
+   
+   **Elfin move**
+   
+   ```c++
+   void elfin_move(Map& map, Player& player, bool& touch, bool& moving);
+   ```
+   
+   **Window size reminder**
+   
+   ```c++
+   void sizecheck(void);
+   ```
+
+## Non standard libraries
+
+* `termios.h` is used to monitor keyboard input
+
+  ```c++
+  #include <termios.h>
+  struct termios;
+  int txgetattr(int, struct termios *);
+  int tcsetattr(int, int, struct termios *);
+  ```
+
+* `sys/ioctl.h` is used to get the row and column of the window
+
+  ```c++
+  #include <sys/ioctl.h>
+  struct winsize;
+  ioctl(int, usigned long, struct winsize *);
+  ```
+
+* `conio.h` is used to determine whether a key has been pressed or not
+
+  ```c++
+  #include <conio.h>
+  int kbhit(void);
+  ```
 
 
 
