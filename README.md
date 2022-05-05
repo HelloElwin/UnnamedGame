@@ -1,6 +1,6 @@
 # UnnamedGame
 
-###### <img src="./pics/demonstration.gif" alt="demonstration" style="zoom: 67%;" />
+###### <img src="./pics/demonstration.gif" alt="demonstration" style="zoom: 50%;" />
 
 ## Team members
 
@@ -15,8 +15,6 @@ Ye Yaowen (3035845344) [@HelloElwin](https://github.com/HelloElwin)
 This is a keyboard-based adventure game for one player controlled by **wasd**. The player is suggested to kick in a way to travel to the destination.
 
 A list of features including portals, gravity switches, world converters etc., are designed to assist the travel. Two properties, ice and flame, are attached to the player, elfins and grounds. Under opposite properties, elfins and grounds may be dangerous to the player.
-
-**[Game guidance]()**
 
 **[Video demostration]()**
 
@@ -60,44 +58,53 @@ They differd from normal grounds as their specified properties. They may be atta
 
 World converters usually have similar shapes with portals except that they are not appear in pairs. It means that if there's no other portal that is with the same color as this "portal", then it is a world converter. When it is a necessity to pass a block of property ground with the opposite property, or when facing the coming attack from a bar with the opposite property, the player can enter the external/inner world through these world converters.  
 
-## Features
+## Featureses
 
 1. Generation of random game sets or events
 
-    * We use random seeds to decide the color of Portals and World-Converters.
+    * We use random seeds to decide the color of Portals and World-Converters. \[[link](./src/map.cpp#L136)\]
+
 2. Data structures for storing game status
 
-    * We design a class `Map` to store the information of the map.
-    * We design a class `Block` to store the information of blocks, i.e. ground, portals etc. 
-    * We design a class `Player` to store the information of the player.
-    * We design a class `Elfin` to store the information of elfins.
+    * We design a class `Map` to store the information of the map. \[[link](./src/map.h#L23)\]
+    * We design a class `Block` to store the information of blocks, i.e. ground, portals etc. \[[link](./src/map.h#L31)\]
+    * We design a class `Player` to store the information of the player. \[[link](./src/player.h#L8)\]
+    * We design a class `Elfin` to store the information of elfins. \[[link](./src/elfin.h#L8)\]
+    
 3. Dynamic memory management
 
-    * We use a vector to store all the elfins in a specific map. When initializing a map, we push the elfin to the vector one by one. At the end of the game, we release all the stored elfins from the vector.
-4. File input/output (e.g., for loading/saving game status)
+    * We use a vector to store all the elfins in a specific map. When initializing a map, we push the elfin to the vector one by one. At the end of the game, we release all the stored elfins from the vector. \[[link](./src/map.h#L45)\]
+    
+4. File input/output
 
-    * Before the game, the player needs to choose a map available. The program will read the choice, and the corresponding map file will be loaded from `/lib/maps`.
-    * When the program initializes a map, the corresponding templates of different blocks (E.G., portals, gates, grounds) and the elfin are loaded to fill the content of the map.
-    * After the player wins a game, the success record will be saved to `pass.txt`.
+    * Before the game, the player needs to choose a map available. The program will read the choice, and the corresponding map file will be loaded from `/lib/maps`. \[[link](./src/map.cpp#L69)\]
+    * When the program initializes a map, the corresponding templates of different blocks (E.G., portals, gates, grounds) and the elfin are loaded to fill the content of the map. \[[link](./src/block_fill.cpp#L37)\]
+    * After the player wins a game, the success record will be saved to `pass.txt`. \[[link](./src/interface.cpp#L250)\]
+    
 5. Program codes in multiple files
-```
-.
-├── Makefile
-├── README.md
-├── bin
-│   ├── *.o
-├── lib
-│   ├── blocks
-│   └── maps
-├── main
-├── src
-│   ├── *.h
-│   ├── *.cpp
-└── test
-    ├── color_test.py
-    ├── map_test.py
-    └── testfill.cpp
-```
+      ```
+      .
+      ├── main
+      ├── Makefile
+      ├── README.md
+      ├── src
+      │   ├── *.cpp
+      │   ├── *.h
+      ├── bin
+      │   ├── *.o
+      ├── lib
+      │   ├── blocks
+      │   │   ├── *.txt (block models)
+      │   └── maps
+      │       ├── *.txt (maps)
+      │       ├── conio.h
+      │       ├── description.txt
+      │       ├── format.txt
+      │       ├── pass.txt
+      ├── test
+      │   ├── *.py/cpp (test programs)
+      ├── pics
+      ```
 
 6. Program functions
 
