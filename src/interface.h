@@ -10,6 +10,7 @@ void show_welcome(int&); // adjust window size and show game logo
 void map_selection(std::string&); // (return map_name) select a map with WASD and then show_game will be called
 void show_selection(int, std::string[][MAP_C]); //print function of map_selection
 void show_game_end(bool, bool&, std::string&); // (0 for lose 1 for win, map_name), show win or lose, and choose to continue on same map / another map / quit
+void show_about(void); //the interface of about
 void show_bye(void); //the interface of quit
 void show_interface(std::string[][MAP_C]);
 

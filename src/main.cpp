@@ -32,10 +32,9 @@ int main() {
         show_game_end(won, back, map_name);
       }
     } else if (choice == 1) { // about
-      // show about 
+      show_about(); // show about 
     } else if (choice == 2) { // quit
-      show_bye();
-      // show goodbye
+      show_bye(); // show goodbye
     }
   }
 

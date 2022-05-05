@@ -7,6 +7,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #define SQUARE_H 15
 #define SQUARE_W 32
@@ -139,6 +140,30 @@ std::string word_next[MAP_R][MAP_C] = {
   {" ", "/", " ", " ", " ", " ", "/", " ", "-", "_", ")", " ", "\\", " ", "/", " ", "_", "_", "/"},
   {"/", "_", "/", "|", "_", "/", "\\", "_", "_", "/", "_", "\\", "_", "\\", "\\", "_", "_", "/", " "}
 };
+std::string word_elwin[MAP_R][MAP_C] = { // 7, 54
+{"U", " ", "_", "_", "_", "_", "_", " ", "u", " ", " ", "_", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "_", " ", " ", " ", "_", " ", " ", " ", " ", " "},
+{"\\", "|", " ", "_", "_", "_", "\"", "|", "/", " ", "|", "\"", "|", " ", " ", " ", " ", " ", "_", "_", " ", " ", " ", " ", " ", " ", " ", " ", "_", "_", " ", " ", " ", " ", " ", "_", "_", "_", " ", " ", " ", " ", " ", "|", " ", "\\", " ", "|", "\"", "|", " ", " ", " ", " "},
+{" ", "|", " ", " ", "_", "|", "\"", " ", "U", " ", "|", " ", "|", " ", "u", " ", " ", " ", "\\", "\"", "\\", " ", " ", " ", " ", " ", " ", "/", "\"", "/", " ", " ", " ", " ", "|", "_", "\"", "_", "|", " ", " ", " ", "<", "|", " ", " ", "\\", "|", " ", "|", ">", " ", " ", " "},
+{" ", "|", " ", "|", "_", "_", "_", " ", " ", "\\", "|", " ", "|", "/", "_", "_", " ", " ", "/", "\\", " ", "\\", " ", "/", "\\", " ", "/", " ", "/", "\\", " ", " ", " ", " ", " ", "|", " ", "|", " ", " ", " ", " ", "U", "|", " ", "|", "\\", " ", " ", "|", "u", " ", " ", " "},
+{" ", "|", "_", "_", "_", "_", "_", "|", " ", " ", "|", "_", "_", "_", "_", "_", "|", "U", " ", " ", "\\", " ", "V", " ", " ", "V", " ", "/", " ", " ", "U", " ", " ", "U", "/", "|", " ", "|", "\\", "u", " ", " ", " ", "|", "_", "|", " ", "\\", "_", "|", " ", " ", " ", " "},
+{" ", "<", "<", " ", " ", " ", ">", ">", " ", " ", "/", "/", " ", " ", "\\", "\\", " ", ".", "-", ",", "_", "\\", " ", "/", "\\", " ", "/", "_", ",", "-", ".", "-", ",", "_", "|", "_", "_", "_", "|", "_", ",", "-", ".", "|", "|", " ", " ", " ", "\\", "\\", ",", "-", ".", " "},
+{"(", "_", "_", ")", " ", "(", "_", "_", ")", "(", "_", "\"", ")", "(", "\"", "_", ")", " ", "\\", "_", ")", "-", "'", " ", " ", "'", "-", "(", "_", "/", " ", "\\", "_", ")", "-", "'", " ", "'", "-", "(", "_", "/", " ", "(", "_", "\"", ")", " ", " ", "(", "_", "/", " ", " "}
+};
+std::string word_ceylon[MAP_R][MAP_C] = { // 7, 55
+{" ", " ", " ", "_", "_", "_", "_", " ", "U", " ", "_", "_", "_", "_", "_", " ", "u", " ", "_", "_", " ", " ", " ", "_", "_", " ", " ", "_", " ", " ", " ", " ", " ", " ", " ", "U", " ", " ", "_", "_", "_", " ", "u", " ", " ", "_", " ", " ", " ", "_", " ", " ", " ", " ", " "},
+{"U", " ", "/", "\"", "_", "_", "_", "|", "\\", "|", " ", "_", "_", "_", "\"", "|", "/", " ", "\\", " ", "\\", " ", "/", " ", "/", " ", "|", "\"", "|", " ", " ", " ", " ", " ", " ", " ", "\\", "/", "\"", "_", " ", "\\", "/", " ", "|", " ", "\\", " ", "|", "\"", "|", " ", " ", " ", " "},
+{"\\", "|", " ", "|", " ", "u", " ", " ", " ", "|", " ", " ", "_", "|", "\"", " ", " ", " ", " ", "\\", " ", "V", " ", "/", "U", " ", "|", " ", "|", " ", "u", " ", " ", " ", " ", " ", "|", " ", "|", " ", "|", " ", "|", "<", "|", " ", " ", "\\", "|", " ", "|", ">", " ", " ", " "},
+{" ", "|", " ", "|", "/", "_", "_", " ", " ", "|", " ", "|", "_", "_", "_", " ", " ", " ", "U", "_", "|", "\"", "|", "_", "u", "\\", "|", " ", "|", "/", "_", "_", ".", "-", ",", "_", "|", " ", "|", "_", "|", " ", "|", "U", "|", " ", "|", "\\", " ", " ", "|", "u", " ", " ", " "},
+{" ", " ", "\\", "_", "_", "_", "_", "|", " ", "|", "_", "_", "_", "_", "_", "|", " ", " ", " ", " ", "|", "_", "|", " ", " ", " ", "|", "_", "_", "_", "_", "_", "|", "\\", "_", ")", "-", "\\", "_", "_", "_", "/", " ", " ", "|", "_", "|", " ", "\\", "_", "|", " ", " ", " ", " "},
+{" ", "_", "/", "/", " ", "\\", "\\", " ", " ", "<", "<", " ", " ", " ", ">", ">", ".", "-", ",", "/", "/", "|", "(", "_", " ", " ", "/", "/", " ", " ", "\\", "\\", " ", " ", " ", " ", " ", " ", "\\", "\\", " ", " ", " ", " ", "|", "|", " ", " ", " ", "\\", "\\", ",", "-", ".", " "},
+{"(", "_", "_", ")", "(", "_", "_", ")", "(", "_", "_", ")", " ", "(", "_", "_", ")", "\\", "_", ")", " ", "(", "_", "_", ")", "(", "_", "\"", ")", "(", "\"", "_", ")", " ", " ", " ", " ", "(", "_", "_", ")", " ", " ", " ", "(", "_", "\"", ")", " ", " ", "(", "_", "/", " ", " "}
+};
+std::string word_game_description[MAP_R][MAP_C] = { // 4, 96
+  {"Unnamed Game is a fun game without a name (yet)! And you, the bravest explorer in HKU, are given"},
+  {"the job to find the name for this game! The name is hidden in a secrete room in a world of ice  "},
+  {"and flame, and your journey starts from a certain point in this world. At the end point lies the"},
+  {"entrance of the secrete room and your ultimate goal: name for the Unnamed Game!                 "}
+};
 
 bool map_pass[20];
 void show_welcome(int& choice) {
@@ -220,11 +245,22 @@ void map_selection(std::string &selection) {
   int levnum = MAP_C / SQUARE_W;
   for (int i = 0; i < 20; i++)
     map_pass[i] = false;
-  std::ifstream map_passed ("./lib/maps/pass.txt");
-  std::string name;
-  while (getline(map_passed, name))
-    map_pass[std::stoi(name) - 1] = true;
-  map_passed.close();
+
+  std::string tmp;
+  std::ifstream file_map_passed("./lib/maps/pass.txt");
+  while (getline(file_map_passed, tmp))
+    map_pass[std::stoi(tmp) - 1] = true;
+  file_map_passed.close();
+
+  std::vector<std::string> map_descriptions;
+  std::ifstream file_map_descriptions("./lib/maps/description.txt");
+  while (getline(file_map_descriptions, tmp)) {
+    for (int i = 0; i < tmp.size(); i++)
+      if (tmp[i] == ' ') tmp[i] = 'B';
+    map_descriptions.push_back(tmp);
+  }
+  file_map_descriptions.close();
+
   for (int i = 0; i < SQUARE_H - 2; i++)
     for (int j = 0; j < SQUARE_W - 2; j++)
       background[i][j] = "B";
@@ -303,27 +339,33 @@ void map_selection(std::string &selection) {
         select += 1;
         break;
     }
-    draw_border((select / levnum) * SQUARE_H, (select % levnum) * SQUARE_W, SQUARE_H, SQUARE_W, interface); 
-    if (select > 0 && map_pass[select - 1] == false) {
-      draw_insert((select / levnum) * SQUARE_H + 1, (select % levnum) * SQUARE_W + 1, SQUARE_H - 2, SQUARE_W - 2, background, interface);
 
-      if ((select + 1) / 10 == 0) {
-        draw_insert((select / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 - 1, (select % levnum) * SQUARE_W + (SQUARE_W - SINGLE_C - 2) / 2 + 1, SINGLE_R, SINGLE_C, number[select + 1], interface);
-      }
-      else {
-        int tens = (select + 1) / 10;
-        int digits = (select + 1) % 10;
-        std::string combine[MAP_R][MAP_C];
-        for (int ii = 0; ii < SINGLE_R; ii++) {
-          for (int j = 0; j < SINGLE_C; j++) {
-            combine[ii][j] = number[tens][ii][j];
-            combine[ii][SINGLE_C + j] = number[digits][ii][j];
-          }
+    draw_border((select / levnum) * SQUARE_H, (select % levnum) * SQUARE_W, SQUARE_H, SQUARE_W, interface); 
+
+    draw_insert((select / levnum) * SQUARE_H + 1, (select % levnum) * SQUARE_W + 1, SQUARE_H - 2, SQUARE_W - 2, background, interface);
+
+    if ((select + 1) / 10 == 0) {
+      draw_insert((select / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 - 1, (select % levnum) * SQUARE_W + (SQUARE_W - SINGLE_C - 2) / 2 + 1, SINGLE_R, SINGLE_C, number[select + 1], interface);
+    }
+    else {
+      int tens = (select + 1) / 10;
+      int digits = (select + 1) % 10;
+      std::string combine[MAP_R][MAP_C];
+      for (int ii = 0; ii < SINGLE_R; ii++) {
+        for (int j = 0; j < SINGLE_C; j++) {
+          combine[ii][j] = number[tens][ii][j];
+          combine[ii][SINGLE_C + j] = number[digits][ii][j];
         }
-        draw_insert((select / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 - 1, (select % levnum) * SQUARE_W + (SQUARE_W - SINGLE_C * 2 - 2) / 2 + 1, SINGLE_R, SINGLE_C * 2, combine, interface);
       }
+      draw_insert((select / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 - 1, (select % levnum) * SQUARE_W + (SQUARE_W - SINGLE_C * 2 - 2) / 2 + 1, SINGLE_R, SINGLE_C * 2, combine, interface);
+    }
+
+    if (select > 0 && map_pass[select - 1] == false) {
       std::string notice = "passBpreviousBmapsBfirst";
       draw_words((select / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 - 1 + SINGLE_R + 2, (select % levnum) * SQUARE_W + 1 + (SQUARE_W - notice.size()) / 2, notice, interface);
+    } else {
+      std::string description = map_descriptions[select];
+      draw_words((select / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 - 1 + SINGLE_R + 2, (select % levnum) * SQUARE_W + 1 + (SQUARE_W - description.size()) / 2, description, interface);
     }
     show_selection(select, interface);
   }
@@ -397,6 +439,27 @@ void show_bye() {
   draw_insert(25, 61, 9, 39, word_BYE, interface);
   show_interface(interface);
   usleep(60000);
+}
+
+void show_about() {
+  char key = 'x';
+  while (key != 'g') {
+    clear_screen();
+    std::string interface[MAP_R][MAP_C];
+    std::string tip_msg = "Press g to return";
+    std::string author_msg1 = "This is a game designed by";
+    std::string author_msg2 = "and";
+    draw_initial_interface(interface);
+    draw_insert(8, 27, 6, 104, game_title, interface);
+    draw_insert(16, 31, 4, 96, word_game_description, interface);
+    draw_words(27, 65, author_msg1, interface);
+    draw_words(38, 77, author_msg2, interface);
+    draw_insert(29, 53, 7, 54, word_elwin, interface);
+    draw_insert(40, 53, 7, 55, word_ceylon, interface);
+    draw_words(55, 70, tip_msg, interface);
+    show_interface(interface);
+    key = get_keyboard();
+  }
 }
 
 void draw_initial_interface(std::string interface[][MAP_C]) {
