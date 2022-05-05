@@ -290,6 +290,8 @@ void map_selection(std::string &selection) {
     }
   }
   draw_border((select / levnum) * SQUARE_H, (select % levnum) * SQUARE_W, SQUARE_H, SQUARE_W, interface); 
+  std::string notice = "ABtasteBofBportals";
+  draw_words((select / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 - 1 + SINGLE_R + 2, (select % levnum) * SQUARE_W + 1 + (SQUARE_W - notice.size()) / 2, notice, interface);
   show_selection(select, interface);
   char key = 'x';
   while (key != 'g') {
@@ -316,7 +318,9 @@ void map_selection(std::string &selection) {
         draw_insert((i / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 + 1, (i % levnum) * SQUARE_W + (SQUARE_W - SINGLE_C * 2 - 2) / 2 + 1, SINGLE_R, SINGLE_C * 2, combine, interface);
       }
     }
+
     key = get_keyboard();
+
     switch(key) {
       case 'w':
         if (select / levnum == 0)
