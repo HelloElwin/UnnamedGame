@@ -1,7 +1,5 @@
 # UnnamedGame
 
-###### <img src="./pics/demonstration.gif" alt="demonstration" style="zoom: 50%;" />
-
 ## Team members
 
 Li Han (3035845954) [@Kelios1556](https://github.com/Kelios1556)
@@ -16,7 +14,7 @@ This is a keyboard-based adventure game for one player controlled by **wasd**. T
 
 A list of features including portals, gravity switches, world converters etc., are designed to assist the travel. Two properties, ice and flame, are attached to the player, elfins and grounds. Under opposite properties, elfins and grounds may be dangerous to the player.
 
-**[Video demostration]()**
+\[[Video Demonstration](https://drive.google.com/file/d/1Zh4KOynGt4oPI9joVerWWsWSWNrtcACP/view?usp=sharing)\]
 
 ### Quick Start
 
