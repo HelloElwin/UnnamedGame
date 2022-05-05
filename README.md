@@ -16,7 +16,9 @@ This is a keyboard-based adventure game for one player controlled by **wasd**. T
 
 A list of features including portals, gravity switches, world converters etc., are designed to assist the travel. Two properties, ice and flame, are attached to the player, elfins and grounds. Under opposite properties, elfins and grounds may be dangerous to the player.
 
-## Instruction
+**[Game guidance]()**
+
+**[Video demostration]()**
 
 ### Quick Start
 
@@ -27,10 +29,6 @@ make clean
 make main
 ./main
 ```
-
-**[Game guidance]()**
-
-**[Video demostration]()**
 
 ## Element Description
 
