@@ -1,5 +1,7 @@
 # UnnamedGame
 
+###### <img src="./pics/demonstration.gif" alt="demonstration" style="zoom: 67%;" />
+
 ## Team members
 
 Li Han (3035845954) [@Kelios1556](https://github.com/Kelios1556)
