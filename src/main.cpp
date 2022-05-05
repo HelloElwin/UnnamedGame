@@ -29,12 +29,12 @@ int main() {
       while (!back) {
         printf("Selected map: %s", map_name.c_str());
         bool won = start_game(map_name);
-        show_game_end(won, back);
+        show_game_end(won, back, map_name);
       }
     } else if (choice == 1) { // about
-      // show about 
+      show_about(); // show about 
     } else if (choice == 2) { // quit
-      // show goodbye
+      show_bye(); // show goodbye
     }
   }
 
