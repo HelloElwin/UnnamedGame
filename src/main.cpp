@@ -1,4 +1,4 @@
-#include "bar.h"
+#include "elfin.h"
 #include "map.h"
 #include "utils.h"
 #include "player.h"
@@ -29,12 +29,12 @@ int main() {
       while (!back) {
         printf("Selected map: %s", map_name.c_str());
         bool won = start_game(map_name);
-        show_game_end(won, back);
+        show_game_end(won, back, map_name);
       }
     } else if (choice == 1) { // about
-      // show about 
+      show_about(); // show about 
     } else if (choice == 2) { // quit
-      // show goodbye
+      show_bye(); // show goodbye
     }
   }
 
@@ -67,9 +67,9 @@ bool game(Map& map, Player& player) {
     bool live_judge = true;
     live_judge = player.alive(map);
 
-    bool touch_bar = false;
-    bar_move(map, player, touch_bar, moving);
-    if (touch_bar)
+    bool touch_elfin = false;
+    elfin_move(map, player, touch_elfin, moving);
+    if (touch_elfin)
       live_judge = false;
     
     bool succ_judge = false;

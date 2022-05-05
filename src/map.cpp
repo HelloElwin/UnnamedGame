@@ -2,7 +2,7 @@
 #include "utils.h"
 #include "player.h"
 #include "block_fill.h"
-#include "bar.h"
+#include "elfin.h"
 
 #include <cstdio>
 #include <string>
@@ -10,10 +10,11 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <cstdlib>
 
 // class Block {
 //   public:
-//     void init(int);
+//     void init(int, int[]);
 //     int x, y;
 //     int overall_property;
 //     int content[BLOCK_H][BLOCK_W];
@@ -30,11 +31,12 @@
 //     int content[MAP_R][MAP_C];
 //     Block blocks[MAP_H][MAP_W];
 //     int gravity; // verticle gravity only
-//     std::vector<Bar> bars;
+//     std::vector<Elfin> elfins;
+//     int portal_color[8];
 // };
 
-void Block::init(int property) {
-  fill(property, (int*)content, 0);
+void Block::init(int property, int portal_color[]) {
+  fill(property, (int*)content, 0, portal_color);
   overall_property = property;
 }
 
@@ -111,13 +113,13 @@ void Map::init(int map_num) {
         case 'G': // upper gravity-converter
           blocks[i][j].overall_property = 52;
           break;
-        case 'b': //bar
+        case 'b': //elfin
           map_file >> serial >> x;
-          Bar bar;
+          Elfin elfin;
           int content[4][6];
-          fill(serial, (int*)content, 0);
-          bar.init(i * BLOCK_H + 2, j * BLOCK_W + 4, 4, 6, content, serial, i);
-          bars.push_back(bar);
+          fill(serial, (int*)content, 0, portal_color);
+          elfin.init(i * BLOCK_H + 2, j * BLOCK_W + 4, 4, 6, content, serial, i);
+          elfins.push_back(elfin);
           blocks[i][j].overall_property = 1;
           break;
       }
@@ -126,10 +128,22 @@ void Map::init(int map_num) {
 
   map_file.close();
 
+  bool judge_repeat[8];
+  for (int i = 0; i < 8; i++)
+    judge_repeat[i] = false;
+  srand(time(NULL));
+  for (int i = 0; i < 8; i++) {
+    int c = rand() % 8;
+    while(judge_repeat[c])
+      c = rand() % 8;
+    judge_repeat[c] = true;
+    portal_color[i] = c;
+  }
+
   for (int i = 0; i < MAP_H; i++)
     for (int j = 0; j < MAP_W; j++) {
       blocks[i][j].x = i, blocks[i][j].y = j;
-      blocks[i][j].init(blocks[i][j].overall_property);
+      blocks[i][j].init(blocks[i][j].overall_property, portal_color);
     }
 
   gravity = -1;
@@ -162,12 +176,12 @@ void Map::converter(Player& u) {
         k = 3 - k;
         blocks[i][j].overall_property = 20 + k;
       }
-      fill(blocks[i][j].overall_property, (int*)blocks[i][j].content, u.state);
+      fill(blocks[i][j].overall_property, (int*)blocks[i][j].content, u.state, portal_color);
     }
   }
-  for (int i = 0; i < bars.size(); i++) {
-    bars[i].property = 63 - bars[i].property;
-    fill(bars[i].property, (int*)bars[i].content, u.state);
+  for (int i = 0; i < elfins.size(); i++) {
+    elfins[i].property = 63 - elfins[i].property;
+    fill(elfins[i].property, (int*)elfins[i].content, u.state, portal_color);
   }
 
 }
@@ -227,7 +241,7 @@ void Map::check(Player &u) {
           else
             direc_from = 1 - direc_orig % 2;
         }
-        int res_property;
+        int res_property; //the portal to go
         Block res_portal;
         if (flag) { //portal
           res_property = tar_portal.overall_property % 10;
@@ -242,13 +256,15 @@ void Map::check(Player &u) {
         }
         if (res_property <= 2) { // up and down
           if (direc_orig <= 2) {
-            double cspeed;
-            cspeed = -0.9 * u.speed;
-            if (abs(cspeed) <= 1)
+            double cspeed = u.real_speed;
+            if (res_property == direc_orig) 
+              cspeed = -0.9 * u.real_speed;
+            if (abs(cspeed) <= 1 && abs(cspeed) > 0)
               cspeed = (cspeed / abs(cspeed)) * ceil(abs(cspeed));
-            else
+            else if (abs(cspeed) > 0)
               cspeed = (cspeed / abs(cspeed)) * floor(abs(cspeed));
             u.speed = cspeed;
+            u.real_speed = cspeed;
           }
           u.x = res_portal.x * BLOCK_H + (BLOCK_H / 2 + ((1.5 - res_property) * 2) * ((direc_from - 0.5) * 2) * (u.height * (((res_property % 2) + (direc_from % 2)) % 2) + 2 * (1 - ((res_property % 2) + (direc_from % 2)) % 2)));
           u.y = res_portal.y * BLOCK_W + ((BLOCK_W - u.width) / 2);
@@ -278,11 +294,11 @@ void Map::update(Player u) {
           if (cont != 0) content[x + i][y + j] = cont;
         }
 
-  for (int idx = 0; idx < bars.size(); idx++)
-    for (int i = bars[idx].x; i < bars[idx].x + bars[idx].height; i++) 
-      for (int j = bars[idx].y - 2; j < bars[idx].y - 2 + bars[idx].width; j++) 
-        if (bars[idx].content[i - bars[idx].x][j - bars[idx].y + 2] % 100 != 0) 
-          content[i][j] = bars[idx].content[i - bars[idx].x][j - bars[idx].y + 2]; 
+  for (int idx = 0; idx < elfins.size(); idx++)
+    for (int i = elfins[idx].x; i < elfins[idx].x + elfins[idx].height; i++) 
+      for (int j = elfins[idx].y - 2; j < elfins[idx].y - 2 + elfins[idx].width; j++) 
+        if (elfins[idx].content[i - elfins[idx].x][j - elfins[idx].y + 2] % 100 != 0) 
+          content[i][j] = elfins[idx].content[i - elfins[idx].x][j - elfins[idx].y + 2]; 
 
   for (int i = u.x; i < u.x + u.height; i++)
     for (int j = u.y; j < u.y + u.width; j++)
