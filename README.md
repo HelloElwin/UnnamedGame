@@ -58,7 +58,7 @@ They differd from normal grounds as their specified properties. They may be atta
 
 World converters usually have similar shapes with portals except that they are not appear in pairs. It means that if there's no other portal that is with the same color as this "portal", then it is a world converter. When it is a necessity to pass a block of property ground with the opposite property, or when facing the coming attack from a bar with the opposite property, the player can enter the external/inner world through these world converters.  
 
-## Featureses
+## Features
 
 1. Generation of random game sets or events
 
