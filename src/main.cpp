@@ -17,7 +17,7 @@ bool start_game(std::string);
 
 int main() {
   
-  sizecheck();
+  sizecheck(); // check if the window size is big enough
 
   int choice = -1;
   while (choice != 2) {
@@ -32,15 +32,21 @@ int main() {
         show_game_end(won, back, map_name);
       }
     } else if (choice == 1) { // about
-      show_about(); // show about 
+      show_about(); // show about page 
     } else if (choice == 2) { // quit
-      show_bye(); // show goodbye
+      show_bye(); // show goodbye page
     }
   }
 
   return 0;
 }
 
+
+/* 
+   initialize map and player and start the game
+   input: the number of the map
+   return value: true if the player wins the game, and false if loses
+*/
 bool start_game(std::string map_name) {
   Player player;
   clear_screen();
@@ -57,6 +63,12 @@ bool start_game(std::string map_name) {
   return game(map, player);
 }
 
+
+/* 
+   process the game, judge game status
+   input: an object of class Map, an object of class Player
+   return value: true for win and false for lose 
+*/
 bool game(Map& map, Player& player) {
   while (true) {
     char key = '.';

@@ -36,7 +36,6 @@ class Map {
     void check(Player&);
     void update(Player);
     void converter(Player&);
-    Block get_portal(int, int, int);
     Block get_tar_portal(int, int, int, bool&);
     int content[MAP_R][MAP_C];
 	int portal_color[8];

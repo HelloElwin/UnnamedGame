@@ -2,14 +2,23 @@
 #include <fstream>
 #include <string>
 
-// content = color的int*100+属性的数字
-// overall property = 属性(*10 + 方向(如果有)）
+// content = color * 100 + property
+// overall property = property(*10 + direction (if any)）
 
-// overall_property of a portal
+// overall_property of a portal:
 // serial = overall_property / 10
 // direction = overall % 10
 
 
+/*
+   fill the content
+   input: 
+    · int variable overall property
+    · pointer pointing to int array content[5][10] 
+    · int variable state indicating inner or outer
+    · int array, storing a randonly generated portal colors
+    no return value
+*/
 void fill(int overall, int *cont, int state, int portal_color[]) {
   const int row = 5;
   const int col = 10;
@@ -34,6 +43,7 @@ void fill(int overall, int *cont, int state, int portal_color[]) {
   int ELFIN_H = 4;
   int ELFIN_W = 6;
 
+  //load the pre-saved template
   std::ifstream model1 ("./lib/blocks/1.txt");
   std::string temp1;
   std::string temp10;
@@ -87,20 +97,20 @@ void fill(int overall, int *cont, int state, int portal_color[]) {
         break;
     }*/
     switch (direct) {
-      case 1: //up
+      case 1: // up
         while (getline (model61, temp61)) {
           for (int j = 0; j < col; j++) {
-            if (temp61[j] == '2')
+            if (temp61[j] == '2') // main body of portal
               *ct++ = numcolor * 100 + serial;
-            else if (temp61[j] == '1')
+            else if (temp61[j] == '1') // ground
               *ct++ = GRD_C * 100 + 1;
-            else
+            else // air
               *ct++ = AIR_C * 100 + 0;
           }
         }
         ct = cont;
         break;
-      case 2: //down
+      case 2: // down
         while (getline (model62, temp62)) {
           for (int j = 0; j < col; j++) {
             if (temp62[j] == '2')
@@ -113,7 +123,7 @@ void fill(int overall, int *cont, int state, int portal_color[]) {
         }
         ct = cont;
         break;
-      case 3: //left
+      case 3: // left
         while (getline (model63, temp63)) {
           for (int j = 0; j < col; j++) {
             if (temp63[j] == '2')
@@ -126,7 +136,7 @@ void fill(int overall, int *cont, int state, int portal_color[]) {
         }
         ct = cont;
         break;
-      case 4: //right
+      case 4: // right
         while (getline (model64, temp64)) {
           for (int j = 0; j < col; j++) {
             if (temp64[j] == '2')
@@ -141,20 +151,20 @@ void fill(int overall, int *cont, int state, int portal_color[]) {
         break;
     }
   }
-  else if (overall / 10 >= 2) { //player and elfin and property ground and gravity converter
+  else if (overall / 10 >= 2) { // player and elfin and property ground and gravity converter
     int serial = overall / 10;
     int fi = overall % 10;
     int color = 0;
     switch(fi) {
-      case 1: //ice
+      case 1: // ice
         color = 32;
         break;
-      case 2: //fire
+      case 2: // fire
         color = 1;
         break;
     }
     switch(serial) {
-      case 2: //property ground
+      case 2: // property ground
         while (getline (model1, temp10)) {
           for (int j = 0; j < col; j++) {
             if (temp10[j] == '1')
@@ -165,8 +175,7 @@ void fill(int overall, int *cont, int state, int portal_color[]) {
         }
         ct = cont;
         break;
-      case 3: //elfin
-        //temporarily/permanently nothing
+      case 3: // elfin
         while (getline(model3, temp3)) {
           for (int i = 0; i < ELFIN_W; i++) {
               if (temp3[i] == '1') 
@@ -205,16 +214,15 @@ void fill(int overall, int *cont, int state, int portal_color[]) {
         ct = cont;
         break;
     }
-    //to be continued
   }
-  else { //not portal
+  else { // not portal
     switch(overall) {
       case 0: //air
         for (int i = 0; i < row; i++) 
           for (int j = 0; j < col; j++)
             *ct++ = AIR_C * 100 + 0;
         break;
-      case 1: //ground
+      case 1: // ground
         while (getline (model1, temp1)) {
           for (int j = 0; j < col; j++) {
             if (temp1[j] == '1')
@@ -251,13 +259,19 @@ void fill(int overall, int *cont, int state, int portal_color[]) {
   model64.close();
 }
 
+
+/*
+   fill the content of the player
+   input: int variable property, pointer pointing to an int array
+   no return value
+*/
 void player_fill(int property, int *cont) {
   int color;
   switch(property) {
     case 1: // ice
       color = 32;
       break;
-    case 2:
+    case 2: // fire
       color = 1;
       break;
   }
@@ -265,103 +279,3 @@ void player_fill(int property, int *cont) {
   for (int i = 0; i < 2 * 2; i++) 
     *ct++ = color * 100 + 2;
 }
-
-
-/*design test
-
-  int content = 0;
-  for (int i = 1;i <= 60;i++) {
-    for(int j = 1; j <= 160;j++) {
-      content = (i == 1)||(i == 60) ? 1 : 0;
-
-      //portal
-      //up pink
-      if(i >= 38 && i <= 41 && j >= 40 && j <= 49)
-        content = 3;
-      if((i == 40 && j >= 40 && j <= 49)||(i == 39 && (j == 40 || j == 41 || j == 48 || j ==49)))
-        content = 4;
-      //down violet
-      if(i >= 38 && i <= 41 && j >= 70 && j <= 79)
-        content = 3;
-      if((i == 39 && j >= 70 && j <= 79)||(i == 40 && (j == 70 || j == 71 || j == 78 || j ==79)))
-        content = 5;
-      //left cyan
-      if(i <= 41 && i >= 38 && j >= 101 && j <= 110)
-        content = 3;
-      if(((i <= 41 && i >= 38) && j == 105)||((i == 41 || i == 38) && (j == 106)))
-        content = 6;
-
-      //right green
-      if(i <= 35 && i >= 32 && j >= 101 && j <= 110)
-        content = 3;
-      if(((i <= 35 && i >= 32) && j == 106)||((i == 35 || i == 32) && (j == 105)))
-        content = 7;
-
-      //gate 131
-      if (i >= 20 && i <= 23 && j >= 101 && j<=110)
-        content = 3;
-      if ((i >= 20 && i <= 23 && j >=105 && j <= 106)||((i == 22 || i == 23) && (j == 104 || j == 107)))
-        content = 8;
-
-      //ground 231
-      if (i >= 20 && i <=23 && j >= 70 && j<= 79)
-        content = 3;
-      if (i == 23 && j >= 70 && j <=79)
-        content = 9;
-
-      //player ice
-      if (i >= 20 && i <= 23 && j >= 41 && j <= 50)
-        content = 3;
-      if (((i == 20 || i == 22 || i == 23) && j >= 44 && j <= 47)||(i == 21 && j >= 45 && j <= 46))
-        content = 10;
-
-      //elfin fire
-      if (i <= 35 && i >= 32 && j <= 50 && j >= 41)
-        content = 3;
-      if (i <= 35 && i >= 32 && j >= 45 && j <= 46)
-        content = 11;
-
-      switch (content) {
-        case 0:
-          printf(" ");
-          break;
-        case 1:
-          printf("\033[48;5;231m \033[0m");
-          break;
-        case 2:
-          printf("\033[48;5;135m \033[0m");
-          break;
-        case 3:
-          printf("\033[48;5;230m \033[0m");
-          break;
-        case 4:
-          printf("\033[48;5;219m \033[0m");
-          break;
-        case 5:
-          printf("\033[48;5;93m \033[0m");
-          break;
-        case 6:
-          printf("\033[48;5;14m \033[0m");
-          break;
-        case 7:
-          printf("\033[48;5;118m \033[0m");
-          break;
-        case 8:
-          printf("\033[48;5;131m \033[0m");
-          break;
-        case 9:
-          printf("\033[48;5;231m \033[0m");
-          break;
-        case 10:
-          printf("\033[48;5;32m \033[0m");
-          break;
-        case 11:
-          printf("\033[48;5;1m \033[0m");
-          break;
-      }
-    }
-    printf("\n");
-  }
-}
-}
-*/

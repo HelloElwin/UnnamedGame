@@ -16,8 +16,7 @@
 #define SINGLE_C 8
 
 std::string background[MAP_R][MAP_C]; // background of each little map square
-//0123456789 row: 6 column: 8
-std::string number[10][MAP_R][MAP_C] = {
+std::string number[10][MAP_R][MAP_C] = { //0123456789 row: 6 column: 8
   {{"B", "█", "█", "█", "█", "█", "╗", "B"},{"█", "█", "B", "B", "B", "█", "█", "╗"},{"█", "█", "B", "B", "B", "█", "█", "║"},{"█", "█", "B", "B", "B", "█", "█", "║"},{"╚", "█", "█", "█", "█", "█", "╔", "╝"},{"B", "╚", "═", "═", "═", "═", "╝", "B"}},
 
   {{"B", "B", "B", "█", "█", "╗", "B", "B"},{"B", "B", "█", "█", "█", "║", "B", "B"},{"B", "B", "╚", "█", "█", "║", "B", "B"},{"B", "B", "B", "█", "█", "║", "B", "B"},{"B", "B", "B", "█", "█", "║", "B", "B"},{"B", "B", "B", "╚", "═", "╝", "B", "B"}}, 
@@ -166,8 +165,14 @@ std::string word_game_description[MAP_R][MAP_C] = { // 4, 96
 };
 
 bool map_pass[20];
+
+
+/*
+   display the welcome page
+   input: int variable choice
+   return value: int variable choice, storing the number of the map chosen
+*/
 void show_welcome(int& choice) {
-  std::string welcome_msg = "Welcome to the Unnamed Game!";
   std::string tip_msg = "Press wasd to move; Press g to select";
   int pos = 0;
   char key = 'x';
@@ -176,11 +181,7 @@ void show_welcome(int& choice) {
     std::string interface[MAP_R][MAP_C];
     draw_initial_interface(interface);
     draw_insert(12, 27, 6, 104, game_title, interface);
-    // draw_words(20, 60, welcome_msg, interface);
     draw_words(55, 60, tip_msg, interface);
-    // draw_words(30, 75, "Start", interface);
-    // draw_words(35, 75, "About", interface);
-    // draw_words(40, 75, "Quit", interface);
     draw_insert(26, 68, 4, 23, word_start, interface);
     draw_insert(34, 66, 4, 27, word_about, interface);
     draw_insert(42, 70, 4, 17, word_quit, interface);
@@ -200,6 +201,12 @@ void show_welcome(int& choice) {
   choice = pos;
 }
 
+
+/*
+   display the filled interface
+   input: string array interface[60][160]
+   no return value
+*/
 void show_interface(std::string interface[][MAP_C]) {
   clear_screen();
   for (int i = 0; i < MAP_R; i++) {
@@ -212,6 +219,14 @@ void show_interface(std::string interface[][MAP_C]) {
   }
 }
 
+
+/*
+   attach a special pattern to the map block currently being chosen
+   input: 
+    · int variable selection, storing which map is currently chosen
+    · string array interface[60][160], the content of the interface
+   no return value
+*/
 void show_selection(int selection, std::string interface[][MAP_C]) {
   clear_screen();
   for (int i = 0; i < MAP_R; i++) {
@@ -240,6 +255,12 @@ void show_selection(int selection, std::string interface[][MAP_C]) {
   }
 }
 
+
+/*
+   display the page to select a map
+   input: string variable selection
+   return value: string variable selection, storing the number of the map chosen
+*/
 void map_selection(std::string &selection) {
   int select = 0;
   int levnum = MAP_C / SQUARE_W;
@@ -266,16 +287,13 @@ void map_selection(std::string &selection) {
       background[i][j] = "B";
   
   std::string interface[MAP_R][MAP_C];
-  for (int i = 0; i < MAP_R; i++) {
-    for (int j = 0; j < MAP_C; j++) {
+  for (int i = 0; i < MAP_R; i++)
+    for (int j = 0; j < MAP_C; j++)
       interface[i][j] = " ";
-    }
-  }
   for (int i = 0; i < MAP_NUM; i++) {
     draw_insert((i / levnum) * SQUARE_H + 1, (i % levnum) * SQUARE_W + 1, SQUARE_H - 2, SQUARE_W - 2, background, interface);
-    if ((i + 1) / 10 == 0) {
+    if ((i + 1) / 10 == 0)
       draw_insert((i / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 + 1, (i % levnum) * SQUARE_W + (SQUARE_W - SINGLE_C - 2) / 2 + 1, SINGLE_R, SINGLE_C, number[i + 1], interface);
-    }
     else {
       int tens = (i + 1) / 10;
       int digits = (i + 1) % 10;
@@ -294,7 +312,8 @@ void map_selection(std::string &selection) {
   draw_words((select / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 - 1 + SINGLE_R + 2, (select % levnum) * SQUARE_W + 1 + (SQUARE_W - notice.size()) / 2, notice, interface);
   show_selection(select, interface);
   char key = 'x';
-  while (key != 'g') {
+  int max_map = 4; // how many maps we have now
+  while (key != 'g' || select > max_map - 1) {
     for (int i = 0; i < MAP_R; i++) {
       for (int j = 0; j < MAP_C; j++) {
         interface[i][j] = " ";
@@ -302,9 +321,8 @@ void map_selection(std::string &selection) {
     }
     for (int i = 0; i < MAP_NUM; i++) {
       draw_insert((i / levnum) * SQUARE_H + 1, (i % levnum) * SQUARE_W + 1, SQUARE_H - 2, SQUARE_W - 2, background, interface);
-      if ((i + 1) / 10 == 0) {
+      if ((i + 1) / 10 == 0)
         draw_insert((i / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 + 1, (i % levnum) * SQUARE_W + (SQUARE_W - SINGLE_C - 2) / 2 + 1, SINGLE_R, SINGLE_C, number[i + 1], interface);
-      }
       else {
         int tens = (i + 1) / 10;
         int digits = (i + 1) % 10;
@@ -376,8 +394,18 @@ void map_selection(std::string &selection) {
   selection = std::to_string(select + 1);
 }
 
-void show_game_end(bool won, bool& back, std::string& map_name) { // (0 for lose 1 for win, map_name), show win or lose, and choose to restart or go back
-  std::string msg = won ? "You won!" : "You are a loser!";
+
+/*
+   display the end , show win or lose, and choose to restart/go next, reselect or go back
+   input:
+    · bool variable won, 0 for lose and 1 for win
+    · bool variable back, indicating whether it's needed to back to "welcome page"
+    · string variable map_name, storing the map the player currently is in
+   return value:
+    · bool variable back, true if needed and false if not
+    · string variable map_name, storing which map the player is going to be in
+*/
+void show_game_end(bool won, bool& back, std::string& map_name) { 
   std::string tip_msg = "Press WASD to move; Press g to select";
   int pos = 0;
   char key = 'x';
@@ -385,7 +413,6 @@ void show_game_end(bool won, bool& back, std::string& map_name) { // (0 for lose
     clear_screen();
     std::string interface[MAP_R][MAP_C];
     draw_initial_interface(interface);
-    // draw_words(20, 60, msg, interface);
     if (won) {
       draw_insert(10, 26, 16, 110, you_win, interface);
       if (map_name != "20")
@@ -404,10 +431,7 @@ void show_game_end(bool won, bool& back, std::string& map_name) { // (0 for lose
     }
     draw_words(55, 60, tip_msg, interface);
     draw_insert(39, 63, 4, 33, word_reselect, interface);
-    //draw_insert(39, 68, 4, 21, word_back, interface);
     draw_insert(47, 67, 4, 21, word_back, interface);
-    // draw_words(35, 75, "Restart", interface);
-    // draw_words(40, 75, "Back", interface);
     switch (key) {
       case 'w':
         if (!(won && map_name == "20" && pos == 1) || pos != 0) pos -= 1;
@@ -416,27 +440,30 @@ void show_game_end(bool won, bool& back, std::string& map_name) { // (0 for lose
         if (pos != 2) pos += 1;
     }
     if (pos == 0) 
-      //draw_border(29, 62, 6, 35, interface);
       draw_border(30, 60, 6, 38, interface);
     else if (pos == 1) 
-      //draw_border(38, 66, 6, 25, interface);
       draw_border(38, 60, 6, 38, interface);
     else
       draw_border(46, 60, 6, 38, interface);
     show_interface(interface);
     key = get_keyboard();
   }
-  if (won && pos == 0) { //next
+  if (won && pos == 0) { // next
     int num = std::stoi(map_name);
     map_name = std::to_string(num + 1);
   }
-  else if (pos == 1)
+  else if (pos == 1) // reselect
     map_selection(map_name);
-  else if (pos == 2) 
+  else if (pos == 2) // back
     back = true;
-  //back = pos;
 }
   
+
+/*
+   display the "BYE" page
+   no input
+   no return value
+*/
 void show_bye() {
   std::string interface[MAP_R][MAP_C];
   draw_initial_interface(interface);
@@ -445,6 +472,12 @@ void show_bye() {
   usleep(60000);
 }
 
+
+/*
+   display the "about" page
+   no input
+   no return value
+*/
 void show_about() {
   char key = 'x';
   while (key != 'g') {
@@ -466,6 +499,12 @@ void show_about() {
   }
 }
 
+
+/*
+   draw the initial interface
+   input: string array interface[60][160]i, the content of the interface
+   no return value
+*/
 void draw_initial_interface(std::string interface[][MAP_C]) {
   int r = MAP_R;
   int c = MAP_C;
@@ -482,6 +521,15 @@ void draw_initial_interface(std::string interface[][MAP_C]) {
   }
 }
 
+
+/*
+   draw a rectangular frame
+   input:
+    · int variables x and y, the coordinates of the top left point
+    · int variables r and c, the height and width of the pattern
+    · string array interface[60][160], the content of the interface
+   no return value
+*/
 void draw_border(int x, int y, int r, int c, std::string interface[][MAP_C]) {
   for (int i = 0; i < r; i++) 
     for (int j = 0; j < c; j++) 
@@ -494,24 +542,42 @@ void draw_border(int x, int y, int r, int c, std::string interface[][MAP_C]) {
       else continue;
 }
 
-void draw_box(int x, int y, int r, int c, std::string interface[][120]) {
-  for (int i = 0; i < r; i++) 
-    for (int j = 0; j < c; j++) 
-      interface[x + i][y + j] = "█";
-}
 
+/*
+   insert a pattern into the interface 
+   input: 
+    · int variables x and y, the coordinates of the top left point
+    · int variables r and c, the height and width of the pattern
+    · string array parttern[60][160]
+    · string array interface[60][160], the content of the interface
+   no return value
+*/
 void draw_insert(int x, int y, int r, int c, std::string pattern[][MAP_C], std::string interface[][MAP_C]) {
   for (int i = 0; i < r; i++) 
     for (int j = 0; j < c; j++) 
       interface[x + i][y + j] = pattern[i][j];
 }
 
+
+/*
+   insert a string of words into the interface
+   input:
+    · int variables x and y, the coordinates of the top left point
+    · string variable words
+    · string array interface[60][160], the content of the interface
+   no return value
+*/
 void draw_words(int x, int y, std::string words, std::string interface[][MAP_C]) {
   for (int i = 0; i < words.size(); i++)
     interface[x][y + i] = words[i];
 }
 
 
+/*
+   make print start at the first line of the window
+   no input
+   no return value
+*/
 void clear_screen() {
   printf("\033[2J\033[1;1H");
 }

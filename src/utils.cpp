@@ -7,15 +7,15 @@
 #include <cstdio>
 
 // type sheet
-// 0  air
-// 1  ground
-// 21 ice ground
-// 22 fire ground
-// 31 ice bar
-// 32 fire bar
-// 4  gate 
-// 5  world converter
-// 6+ portal
+// 0        air
+// 1        ground
+// 21       ice ground
+// 22       fire ground
+// 31       ice bar
+// 32       fire bar
+// 4        gate 
+// 5        world converter
+// 6 - 13   portal
  
 // property sheet
 // property = 'x' : none
@@ -31,75 +31,47 @@
 // property = 'o' : orange 214
 
 
+/*
+   print according to the property
+   input: int variable Type = color * 100 + property
+   no return value
+*/
 void super_print(int Type) {
-  int type = Type % 100;
   int property = Type / 100;
-  /*if (type == 0) {
-    printf(" ");
-  } 
-  else if (type == 1) {
-    printf("\033[48;5;231m \033[0m");  
-  } 
-  else {
-    switch (property) {
-      case 'i':
-        printf("\033[48;5;32m \033[0m");  
-        break;
-      case 'f':
-        printf("\033[48;5;1m \033[0m");  
-        break;
-      case 'r':
-        printf("\033[48;5;9m \033[0m");  
-        break;
-      case 'p':
-        printf("\033[48;5;219m \033[0m");  
-        break;
-      case 'v':
-        printf("\033[48;5;93m \033[0m");  
-        break;
-      case 'b':
-        printf("\033[48;5;12m \033[0m");  
-        break;
-      case 'c':
-        printf("\033[48;5;14m \033[0m");  
-        break;
-      case 'g':
-        printf("\033[48;5;118m \033[0m");  
-        break;
-      case 'y':
-        printf("\033[48;5;226m \033[0m");  
-        break;
-      case 'o':
-        printf("\033[48;5;214m \033[0m");  
-        break;
-      case 'x':
-        printf("\033[48;5;231m \033[0m");  
-    }
-  }
-  */
   printf("\033[48;5;%dm \033[0m",property);
 }
 
 
-// Adapted from https://zhuanlan.zhihu.com/p/381561249
+/* 
+   Adapted from https://zhuanlan.zhihu.com/p/381561249
+   minitor real-time keyboard input
+   no input
+   return value: char variable, the keyboard input
+*/
 char get_keyboard(void) {
   char input;
   struct termios new_settings;
   struct termios stored_settings;
-  tcgetattr(0,&stored_settings);
+  tcgetattr(0, &stored_settings);
   new_settings = stored_settings;
   new_settings.c_lflag &= (~ICANON);
   new_settings.c_cc[VTIME] = 0;
-  tcgetattr(0,&stored_settings);
+  tcgetattr(0, &stored_settings);
   new_settings.c_cc[VMIN] = 1;
-  tcsetattr(0,TCSANOW,&new_settings);
+  tcsetattr(0, TCSANOW, &new_settings);
 
   input = getchar();
 
-  tcsetattr(0,TCSANOW,&stored_settings);
+  tcsetattr(0, TCSANOW, &stored_settings);
   return input;
 }
 
+
+/*
+   check if the current window size is big enough
+   no input
+   no return value
+*/
 void sizecheck(void) {
     struct winsize w;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
@@ -127,16 +99,3 @@ void sizecheck(void) {
 
     return;  
 }
-
-/*
-int main() {
-  int a;
-  char b;
-  while(true) {
-    std::cin>>a>>b;
-    super_print(a, b);
-    printf("\n");
-  }
-  return 0;
-}
-*/
