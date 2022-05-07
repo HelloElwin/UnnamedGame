@@ -2,6 +2,9 @@
 #include "utils.h"
 #include "map.h"
 
+#include <cstdio>
+#include <iostream>
+
 //  class Player {
 //    public:
 //      void init(int, int, int, int, int, int[][10], int);

@@ -97,7 +97,7 @@ bool game(Map& map, Player& player) {
       clear_screen();
       map.print();
       // map.inspect(3);
-      player.inspect(1);
+      // player.inspect(1);
     }
      
     usleep(50000);
