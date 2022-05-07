@@ -23,6 +23,8 @@ A list of features including portals, gravity switches, world converters etc., a
 
 Start the game with these commands!
 
+Move the charactor or your with `wasd` and select with `g`. \[[Sample I/O](./sample/input_output_sample.pdf)\]
+
 ```bash
 make clean
 make main
@@ -47,7 +49,7 @@ When the player reaches a Gravity Switch, the direction of gravity will be chang
 
 ### Inner World
 
-When the player enters a World Converter from the external world, the player will arrive in the inner world, and vice versa. The properties of some features (e.g., player, bars, property grounds) may convert upon player's arrival.
+When the player enters a World Converter from the external world, the player will arrive in the inner world, and vice versa. The properties of some features (e.g., player, elfins, property grounds) may convert upon player's arrival.
 
 ### Portal
 
@@ -59,7 +61,7 @@ They differd from normal grounds as their specified properties. They may be atta
 
 ### World Converter
 
-World converters usually have similar shapes with portals except that they are not appear in pairs. It means that if there's no other portal that is with the same color as this "portal", then it is a world converter. When it is a necessity to pass a block of property ground with the opposite property, or when facing the coming attack from a bar with the opposite property, the player can enter the external/inner world through these world converters.  
+World converters usually have similar shapes with portals except that they do not appear in pairs. It means that if there's no other portal that is with the same color as this "portal", then it is a world converter. When it is a necessity to pass a block of property ground with the opposite property, or when facing the coming attack from a elfin with the opposite property, the player can enter the external/inner world through these world converters.  
 
 ## Features
 
