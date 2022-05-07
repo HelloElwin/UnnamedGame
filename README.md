@@ -1,4 +1,4 @@
-# UnnamedGame
+# Unnamed Game
 
 ## Team members
 
