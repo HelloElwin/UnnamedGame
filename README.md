@@ -27,6 +27,8 @@ make main
 ./main
 ```
 
+The game is tested in HKU CS `academy11` server. However, we strongly recommend you to run the game locally since the **network latency** may affect your gaming experience.
+
 ## Element description
 
 ### Air
