@@ -23,7 +23,7 @@ A list of features including portals, gravity switches, world converters etc., a
 
 Start the game with these commands!
 
-Move the charactor or your with `wasd` and select with `g`. \[[Sample I/O](./sample/input_output_sample.pdf)\]
+Move the character with `wasd` and select with `g`. \[[Sample I/O](./sample/input_output_sample.pdf)\]
 
 ```bash
 make clean
