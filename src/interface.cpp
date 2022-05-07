@@ -312,7 +312,7 @@ void map_selection(std::string &selection) {
   draw_words((select / levnum) * SQUARE_H + (SQUARE_H - 2 - SINGLE_R) / 2 - 1 + SINGLE_R + 2, (select % levnum) * SQUARE_W + 1 + (SQUARE_W - notice.size()) / 2, notice, interface);
   show_selection(select, interface);
   char key = 'x';
-  int max_map = 4; // how many maps we have now
+  int max_map = 6; // how many maps we have now
   while (key != 'g' || select > max_map - 1) {
     for (int i = 0; i < MAP_R; i++) {
       for (int j = 0; j < MAP_C; j++) {
