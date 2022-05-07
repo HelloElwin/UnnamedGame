@@ -27,7 +27,7 @@ make main
 ./main
 ```
 
-## Element Description
+## Element description
 
 ### Air
 
@@ -61,24 +61,24 @@ World converters usually have similar shapes with portals except that they are n
 
 1. Generation of random game sets or events
 
-    * We use random seeds to decide the color of Portals and World-Converters. \[[link](./src/map.cpp#L136)\]
+    * We use random seeds to decide the color of Portals and World-Converters. \[[link](./src/map.cpp#L153)\]
 
 2. Data structures for storing game status
 
-    * We design a class `Map` to store the information of the map. \[[link](./src/map.h#L23)\]
-    * We design a class `Block` to store the information of blocks, i.e. ground, portals etc. \[[link](./src/map.h#L31)\]
+    * We design a class `Map` to store the information of the map. \[[link](./src/map.h#L31)\]
+    * We design a class `Block` to store the information of blocks, i.e. ground, portals etc. \[[link](./src/map.h#L23)\]
     * We design a class `Player` to store the information of the player. \[[link](./src/player.h#L8)\]
-    * We design a class `Elfin` to store the information of elfins. \[[link](./src/elfin.h#L8)\]
+    * We design a class `Elfin` to store the information of elfins. \[[link](./src/elfin.h#L10)\]
     
 3. Dynamic memory management
 
-    * We use a vector to store all the elfins in a specific map. When initializing a map, we push the elfin to the vector one by one. At the end of the game, we release all the stored elfins from the vector. \[[link](./src/map.h#L45)\]
+    * We use a vector to store all the elfins in a specific map. When initializing a map, we push the elfin to the vector one by one. At the end of the game, we release all the stored elfins from the vector. \[[link](./src/block.h#L44)\]
     
 4. File input/output
 
-    * Before the game, the player needs to choose a map available. The program will read the choice, and the corresponding map file will be loaded from `/lib/maps`. \[[link](./src/map.cpp#L69)\]
-    * When the program initializes a map, the corresponding templates of different blocks (E.G., portals, gates, grounds) and the elfin are loaded to fill the content of the map. \[[link](./src/block_fill.cpp#L37)\]
-    * After the player wins a game, the success record will be saved to `pass.txt`. \[[link](./src/interface.cpp#L250)\]
+    * Before the game, the player needs to choose a map available. The program will read the choice, and the corresponding map file will be loaded from `/lib/maps`. \[[link](./src/map.cpp#L85)\]
+    * When the program initializes a map, the corresponding templates of different blocks (E.G., portals, gates, grounds) and the elfin are loaded to fill the content of the map. \[[link](./src/block_fill.cpp#L47)\]
+    * After the player wins a game, the success record will be saved to `pass.txt`. \[[link](./src/interface.cpp#L271)\]
     
 5. Program codes in multiple files
       ```
@@ -105,7 +105,7 @@ World converters usually have similar shapes with portals except that they are n
       ├── pics
       ```
 
-6. Program functions
+6. Implemented functions for game features
 
    **Map initialization**
    
@@ -180,7 +180,7 @@ World converters usually have similar shapes with portals except that they are n
    void sizecheck(void);
    ```
 
-## Non standard libraries
+## Non-standard libraries
 
 * `termios.h` is used to monitor keyboard input
 
