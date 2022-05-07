@@ -27,12 +27,13 @@
 //     void inspect(int);
 //     void check(Player&);
 //     void update(Player);
-//     Block get_portal(int, int, int);
+//     void converter(Player&);
+//     Block get_tar_portal(int, int, int, bool&);
 //     int content[MAP_R][MAP_C];
+// 	   int portal_color[8];
 //     Block blocks[MAP_H][MAP_W];
 //     int gravity; // verticle gravity only
 //     std::vector<Elfin> elfins;
-//     int portal_color[8];
 // };
 
 
