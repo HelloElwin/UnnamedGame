@@ -1,3 +1,5 @@
+> 📢 More maps are coming out in **May**!
+
 # Unnamed Game
 
 ![demonstration](./pics/demonstration.gif)
