@@ -1,4 +1,4 @@
-> 📢 More maps are coming out in **May**!
+> 📢 More maps are coming out in **May**! *(Sorry, this is fake news.)*
 
 # Unnamed Game
 
